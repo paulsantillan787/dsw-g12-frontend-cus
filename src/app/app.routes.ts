@@ -1,20 +1,24 @@
 import { Routes } from '@angular/router';
+import { BienvenidaComponent } from './bienvenida/bienvenida.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { LoginAlumnoComponent } from './login-alumno/login-alumno.component';
+import { LoginEspecialistaComponent } from './login-especialista/login-especialista.component';
 
 export const routes: Routes = [
   {
-    path: 'bienvenida',
-    loadComponent: () => import('./bienvenida/bienvenida.component').then(m => m.BienvenidaComponent)
+    path: '',
+    component: BienvenidaComponent
   },
   {
     path: 'usuarios',
-    loadComponent: () => import('./usuarios/usuarios.component').then(m => m.UsuariosComponent)
+    component: UsuariosComponent
   },
   {
     path: 'login-alumno',
-    loadComponent: () => import('./login-alumno/login-alumno.component').then(m => m.LoginAlumnoComponent)
+    component: LoginAlumnoComponent
   },
   {
     path: 'login-especialista',
-    loadComponent: () => import('./login-especialista/login-especialista.component').then(m => m.LoginEspecialistaComponent)
+    component: LoginEspecialistaComponent
   }
 ];
