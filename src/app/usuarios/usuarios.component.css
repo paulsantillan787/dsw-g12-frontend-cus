@@ -4,14 +4,11 @@
   padding-top: 100%; /* 1:1 Aspect Ratio */
   border-radius: 10px;
   overflow: hidden;
+  scale: .85;
 }
 
 .square-card .card-body {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -21,13 +18,13 @@
 }
 
 .alumnos-card {
-  background-image: url('../../assets/fondo-final-pagina-central.png'); /* Change this to the correct path */
+  background-image: url('../../assets/Estudiantes.jpg');  /* Change this to the correct path */
   background-size: cover;
   background-position: center;
 }
 
 .especialistas-card {
-  background-image: url('../../assets/fondo-final-pagina-central.png'); /* Change this to the correct path */
+  background-image: url('../../assets/EspecialistaPsicologo.jpg'); /* Change this to the correct path */
   background-size: cover;
   background-position: center;
 }
