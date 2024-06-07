@@ -5,6 +5,7 @@ import { Usuario } from '../models/usuario';
 import { UsuariosService } from '../services/usuarios.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-alumno',
@@ -20,7 +21,8 @@ export class LoginAlumnoComponent {
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
-    private usuariosService: UsuariosService
+    private usuariosService: UsuariosService,
+    private router: Router
   ) {
     this.loginForm = new FormGroup({
       correo: new FormControl('', [Validators.required]),
@@ -32,14 +34,17 @@ export class LoginAlumnoComponent {
     if (this.loginForm.valid) {
       console.log(this.loginForm.value);
       this.usuariosService.login(this.loginForm.value).subscribe(
-        response => {
+        (response:any) => {
           console.log(response);
+          localStorage.setItem('token', response.access_token);
+          
           Swal.fire({
             title: 'Inicio de sesión exitoso',
             text: 'Bienvenido',
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.router.navigate(['/dashboard']);
         },
         error => {
           console.error(error);

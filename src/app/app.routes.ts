@@ -3,6 +3,7 @@ import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { LoginAlumnoComponent } from './login-alumno/login-alumno.component';
 import { LoginEspecialistaComponent } from './login-especialista/login-especialista.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -20,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'login-especialista',
     component: LoginEspecialistaComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
   }
 ];
