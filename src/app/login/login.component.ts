@@ -26,7 +26,7 @@ export class LoginComponent {
   registerEspecialistaForm: FormGroup;
   isFormSubmitted: boolean = false;
   usuarios: Usuario[] = [];
-  user: String = '';
+  user: String | null = '';
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
@@ -35,14 +35,8 @@ export class LoginComponent {
     private especialistaService: EspecialistaService,
     private router: Router,
     private modalService: NgbModal,
-    private route: ActivatedRoute
   ) {
-    this.route.queryParams.subscribe(params => {
-      const navigation = this.router.getCurrentNavigation();
-      if (navigation && navigation.extras && navigation.extras.state) {
-        this.user = navigation.extras.state['user'];
-      }
-    });
+    this.user = localStorage.getItem('user');
 
     console.log(this.user);
 
