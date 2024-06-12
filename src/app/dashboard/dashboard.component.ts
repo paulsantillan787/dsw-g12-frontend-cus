@@ -4,6 +4,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,32 +14,31 @@ import { CommonModule } from '@angular/common';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
-  user: String = "";
+  user: String | null = "";
+
+  @ViewChild('dash') dash!: ElementRef;
 
   constructor(
     private modalService: NgbModal,
-    private router: Router,
-    private route: ActivatedRoute
   ) {
-    this.route.queryParams.subscribe(params => {
-      const navigation = this.router.getCurrentNavigation();
-      if (navigation && navigation.extras && navigation.extras.state) {
-        this.user = navigation.extras.state['user'];
-      }
-    });
+    this.user = localStorage.getItem('user');
 
     console.log("User: ", this.user);
 
+    // if (this.user == 'estudiante') {
+    //   this.openRegisterModal(this.dash)
+    // }
+
   }
 
-  openRegisterModal(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-      (result) => {
-        console.log(`Closed with: ${result}`);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
+  // openRegisterModal(content: any) {
+  //   this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+  //     (result) => {
+  //       console.log(`Closed with: ${result}`);
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
 }
