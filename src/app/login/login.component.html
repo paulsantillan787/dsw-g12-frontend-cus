@@ -48,7 +48,7 @@
     <h5 class="modal-title" id="modal-basic-title">REGISTRAR ESTUDIANTE</h5>
   </div>
   <div class="modal-body">
-    <form [formGroup]="registerForm" class="letter">
+    <form [formGroup]="registerEstudianteForm" class="letter">
       <div class="row">
         <div class="col-md-6">
           <h4>Datos personales</h4>
@@ -135,7 +135,7 @@
     <h5 class="modal-title" id="modal-basic-title">REGISTRAR ESPECIALISTA</h5>
   </div>
   <div class="modal-body">
-    <form [formGroup]="registerForm" class="letter">
+    <form [formGroup]="registerEspecialistaForm" class="letter">
       <div class="row">
         <div class="col-md-6">
           <h4>Datos personales</h4>
@@ -182,30 +182,10 @@
         </div>
 
         <div class="col-md-6">
-          <h4>Datos de estudiante</h4>
+          <h4>Datos de especialista</h4>
           <div class="form-group">
-            <label for="anio_ingreso">Año de ingreso</label>
-            <input type="text" formControlName="anio_ingreso" class="form-control" id="anio_ingreso" placeholder="Ingrese el año de ingreso">
-          </div>
-          <div class="form-group">
-            <label for="base">Base</label>
-            <input type="text" formControlName="base" class="form-control" id="base" placeholder="Ingrese la base">
-          </div>
-          <div class="form-group">
-            <label for="carrera">Carrera</label>
-            <input type="text" formControlName="carrera" class="form-control" id="carrera" placeholder="Ingrese la carrera">
-          </div>
-          <div class="form-group">
-            <label for="ciclo_actual">Ciclo actual</label>
-            <input type="text" formControlName="ciclo_actual" class="form-control" id="ciclo_actual" placeholder="Ingrese el ciclo actual">
-          </div>
-          <div class="form-group">
-            <label for="cod_estudiante">Código de estudiante</label>
-            <input type="text" formControlName="cod_estudiante" class="form-control" id="cod_estudiante" placeholder="Ingrese el código de estudiante">
-          </div>
-          <div class="form-group">
-            <label for="facultad">Facultad</label>
-            <input type="text" formControlName="facultad" class="form-control" id="facultad" placeholder="Ingrese la facultad">
+            <label for="numero_de_colegiatura">Numero de colegiatura</label>
+            <input type="text" formControlName="numero_de_colegiatura" class="form-control" id="numero_de_colegiatura" placeholder="Ingrese su nro de colegiatura">
           </div>
         </div>
       </div>
