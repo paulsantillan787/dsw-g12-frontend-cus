@@ -10,5 +10,6 @@ import { Component } from '@angular/core';
 export class NavbarComponent {
   exit(){
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 }

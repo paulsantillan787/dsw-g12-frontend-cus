@@ -13,11 +13,7 @@ export class UsuariosComponent {
   constructor(private router: Router) { }
 
   onClick(user: string) {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        user: user
-      }
-    };
-    this.router.navigate(['login'], navigationExtras);
+    localStorage.setItem('user', user);
+    this.router.navigate(['login']);
   }
 }

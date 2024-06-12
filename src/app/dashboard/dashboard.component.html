@@ -10,38 +10,6 @@
     </div>
     <div id="features" class="mt-5">
         <h2 class="text-center">¿Qué puedes hacer en SISVITA?</h2>
-        <div class="row text-center mt-4">
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="../../assets/test-dashboard.jpg" class="card-img-top" alt="Realizar Test">
-                    <div class="card-body">
-                        <h5 class="card-title">Realizar Test</h5>
-                        <p class="card-text">Accede a diversos tests para evaluar tu nivel de ansiedad de forma rápida y sencilla.</p>
-                        <a href="../test" class="btn btn-primary">Hacer Test</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="../../assets/historial-dashboard.webp" class="card-img-top" alt="Historial Clínico">
-                    <div class="card-body">
-                        <h5 class="card-title">Historial Clínico</h5>
-                        <p class="card-text">Consulta tu historial clínico y sigue el progreso de tu tratamiento con nuestros especialistas.</p>
-                        <a href="../historial" class="btn btn-primary">Ver Historial</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="../../assets/perfil-dashboard.jpg" class="card-img-top" alt="Mi Cuenta">
-                    <div class="card-body">
-                        <h5 class="card-title">Mi Cuenta</h5>
-                        <p class="card-text">Administra tu perfil, cambia tu contraseña y configura tus preferencias.</p>
-                        <a href="../perfil" class="btn btn-primary">Administrar Cuenta</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div id="mission-vision" class="mt-5 mb-5">
         <h2 class="text-center">Nuestra Misión y Visión</h2>
@@ -49,6 +17,9 @@
             <div class="col-md-6">
                 <h3 class="text-center">Misión</h3>
                 <p>SISVITA se dedica a proporcionar a los jóvenes herramientas para medir y comprender sus niveles de ansiedad. Nuestra misión es facilitar el acceso a evaluaciones rápidas y precisas, y brindar apoyo continuo a través de especialistas comprometidos con la salud mental.</p>
+                <div *ngIf="user==='estudiante' openRegisterModal(dashboardEstudiante)" >
+
+                </div>
             </div>
             <div class="col-md-6">
                 <h3 class="text-center">Visión</h3>
@@ -60,3 +31,73 @@
 <app-footer></app-footer>
 
 </body>
+
+<ng-template #dashboardEstudiante let-modal>
+  <div class="row text-center mt-4">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="../../assets/test-dashboard.jpg" class="card-img-top" alt="Realizar Test">
+            <div class="card-body">
+                <h5 class="card-title">Realizar Test</h5>
+                <p class="card-text">Accede a diversos tests para evaluar tu nivel de ansiedad de forma rápida y sencilla.</p>
+                <a href="../test" class="btn btn-primary">Hacer Test</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="../../assets/historial-dashboard.webp" class="card-img-top" alt="Historial Clínico">
+            <div class="card-body">
+                <h5 class="card-title">Historial Clínico</h5>
+                <p class="card-text">Consulta tu historial clínico y sigue el progreso de tu tratamiento con nuestros especialistas.</p>
+                <a href="../historial" class="btn btn-primary">Ver Historial</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="../../assets/perfil-dashboard.jpg" class="card-img-top" alt="Mi Cuenta">
+            <div class="card-body">
+                <h5 class="card-title">Mi Cuenta</h5>
+                <p class="card-text">Administra tu perfil, cambia tu contraseña y configura tus preferencias.</p>
+                <a href="../perfil" class="btn btn-primary">Administrar Cuenta</a>
+            </div>
+        </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #dashboardEspecialista let-modal>
+  <div class="row text-center mt-4">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="../../assets/test-dashboard.jpg" class="card-img-top" alt="Realizar Test">
+            <div class="card-body">
+                <h5 class="card-title">Realizar Test</h5>
+                <p class="card-text">Accede a diversos tests para evaluar tu nivel de ansiedad de forma rápida y sencilla.</p>
+                <a href="../test" class="btn btn-primary">Hacer Test</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="../../assets/historial-dashboard.webp" class="card-img-top" alt="Historial Clínico">
+            <div class="card-body">
+                <h5 class="card-title">Historial Clínico</h5>
+                <p class="card-text">Consulta tu historial clínico y sigue el progreso de tu tratamiento con nuestros especialistas.</p>
+                <a href="../historial" class="btn btn-primary">Ver Historial</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="../../assets/perfil-dashboard.jpg" class="card-img-top" alt="Mi Cuenta">
+            <div class="card-body">
+                <h5 class="card-title">Mi Cuenta</h5>
+                <p class="card-text">Administra tu perfil, cambia tu contraseña y configura tus preferencias.</p>
+                <a href="../perfil" class="btn btn-primary">Administrar Cuenta</a>
+            </div>
+        </div>
+    </div>
+  </div>
+</ng-template>
