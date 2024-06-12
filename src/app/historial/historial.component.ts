@@ -3,12 +3,12 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-historial',
   standalone: true,
   imports: [NavbarComponent, FooterComponent],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  templateUrl: './historial.component.html',
+  styleUrl: './historial.component.css'
 })
-export class DashboardComponent {
+export class HistorialComponent {
 
 }

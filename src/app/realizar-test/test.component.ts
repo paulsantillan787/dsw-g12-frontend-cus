@@ -3,12 +3,12 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-realizar-test',
   standalone: true,
   imports: [NavbarComponent, FooterComponent],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  templateUrl: './test.component.html',
+  styleUrl: './test.component.css'
 })
-export class DashboardComponent {
+export class RealizarTestComponent {
 
 }

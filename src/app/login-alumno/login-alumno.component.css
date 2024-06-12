@@ -46,3 +46,18 @@ label {
   background-position: center;
 }
 
+.letter h4 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.letter label{
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.letter input{
+  font-size: 13px;
+}
+
+

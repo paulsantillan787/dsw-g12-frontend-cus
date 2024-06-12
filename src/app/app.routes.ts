@@ -4,6 +4,9 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { LoginAlumnoComponent } from './login-alumno/login-alumno.component';
 import { LoginEspecialistaComponent } from './login-especialista/login-especialista.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
+import { RealizarTestComponent } from './realizar-test/test.component';
+import { HistorialComponent } from './historial/historial.component';
 
 export const routes: Routes = [
   {
@@ -25,5 +28,17 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent
+  },
+  {
+    path: 'perfil',
+    component: MiPerfilComponent
+  },
+  {
+    path: 'test',
+    component: RealizarTestComponent
+  },
+  {
+    path: 'historial',
+    component: HistorialComponent
   }
 ];
