@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { LoginAlumnoComponent } from './login-alumno/login-alumno.component';
-import { LoginEspecialistaComponent } from './login-especialista/login-especialista.component';
+import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
 import { RealizarTestComponent } from './realizar-test/test.component';
@@ -18,12 +17,8 @@ export const routes: Routes = [
     component: UsuariosComponent
   },
   {
-    path: 'login-alumno',
-    component: LoginAlumnoComponent
-  },
-  {
-    path: 'login-especialista',
-    component: LoginEspecialistaComponent
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: 'dashboard',

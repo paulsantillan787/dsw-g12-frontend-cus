@@ -7,22 +7,23 @@ import { Estudiante } from '../models/estudiante';
 import { EstudianteService } from '../services/estudiante.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute} from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModule } from '@ng-bootstrap/ng-bootstrap';  // npm install @ng-bootstrap/ng-bootstrap
 
 
 @Component({
-  selector: 'app-login-alumno',
+  selector: 'app-login',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, NgxPaginationModule, NgbModule],
-  templateUrl: './login-alumno.component.html',
-  styleUrl: './login-alumno.component.css'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
-export class LoginAlumnoComponent {
+export class LoginComponent {
   loginForm: FormGroup; // Use the non-null assertion operator here
   registerForm: FormGroup;
   isFormSubmitted: boolean = false;
   usuarios: Usuario[] = [];
+  user: String = '';
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
@@ -30,7 +31,18 @@ export class LoginAlumnoComponent {
     private estudianteService: EstudianteService,
     private router: Router,
     private modalService: NgbModal,
+    private route: ActivatedRoute
   ) {
+    this.route.queryParams.subscribe(params => {
+      const navigation = this.router.getCurrentNavigation();
+      if (navigation && navigation.extras && navigation.extras.state) {
+        this.user = navigation.extras.state['user'];
+      }
+    });
+
+    console.log(this.user);
+
+
     this.loginForm = new FormGroup({
       correo: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
