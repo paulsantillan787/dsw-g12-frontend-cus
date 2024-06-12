@@ -6,6 +6,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
 import { RealizarTestComponent } from './realizar-test/test.component';
 import { HistorialComponent } from './historial/historial.component';
+import { HorarioComponent } from './horario/horario.component';
+import { PacientesComponent } from './pacientes/pacientes.component';
 
 export const routes: Routes = [
   {
@@ -35,5 +37,13 @@ export const routes: Routes = [
   {
     path: 'historial',
     component: HistorialComponent
+  },
+  {
+    path: 'horario',
+    component: HorarioComponent
+  },
+  {
+    path: 'pacientes',
+    component: PacientesComponent
   }
 ];
