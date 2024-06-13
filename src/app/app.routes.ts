@@ -6,12 +6,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
 import { RealizarTestComponent } from './realizar-test/test.component';
 import { HistorialComponent } from './historial/historial.component';
-<<<<<<< HEAD
 import { HorarioComponent } from './horario/horario.component';
 import { PacientesComponent } from './pacientes/pacientes.component';
-=======
 import { MainLayoutComponent } from './main-layout/main-layout.component';
->>>>>>> plantillas
 
 export const routes: Routes = [
   
@@ -47,32 +44,16 @@ export const routes: Routes = [
       {
         path: 'historial',
         component: HistorialComponent
+      },  
+      {
+        path: 'horario',
+        component: HorarioComponent
+      },
+      {
+        path: 'pacientes',
+        component: PacientesComponent
       }
       // Otras rutas que necesiten el navbar y footer
     ]
-  },
-<<<<<<< HEAD
-  {
-    path: 'perfil',
-    component: MiPerfilComponent
-  },
-  {
-    path: 'test',
-    component: RealizarTestComponent
-  },
-  {
-    path: 'historial',
-    component: HistorialComponent
-  },
-  {
-    path: 'horario',
-    component: HorarioComponent
-  },
-  {
-    path: 'pacientes',
-    component: PacientesComponent
   }
-=======
-
->>>>>>> plantillas
 ];
