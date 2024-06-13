@@ -91,15 +91,27 @@ export class LoginComponent {
       this.usuariosService.login(this.loginForm.value).subscribe(
         (response: any) => {
           console.log(response);
-          localStorage.setItem('token', response.access_token);
+          const token = response.access_token;
+          const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
+          console.log(payload.rol);
 
-          Swal.fire({
-            title: 'Inicio de sesión exitoso',
-            text: 'Bienvenido',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-          });
-          this.router.navigate(['/dashboard']);
+          if (payload.rol == localStorage.getItem('user')) {
+            localStorage.setItem('token', token);
+            Swal.fire({
+              title: 'Inicio de sesión exitoso',
+              text: 'Bienvenido',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
+            this.router.navigate(['/dashboard']);
+          } else {
+            Swal.fire({
+              title: 'Error',
+              text: 'Usted no es un ' + localStorage.getItem('user') + '. Ingrese con su cuenta correspondiente.',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+          }
         },
         error => {
           console.error(error);
@@ -129,7 +141,7 @@ export class LoginComponent {
     if (this.registerEstudianteForm.valid) {
 
       if (this.user === 'estudiante') {
-      //JSON para el modelo Usuario
+        //JSON para el modelo Usuario
         const usuario: Usuario = {
           tipo_documento: this.registerEstudianteForm.value.tipo_documento,
           documento: this.registerEstudianteForm.value.documento,
@@ -191,64 +203,64 @@ export class LoginComponent {
       }
 
     } else if (this.registerEspecialistaForm.valid) {
-        if (this.user === 'especialista') {
+      if (this.user === 'especialista') {
         //JSON para el modelo Usuario
-          const usuario: Usuario = {
-            tipo_documento: this.registerEspecialistaForm.value.tipo_documento,
-            documento: this.registerEspecialistaForm.value.documento,
-            nombre: this.registerEspecialistaForm.value.nombre,
-            apellido_paterno: this.registerEspecialistaForm.value.apellido_paterno,
-            apellido_materno: this.registerEspecialistaForm.value.apellido_materno,
-            telefono: this.registerEspecialistaForm.value.telefono,
-            correo: this.registerEspecialistaForm.value.correo,
-            password: this.registerEspecialistaForm.value.password,
-            id_tipo_rol: 2
-          };
-          this.usuariosService.insert(usuario).subscribe(
-            (response: any) => {
-              console.log(response.message);
-              //JSON para el modelo Especialista
-              const especialista: Especialista = {
-                id_especialista: 0,
-                numero_de_colegiatura: this.registerEspecialistaForm.value.numero_de_colegiatura,
-                documento: this.registerEspecialistaForm.value.documento
-              };
+        const usuario: Usuario = {
+          tipo_documento: this.registerEspecialistaForm.value.tipo_documento,
+          documento: this.registerEspecialistaForm.value.documento,
+          nombre: this.registerEspecialistaForm.value.nombre,
+          apellido_paterno: this.registerEspecialistaForm.value.apellido_paterno,
+          apellido_materno: this.registerEspecialistaForm.value.apellido_materno,
+          telefono: this.registerEspecialistaForm.value.telefono,
+          correo: this.registerEspecialistaForm.value.correo,
+          password: this.registerEspecialistaForm.value.password,
+          id_tipo_rol: 2
+        };
+        this.usuariosService.insert(usuario).subscribe(
+          (response: any) => {
+            console.log(response.message);
+            //JSON para el modelo Especialista
+            const especialista: Especialista = {
+              id_especialista: 0,
+              numero_de_colegiatura: this.registerEspecialistaForm.value.numero_de_colegiatura,
+              documento: this.registerEspecialistaForm.value.documento
+            };
 
-              this.especialistaService.insert(especialista).subscribe(
-                (response: any) => {
-                  console.log(response.message);
-                  Swal.fire({
-                    title: 'Registro exitoso',
-                    text: response.message,
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar'
-                  });
-                  this.registerEspecialistaForm.reset();
-                  this.modalService.dismissAll();
-                },
-                error => {
-                  console.log(error);
-                  Swal.fire({
-                    title: 'Error',
-                    text: error.message,
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                  });
-                }
-              );
-            },
-            error => {
-              console.log(error);
-              Swal.fire({
-                title: 'Error',
-                text: error.message,
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-              });
-            }
-          );
-        }
+            this.especialistaService.insert(especialista).subscribe(
+              (response: any) => {
+                console.log(response.message);
+                Swal.fire({
+                  title: 'Registro exitoso',
+                  text: response.message,
+                  icon: 'success',
+                  confirmButtonText: 'Aceptar'
+                });
+                this.registerEspecialistaForm.reset();
+                this.modalService.dismissAll();
+              },
+              error => {
+                console.log(error);
+                Swal.fire({
+                  title: 'Error',
+                  text: error.message,
+                  icon: 'error',
+                  confirmButtonText: 'Aceptar'
+                });
+              }
+            );
+          },
+          error => {
+            console.log(error);
+            Swal.fire({
+              title: 'Error',
+              text: error.message,
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+          }
+        );
       }
+    }
   }
 
 }
