@@ -6,12 +6,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
 import { RealizarTestComponent } from './realizar-test/test.component';
 import { HistorialComponent } from './historial/historial.component';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 export const routes: Routes = [
+  
   {
     path: '',
     component: BienvenidaComponent
   },
+
   {
     path: 'usuarios',
     component: UsuariosComponent
@@ -21,19 +24,27 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+      {
+        path: 'perfil',
+        component: MiPerfilComponent
+      },
+      {
+        path: 'test',
+        component: RealizarTestComponent
+      },
+      {
+        path: 'historial',
+        component: HistorialComponent
+      }
+      // Otras rutas que necesiten el navbar y footer
+    ]
   },
-  {
-    path: 'perfil',
-    component: MiPerfilComponent
-  },
-  {
-    path: 'test',
-    component: RealizarTestComponent
-  },
-  {
-    path: 'historial',
-    component: HistorialComponent
-  }
+
 ];
