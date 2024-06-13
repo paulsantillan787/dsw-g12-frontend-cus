@@ -1,89 +1,85 @@
-<body>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Mi Perfil</h2>
 
-    <div class="container mt-4">
-        <h2 class="text-center mb-4">Mi Perfil</h2>
+    <!-- Sección de Datos Personales -->
+    <div *ngIf="usuario; else noUsuario" class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">DATOS PERSONALES</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="card-text"><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+                            <p class="card-text"><strong>Apellido paterno:</strong> {{ usuario.apellido_paterno }}
+                            </p>
+                            <p class="card-text"><strong>Apellido materno:</strong> {{ usuario.apellido_materno }}
+                            </p>
+                            <p class="card-text"><strong>Tipo de Documento:</strong> {{ usuario.tipo_documento }}
+                            </p>
+                            <p class="card-text"><strong>Documento:</strong> {{ usuario.documento }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="card-text"><strong>Correo:</strong> {{ usuario.correo }}</p>
+                            <p class="card-text"><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #noUsuario>
+        <p class="text-center">Cargando datos del usuario...</p>
+    </ng-template>
 
-        <!-- Sección de Datos Personales -->
-        <div *ngIf="usuario; else noUsuario" class="row justify-content-center mb-4">
+    <div *ngIf="user === 'estudiante'">
+        <!-- Sección de Datos de Estudiante -->
+        <div *ngIf="estudiante; else noEstudiante" class="row justify-content-center mb-5">
             <div class="col-md-8">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title text-primary">DATOS PERSONALES</h5>
+                        <h5 class="card-title text-primary">DATOS DE ESTUDIANTE</h5>
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="card-text"><strong>Nombre:</strong> {{ usuario.nombre }}</p>
-                                <p class="card-text"><strong>Apellido paterno:</strong> {{ usuario.apellido_paterno }}
+                                <p class="card-text"><strong>Código de estudiante:</strong> {{ estudiante.cod_alumno
+                                    }}
                                 </p>
-                                <p class="card-text"><strong>Apellido materno:</strong> {{ usuario.apellido_materno }}
+                                <p class="card-text"><strong>Año de ingreso:</strong> {{ estudiante.anio_ingreso }}
                                 </p>
-                                <p class="card-text"><strong>Tipo de Documento:</strong> {{ usuario.tipo_documento }}
-                                </p>
-                                <p class="card-text"><strong>Documento:</strong> {{ usuario.documento }}</p>
+                                <p class="card-text"><strong>Base:</strong> {{ estudiante.base }}</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="card-text"><strong>Correo:</strong> {{ usuario.correo }}</p>
-                                <p class="card-text"><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+                                <p class="card-text"><strong>Facultad:</strong> {{ estudiante.facultad }}</p>
+                                <p class="card-text"><strong>Carrera:</strong> {{ estudiante.carrera }}</p>
+                                <p class="card-text"><strong>Ciclo:</strong> {{ estudiante.ciclo_estudio }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <ng-template #noUsuario>
-            <p class="text-center">Cargando datos del usuario...</p>
+        <ng-template #noEstudiante>
+            <p class="text-center">Cargando datos del estudiante...</p>
         </ng-template>
-
-        <div *ngIf="user === 'estudiante'">
-            <!-- Sección de Datos de Estudiante -->
-            <div *ngIf="estudiante; else noEstudiante" class="row justify-content-center mb-5">
-                <div class="col-md-8">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary">DATOS DE ESTUDIANTE</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p class="card-text"><strong>Código de estudiante:</strong> {{ estudiante.cod_alumno
-                                        }}
-                                    </p>
-                                    <p class="card-text"><strong>Año de ingreso:</strong> {{ estudiante.anio_ingreso }}
-                                    </p>
-                                    <p class="card-text"><strong>Base:</strong> {{ estudiante.base }}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="card-text"><strong>Facultad:</strong> {{ estudiante.facultad }}</p>
-                                    <p class="card-text"><strong>Carrera:</strong> {{ estudiante.carrera }}</p>
-                                    <p class="card-text"><strong>Ciclo:</strong> {{ estudiante.ciclo_estudio }}</p>
-                                </div>
+    </div>
+    <div *ngIf="user === 'especialista'">
+        <!-- Sección de Datos de Especialista -->
+        <div *ngIf="especialista; else noEspecialista" class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">DATOS DE ESPECIALISTA</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="card-text"><strong>Número de colegiatura:</strong> {{
+                                    especialista.numero_de_colegiatura }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <ng-template #noEstudiante>
-                <p class="text-center">Cargando datos del estudiante...</p>
-            </ng-template>
         </div>
-        <div *ngIf="user === 'especialista'">
-            <!-- Sección de Datos de Especialista -->
-            <div *ngIf="especialista; else noEspecialista" class="row justify-content-center mb-5">
-                <div class="col-md-8">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title text-primary">DATOS DE ESPECIALISTA</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p class="card-text"><strong>Número de colegiatura:</strong> {{
-                                        especialista.numero_de_colegiatura }}</p>
-                                </div>
-                            </div>
-                        </div>        
-                    </div>
-                </div>
-            </div>
-            <ng-template #noEspecialista>
-                <p class="text-center">Cargando datos del especialista...</p>
-            </ng-template>
-        </div>
+        <ng-template #noEspecialista>
+            <p class="text-center">Cargando datos del especialista...</p>
+        </ng-template>
     </div>
-
-</body>
+</div>

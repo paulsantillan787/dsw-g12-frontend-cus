@@ -1,5 +1,5 @@
 /* Asegura que el body ocupe toda la altura y se organiza con flexbox */
-html, body {
+html{
     height: 100%;
     margin: 0;
     display: flex;
