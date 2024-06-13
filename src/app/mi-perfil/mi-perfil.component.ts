@@ -6,6 +6,8 @@ import { Usuario } from '../models/usuario';
 import { UsuariosService } from '../services/usuarios.service';
 import { Estudiante } from '../models/estudiante';
 import { EstudianteService } from '../services/estudiante.service';
+import { Especialista } from '../models/especialista';
+import { EspecialistaService } from '../services/especialista.service';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -17,9 +19,12 @@ import { EstudianteService } from '../services/estudiante.service';
 export class MiPerfilComponent implements OnInit {
   usuario: Usuario | null = null;
   estudiante: Estudiante | null = null;
+  especialista: Especialista | null = null;
+  user: String = localStorage.getItem('user') || '';
 
   constructor(private usuariosService: UsuariosService,
-              private estudianteService: EstudianteService
+              private estudianteService: EstudianteService,
+              private especialistaService: EspecialistaService,
   ) {}
 
   ngOnInit() {
@@ -42,6 +47,16 @@ export class MiPerfilComponent implements OnInit {
         const estudiantes = response.estudiantes;
         this.estudiante = estudiantes.find((estudiante: Estudiante) => estudiante.documento === this.usuario?.documento) || null;
         console.log(this.estudiante);
+      },
+      error => {
+        console.error(error);
+      }
+    );
+    this.especialistaService.getEspecialistas().subscribe(
+      (response: any) => {
+        const especialistas = response.especialistas;
+        this.especialista = especialistas.find((especialista: Especialista) => especialista.documento === this.usuario?.documento) || null;
+        console.log(this.especialista);
       },
       error => {
         console.error(error);

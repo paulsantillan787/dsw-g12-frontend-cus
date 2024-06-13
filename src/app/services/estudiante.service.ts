@@ -21,7 +21,7 @@ export class EstudianteService {
   }
 
   insert(form: any) {
-    return this.http.post<Estudiante>(`${this.BASE_URL}/insert`, form, { headers: this.headers });
+    return this.http.post<Estudiante>(`${this.BASE_URL}/insert`, form );
   }
 
   update(form: any) {
