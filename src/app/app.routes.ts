@@ -11,7 +11,6 @@ import { PacientesComponent } from './pacientes/pacientes.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 export const routes: Routes = [
-  
   {
     path: '',
     component: BienvenidaComponent
