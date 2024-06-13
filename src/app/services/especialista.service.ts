@@ -21,7 +21,7 @@ export class EspecialistaService {
   }
 
   insert(form: any) {
-    return this.http.post<Especialista>(`${this.BASE_URL}/insert`, form, { headers: this.headers });
+    return this.http.post<Especialista>(`${this.BASE_URL}/insert`, form );
   }
 
   update(form: any) {

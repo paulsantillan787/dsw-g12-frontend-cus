@@ -7,7 +7,7 @@ import { Estudiante } from '../models/estudiante';
 import { EstudianteService } from '../services/estudiante.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModule } from '@ng-bootstrap/ng-bootstrap';  // npm install @ng-bootstrap/ng-bootstrap
 import { Especialista } from '../models/especialista';
 import { EspecialistaService } from '../services/especialista.service';
