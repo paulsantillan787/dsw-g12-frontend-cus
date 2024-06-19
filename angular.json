@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sisvita-frontend-crud": {
+    "dsw-g12-frontend-cus": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/sisvita-frontend-crud",
+            "outputPath": "dist/dsw-g12-frontend-cus",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sisvita-frontend-crud:build:production"
+              "buildTarget": "dsw-g12-frontend-cus:build:production"
             },
             "development": {
-              "buildTarget": "sisvita-frontend-crud:build:development"
+              "buildTarget": "dsw-g12-frontend-cus:build:development"
             }
           },
           "defaultConfiguration": "development"
