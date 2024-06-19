@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { BienvenidaComponent } from './bienvenida/bienvenida.component';
+import { BienvenidaComponent } from './sites/autenticacion/bienvenida/bienvenida.component';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +10,5 @@ import { BienvenidaComponent } from './bienvenida/bienvenida.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'sisvita-frontend-crud';
+  title = 'dsw-g12-frontend-cus';
 }

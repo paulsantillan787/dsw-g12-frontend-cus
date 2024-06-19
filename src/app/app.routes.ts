@@ -1,58 +1,46 @@
 import { Routes } from '@angular/router';
-import { BienvenidaComponent } from './bienvenida/bienvenida.component';
-import { UsuariosComponent } from './usuarios/usuarios.component';
-import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
-import { RealizarTestComponent } from './realizar-test/test.component';
-import { HistorialComponent } from './historial/historial.component';
-import { HorarioComponent } from './horario/horario.component';
-import { PacientesComponent } from './pacientes/pacientes.component';
-import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { BienvenidaComponent } from './sites/autenticacion/bienvenida/bienvenida.component';
+import { UsuariosComponent } from './sites/autenticacion/usuarios/usuarios.component';
+import { LoginComponent } from './sites/autenticacion/login/login.component';
+import { MainComponent } from './shared/main/main.component';
+import { HomeComponent } from './sites/home/home.component';
+import { SelectTestComponent } from './sites/select-test/select-test.component';
+import { TestsPerformedComponent } from './sites/tests-performed/tests-performed.component';
+import { MyProfileComponent } from './sites/my-profile/my-profile.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: BienvenidaComponent
-  },
-
-  {
-    path: 'usuarios',
-    component: UsuariosComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: '',
-    component: MainLayoutComponent,
-    children: [
-      {
-        path: 'dashboard',
-        component: DashboardComponent
-      },
-      {
-        path: 'perfil',
-        component: MiPerfilComponent
-      },
-      {
-        path: 'test',
-        component: RealizarTestComponent
-      },
-      {
-        path: 'historial',
-        component: HistorialComponent
-      },  
-      {
-        path: 'horario',
-        component: HorarioComponent
-      },
-      {
-        path: 'pacientes',
-        component: PacientesComponent
-      }
-      // Otras rutas que necesiten el navbar y footer
-    ]
-  }
+    {
+        path: '',
+        component: BienvenidaComponent
+    },
+    {
+        path: 'usuarios',
+        component: UsuariosComponent
+    },
+    {
+        path: 'login',
+        component: LoginComponent
+    },
+    {
+        path: '',
+        component: MainComponent,
+        children: [
+            {
+                path: 'home',
+                component: HomeComponent
+            },
+            {
+                path: 'select-test',
+                component: SelectTestComponent
+            },
+            {
+                path: 'tests-performed',
+                component: TestsPerformedComponent
+            },
+            {
+                path: 'my-profile',
+                component: MyProfileComponent
+            }
+        ]
+    }
 ];

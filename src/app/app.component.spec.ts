@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'sisvita-frontend-crud' title`, () => {
+  it(`should have the 'dsw-g12-frontend-cus' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('sisvita-frontend-crud');
+    expect(app.title).toEqual('dsw-g12-frontend-cus');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, sisvita-frontend-crud');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, dsw-g12-frontend-cus');
   });
 });

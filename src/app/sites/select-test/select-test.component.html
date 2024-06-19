@@ -1,0 +1,45 @@
+<div class="container mt-4">
+    <ng-container *ngIf="!isTestSelected; else selectedTestTemplate">
+        <h2 class="mb-3">Selecciona un Test</h2>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let test of tiposTest">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5>{{ test.nombre }}</h5>
+                        <p class="mb-1 text-muted">Autor: {{ test.autor }}</p>
+                        <p class="mb-1">{{ test.descripcion }}</p>
+                    </div>
+                    <button class="btn btn-primary" (click)="selectTest(test)">Seleccionar</button>
+                </div>
+            </li>
+        </ul>
+    </ng-container>
+
+    <ng-template #selectedTestTemplate>
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Test Seleccionado: {{ selectedTest?.nombre }}</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Autor:</strong> {{ selectedTest?.autor }}</p>
+                <p><strong>Descripción:</strong> {{ selectedTest?.descripcion }}</p>
+
+                <h5 class="mt-4">Preguntas</h5>
+                <div *ngFor="let pregunta of preguntas" class="mb-4">
+                    <h6>{{ pregunta.contenido }}</h6>
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label *ngFor="let alternativa of alternativas" class="btn btn-outline-primary">
+                            <input type="radio" name="pregunta{{ pregunta.id_pregunta }}"
+                                value="{{ alternativa.id_alternativa }}"> {{ alternativa.contenido }}
+                        </label>
+                    </div>
+                </div>
+                <div class="option">
+                    <button class="btn btn-success mt-3" (click)="generateTestJson()">Enviar Test</button>
+                    <button class="btn btn-warning mt-3" (click)="cancelTest()">Cancelar Selección</button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

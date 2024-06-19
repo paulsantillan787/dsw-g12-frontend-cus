@@ -1,0 +1,85 @@
+/* CSS */
+.banner {
+    background-color: #ffffff;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-left,
+.logo-right {
+    max-height: 50px;
+    margin: 0 12vw;
+}
+
+.card {
+    border-radius: 10px;
+    height: 400px;
+    min-height: 250px;
+    max-height: 500px;
+    transition: all 0.3s;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000000;
+}
+
+.btn {
+    margin-top: 20px;
+}
+
+.alumnos-card,
+.especialistas-card {
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.alumnos-card {
+    background-image: url('/assets/Estudiantes.webp');
+}
+
+.especialistas-card {
+    background-image: url('/assets/EspecialistaPsicologo.webp');
+}
+
+
+@media (max-width: 768px) {
+    .logo-left,
+    .logo-right {
+        margin: 0 8vw;
+        max-height: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .logo-left,
+    .logo-right {
+        margin: 0 5vw;
+        max-height: 20px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+    }
+}

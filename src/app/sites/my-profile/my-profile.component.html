@@ -1,0 +1,55 @@
+<!-- my-profile.component.html -->
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Mi Perfil</h2>
+
+    <!-- Información de Persona -->
+    <ng-container *ngIf="persona">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Información Personal</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Nombre Completo:</strong> {{ persona.nombre }} {{ persona.apellido_paterno }} {{
+                    persona.apellido_materno }}</p>
+                <p><strong>Documento:</strong> {{ persona.tipo_documento }} - {{ persona.documento }}</p>
+                <p><strong>Teléfono:</strong> {{ persona.telefono }}</p>
+                <p><strong>Fecha de Nacimiento:</strong> {{ persona.fecha_nacimiento | date: 'longDate' }}</p>
+                <p><strong>Sexo:</strong> {{ persona.sexo === 'M' ? 'Masculino' : persona.sexo === 'F' ? 'Femenino' :
+                    'Otro' }}</p>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Información de Usuario -->
+    <ng-container *ngIf="usuario">
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0">Información de Usuario</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Correo Electrónico:</strong> {{ usuario.correo }}</p>
+                <p><strong>Rol:</strong> {{ usuario.rol }}</p>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Información de Paciente -->
+    <ng-container *ngIf="paciente">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Información de Paciente</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>ID Paciente:</strong> {{ paciente.id_paciente }}</p>
+                <p><strong>ID Usuario Asociado:</strong> {{ paciente.id_usuario }}</p>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Mensaje si no hay datos disponibles -->
+    <ng-template #noDataTemplate>
+        <div class="alert alert-warning" role="alert">
+            No se encontraron datos de perfil disponibles.
+        </div>
+    </ng-template>
+</div>
