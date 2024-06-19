@@ -1,9 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
   "projects": {
-    "dsw-g12-frontend-cus": {
+    "sisvita-frontend-crud": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +12,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/dsw-g12-frontend-cus",
+            "outputPath": "dist/sisvita-frontend-crud",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -23,7 +22,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public/assets",
+                "output": "/assets"
               }
             ],
             "styles": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "dsw-g12-frontend-cus:build:production"
+              "buildTarget": "sisvita-frontend-crud:build:production"
             },
             "development": {
-              "buildTarget": "dsw-g12-frontend-cus:build:development"
+              "buildTarget": "sisvita-frontend-crud:build:development"
             }
           },
           "defaultConfiguration": "development"
