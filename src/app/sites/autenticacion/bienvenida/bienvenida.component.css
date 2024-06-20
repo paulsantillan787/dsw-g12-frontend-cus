@@ -6,6 +6,7 @@ html {
 }
 
 .bg {
+    margin-top: 20px;
     background-color: #007B8F;
     /* Using a solid background color */
     min-height: 100vh;
@@ -14,6 +15,7 @@ html {
     align-items: center;
     color: white;
     text-align: center;
+    flex-direction: column;
 }
 
 .welcome-box {
@@ -32,4 +34,18 @@ html {
     background-image: url('/assets/bienvenido.webp');
     background-size: cover;
     background-position: center;
+}
+
+.about-us {
+    width: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    margin-top: 20px;
+    /* Adding a semi-transparent background for readability */
+    padding: 20px;
+    border-radius: 10px;
+    
+}
+
+.welcome-box, .about-us {
+    margin-bottom: 10px; 
 }
