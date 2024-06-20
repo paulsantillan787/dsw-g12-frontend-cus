@@ -5,4 +5,8 @@ export interface Test {
     resultado: number;
     interpretacion: string;
     fecha: Date;
+    color: string;
+    ansiedad_consignada: number;
+    observaciones: string;
+    consignado: boolean;
 }

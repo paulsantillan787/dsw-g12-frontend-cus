@@ -3,5 +3,4 @@ export interface Usuario {
     documento: string;
     correo: string;
     password: string;
-    rol: string;
 }

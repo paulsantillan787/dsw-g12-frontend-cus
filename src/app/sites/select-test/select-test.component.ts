@@ -15,6 +15,8 @@ import { TestService } from '../../core/services/test.service';
 import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
 import Swal from 'sweetalert2';
+import { Semaforo } from '../../core/models/semaforo';
+import { SemaforoService } from '../../core/services/semaforo.service';
 
 @Component({
   selector: 'app-select-test',
@@ -35,6 +37,7 @@ export class SelectTestComponent implements OnInit {
   paciente: Paciente | null = null;
   clasificaciones: Clasificacion[] = [];
   tests: Test[] = [];
+  semaforos: Semaforo[] = [];
 
   constructor(
     private tipoTestService: TipoTestService,
@@ -43,7 +46,8 @@ export class SelectTestComponent implements OnInit {
     private pacienteService: PacienteService,
     private clasificacionService: ClasificacionService,
     private testService: TestService,
-    private respuestaService: RespuestaService
+    private respuestaService: RespuestaService,
+    private semaforoService: SemaforoService
   ) {}
 
   ngOnInit() {
@@ -73,6 +77,9 @@ export class SelectTestComponent implements OnInit {
       this.clasificaciones = this.clasificaciones.filter(clasificacion => clasificacion.id_tipo_test === test.id_tipo_test);
     });
 
+    this.semaforoService.getSemaforos().subscribe((data: any) => {
+      this.semaforos = data.semaforos;
+    });
 
   }
 
@@ -110,10 +117,24 @@ export class SelectTestComponent implements OnInit {
     const clasificacion = this.clasificaciones.find(clasif => {
       return result >= clasif.minimo && result <= clasif.maximo;
     });
-
     return clasificacion ? clasificacion.interpretacion : '';
   }
 
+  getIdSemaforo() {
+    const result = this.calculateResult();
+    const clasificacion = this.clasificaciones.find(clasif => {
+      return result >= clasif.minimo && result <= clasif.maximo;
+    });
+    return clasificacion ? clasificacion.id_semaforo : '';
+  }
+
+  getColor(){
+    const getIdSemaforo = this.getIdSemaforo();
+    const semaforo = this.semaforos.find(semaforo => semaforo.id_semaforo === getIdSemaforo);
+    console.log(semaforo?.color);
+    return semaforo?.color;
+  }
+  
   getNewTestId(): Promise<number> {
     return new Promise((resolve, reject) => {
       this.testService.getTests().subscribe((data: any) => {
@@ -145,9 +166,11 @@ export class SelectTestComponent implements OnInit {
     if (allAnswered) {
       const result = this.calculateResult();
       const interpretacion = this.calculateInterpretacion();
+      const color = this.getColor();
       const id_tipo_test = this.selectedTest?.id_tipo_test;
       const token = localStorage.getItem('token');
       const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
+      this.date.setHours(this.date.getHours() - 5);
       this.pacienteService.getPacientes().subscribe((data: any) => {
         this.pacientes = data.pacientes;
         this.paciente = this.pacientes.find((paciente) => paciente.id_usuario === payload.id_usuario) || null;
@@ -156,7 +179,11 @@ export class SelectTestComponent implements OnInit {
           id_paciente: this.paciente?.id_paciente,
           resultado: result,
           interpretacion: interpretacion,
-          fecha: this.date.getFullYear() + '-' + (this.date.getMonth() + 1) + '-' + this.date.getDate(),
+          color: color,
+          fecha: this.date.toISOString().slice(0,19),
+          ansiedad_consignada: "Por consignar",
+          observaciones: "Por detallar",
+          consignado: false
         };
         console.log(JSON.stringify(testResult, null, 2));
         console.log(JSON.stringify(respuestas, null, 2));

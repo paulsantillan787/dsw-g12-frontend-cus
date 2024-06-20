@@ -4,4 +4,5 @@ export interface Clasificacion {
     minimo: number;
     maximo: number;
     interpretacion: string;
+    id_semaforo: number;
 }

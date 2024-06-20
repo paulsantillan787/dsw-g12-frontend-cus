@@ -7,4 +7,5 @@ export interface Persona {
     telefono: string;
     fecha_nacimiento: Date;
     sexo: string; //M, F, X
+    id_ubigeo: string;
 }

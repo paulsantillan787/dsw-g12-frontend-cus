@@ -1,13 +1,16 @@
 const BACKEND = 'http://localhost:5000';
 
 export const MODEL = {
+    UBIGEO: BACKEND + '/ubigeos',
     PERSONA: BACKEND + '/personas',
     USUARIO: BACKEND + '/usuarios',
     PACIENTE: BACKEND + '/pacientes',
+    ESPECIALISTA: BACKEND + '/especialistas',
     TIPO_TEST: BACKEND + '/tipos',
     PREGUNTA: BACKEND + '/preguntas',
     ALTERNATIVA: BACKEND + '/alternativas',
     CLASIFICACION: BACKEND + '/clasificaciones',
+    SEMAFORO: BACKEND + '/semaforos',
     TEST: BACKEND + '/tests',
     RESPUESTA: BACKEND + '/respuestas',
 };

@@ -6,6 +6,8 @@ import { Usuario }  from '../../core/models/usuario';
 import { UsuarioService } from '../../core/services/usuario.service';
 import { Paciente } from '../../core/models/paciente';
 import { PacienteService } from '../../core/services/paciente.service';
+import { Ubigeo } from '../../core/models/ubigeo';
+import { UbigeoService } from '../../core/services/ubigeo.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -21,21 +23,31 @@ export class MyProfileComponent implements OnInit {
   usuario: Usuario | null = null;
   pacientes: Paciente[] = [];
   paciente: Paciente | null = null;
+  ubigeos: Ubigeo[] = [];
+  ubigeo: Ubigeo | null = null;
 
   constructor(
     private personaService: PersonaService,
     private usuarioService: UsuarioService,
-    private pacienteService: PacienteService
+    private pacienteService: PacienteService,
+    private ubigeoService: UbigeoService
   ) { }
 
   ngOnInit(){
     const token = localStorage.getItem('token');
     const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
+    console.log(payload.sub);
 
     this.personaService.getPersonas().subscribe((data: any) => {
       this.personas = data.personas;
       this.persona = this.personas.find((persona) => persona.documento == payload.sub) || null;
       console.log(this.persona);
+    });
+
+    this.ubigeoService.getUbigeos().subscribe((data: any) => {
+      this.ubigeos = data.ubigeos;
+      this.ubigeo = this.ubigeos.find((ubigeo) => ubigeo.id_ubigeo == this.persona?.id_ubigeo) || null;
+      console.log(this.ubigeo);
     });
 
     this.usuarioService.getUsuarios().subscribe((data: any) => {

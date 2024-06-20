@@ -7,10 +7,15 @@
 
         <div *ngIf="!selectedTest; else testDetail">
             <ul class="list-group">
-                <li class="list-group-item list-group-item-action" *ngFor="let test of tests">
+                <li 
+                    class="list-group-item list-group-item-action" *ngFor="let test of tests"
+                    >
                     <a href="javascript:void(0)" (click)="getResumen(test)" class="text-decoration-none">
-                        <h5 class="mb-1">{{ test.fecha | date: 'dd/MM/yyyy' }}</h5>
-                        <p class="mb-1 text-muted">{{ test.interpretacion }}</p>
+                        <h5 class="mb-1"> Realizado el {{ test.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</h5>
+                        <div class="interpretacion">
+                            <p class="mb-1 text-muted">{{ test.interpretacion }}</p>
+                            <p class="color" [style.background-color]="test.color"></p>
+                        </div>
                     </a>
                 </li>
             </ul>
@@ -55,3 +60,17 @@
         </ng-template>
     </ng-template>
 </div>
+
+<style>
+    .color {
+        padding: 10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+    .interpretacion {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>

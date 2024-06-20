@@ -3,7 +3,7 @@
     <h2 class="mb-4 text-center">Mi Perfil</h2>
 
     <!-- Información de Persona -->
-    <ng-container *ngIf="persona">
+    <ng-container *ngIf="persona && ubigeo">
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
                 <h4 class="mb-0">Información Personal</h4>
@@ -16,6 +16,10 @@
                 <p><strong>Fecha de Nacimiento:</strong> {{ persona.fecha_nacimiento | date: 'longDate' }}</p>
                 <p><strong>Sexo:</strong> {{ persona.sexo === 'M' ? 'Masculino' : persona.sexo === 'F' ? 'Femenino' :
                     'Otro' }}</p>
+                <p><strong>Ubigeo:</strong> {{ ubigeo.id_ubigeo }}</p>
+                <p><strong>Departamento:</strong> {{ ubigeo.departamento }}</p>
+                <p><strong>Provincia:</strong> {{ ubigeo.provincia }}</p>
+                <p><strong>Distrito:</strong> {{ ubigeo.distrito }}</p>
             </div>
         </div>
     </ng-container>
@@ -28,7 +32,6 @@
             </div>
             <div class="card-body">
                 <p><strong>Correo Electrónico:</strong> {{ usuario.correo }}</p>
-                <p><strong>Rol:</strong> {{ usuario.rol }}</p>
             </div>
         </div>
     </ng-container>
