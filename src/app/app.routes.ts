@@ -7,6 +7,7 @@ import { HomeComponent } from './sites/home/home.component';
 import { SelectTestComponent } from './sites/select-test/select-test.component';
 import { TestsPerformedComponent } from './sites/tests-performed/tests-performed.component';
 import { MyProfileComponent } from './sites/my-profile/my-profile.component';
+import { VigilanceComponent } from './sites/vigilance/vigilance.component';
 
 export const routes: Routes = [
     {
@@ -25,6 +26,7 @@ export const routes: Routes = [
         path: '',
         component: MainComponent,
         children: [
+            //Sites para pacientes
             {
                 path: 'home',
                 component: HomeComponent
@@ -40,6 +42,11 @@ export const routes: Routes = [
             {
                 path: 'my-profile',
                 component: MyProfileComponent
+            },
+            //Sites para Especialistas
+            {
+                path: 'vigilance',
+                component: VigilanceComponent
             }
         ]
     }
