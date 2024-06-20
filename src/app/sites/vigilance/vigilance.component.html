@@ -36,17 +36,17 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let test of filteredTests">
-                        <td>{{test.id_test}}</td>
-                        <td>{{test.tipo_test.nombre}}</td>
-                        <td>{{test.paciente.usuario.persona.nombre}} {{test.paciente.usuario.persona.apellido_paterno}} {{test.paciente.usuario.persona.apellido_materno}}</td>
-                        <td>{{test.resultado}}</td>
+                        <td>{{test?.id_test}}</td>
+                        <td>{{test?.tipo_test?.nombre}}</td>
+                        <td>{{test?.paciente?.usuario?.persona?.nombre}} {{test?.paciente?.usuario?.persona?.apellido_paterno}} {{test.paciente.usuario.persona.apellido_materno}}</td>
+                        <td>{{test?.resultado}}</td>
                         <td>
                             <div class="interpretacion">
                                 <p class="mb-1 text-muted">{{ test.interpretacion }}</p>
                                 <div class="color" [style.background-color]="test.color"></div>
                             </div>
                         </td>
-                        <td>{{test.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</td>
+                        <td>{{test?.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</td>
                         <td>
                             <span class="badge"
                                 [ngClass]="{'bg-success': test.consignado, 'bg-warning': !test.consignado}">

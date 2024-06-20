@@ -11,11 +11,11 @@
                     class="list-group-item list-group-item-action" *ngFor="let test of tests"
                     >
                     <a href="javascript:void(0)" (click)="getResumen(test)" class="text-decoration-none">
-                        <h5>{{ test.tipo_test.nombre }}</h5>
+                        <h5>{{ test?.tipo_test?.nombre }}</h5>
                         <div class="interpretacion">
                             <div>
-                                <p><strong>Fecha realizada:</strong> {{ test.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</p>
-                                <p class="mb-1 text-muted"><strong>Interpretacion: </strong>{{ test.interpretacion }} - {{test.resultado}} pts.</p>
+                                <p><strong>Fecha realizada:</strong> {{ test?.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</p>
+                                <p class="mb-1 text-muted"><strong>Interpretacion: </strong>{{ test?.interpretacion }} - {{test?.resultado}} pts.</p>
                                 <p><strong>Estado:</strong> {{ test?.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}</p>
                             </div>
                             <p class="color" [style.background-color]="test.color"></p>
