@@ -1,0 +1,111 @@
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Gestión de Tests</h2>
+
+    <!-- Sección de Filtrado -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Buscar por ID de Test" [(ngModel)]="filterTestId">
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Buscar por ID de Paciente"
+                [(ngModel)]="filterPacienteId">
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" [(ngModel)]="filterConsignado">
+                <option value="">Todos los Estados</option>
+                <option value="true">Consignado</option>
+                <option value="false">Por Consignar</option>
+            </select>
+        </div>
+    </div>
+
+    <div *ngIf="!selectedTest; else testDetail">
+        <div *ngIf="filteredTests.length > 0; else NoTest" class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID Test</th>
+                        <th>ID Tipo Test</th>
+                        <th>ID Paciente</th>
+                        <th>Resultado</th>
+                        <th>Interpretación</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let test of filteredTests">
+                        <td>{{test.id_test}}</td>
+                        <td>{{test.id_tipo_test}}</td>
+                        <td>{{test.id_paciente}}</td>
+                        <td>{{test.resultado}}</td>
+                        <td>
+                            <div class="interpretacion">
+                                <p class="mb-1 text-muted">{{ test.interpretacion }}</p>
+                                <div class="color" [style.background-color]="test.color"></div>
+                            </div>
+                        </td>
+                        <td>{{test.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</td>
+                        <td>
+                            <span class="badge"
+                                [ngClass]="{'bg-success': test.consignado, 'bg-warning': !test.consignado}">
+                                {{ test.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm me-2" (click)="viewTestDetails(test)">
+                                Ver Detalle
+                            </button>
+                            <button *ngIf="!test.consignado;" class="btn btn-primary btn-sm" (click)="getTest(test)">
+                                Consignar
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <ng-template #testDetail>
+        <div *ngIf="tipoTest;" class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">TEST SELECCIONADO - {{ tipoTest.nombre }}</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>ID Test:</strong> {{ test?.id_test }}</p>
+                <p><strong>ID Tipo Test:</strong> {{ test?.id_tipo_test }}</p>
+                <p><strong>ID Paciente:</strong> {{ test?.id_paciente }}</p>
+                <p><strong>Resultado:</strong> {{ test?.resultado }}</p>
+                <p><strong>Interpretación:</strong> {{ test?.interpretacion }}</p>
+                <p><strong>Fecha:</strong> {{ test?.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</p>
+                <p><strong>Estado:</strong> {{ test?.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}</p>
+                <div *ngIf="esOpcionConsignar">
+                    <form (ngSubmit)="submitConsignation()">
+                        <div class="mb-3">
+                            <label for="ansiedadConSignada" class="form-label">Ansiedad Consignada</label>
+                            <input type="text" class="form-control" id="ansiedadConSignada"
+                                [(ngModel)]="ansiedadConsignada" name="ansiedadConSignada" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="observaciones" class="form-label">Observaciones</label>
+                            <textarea class="form-control" id="observaciones" [(ngModel)]="observaciones"
+                                name="observaciones" rows="3" required></textarea>
+                        </div>
+                        <!-- consignado siempre será true -->
+                        <button type="submit" class="btn btn-success">ENVIAR CONSIGNACIÓN</button>
+                        <button type="button" class="btn btn-secondary" (click)="cancel()">CANCELAR
+                            CONSIGNACIÓN</button>
+                    </form>
+                </div>
+            </div>
+            <button *ngIf="!esOpcionConsignar" (click)="cancel()" class="btn btn-danger mt-3">VOLVER</button>
+        </div>
+    </ng-template>
+
+    <ng-template #NoTest>
+        <div class="alert alert-warning text-center" role="alert">
+            No hay tests registrados.
+        </div>
+    </ng-template>
+</div>

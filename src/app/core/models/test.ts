@@ -6,7 +6,7 @@ export interface Test {
     interpretacion: string;
     fecha: Date;
     color: string;
-    ansiedad_consignada: number;
+    ansiedad_consignada: string;
     observaciones: string;
     consignado: boolean;
 }
