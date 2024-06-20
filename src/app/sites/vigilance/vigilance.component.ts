@@ -8,6 +8,12 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Persona } from '../../core/models/persona';
 import { PersonaService } from '../../core/services/persona.service';
+import { Pregunta } from '../../core/models/pregunta';
+import { PreguntaService } from '../../core/services/pregunta.service';
+import { Alternativa } from '../../core/models/alternativa';
+import { AlternativaService } from '../../core/services/alternativa.service';
+import { Respuesta } from '../../core/models/respuesta';
+import { RespuestaService } from '../../core/services/respuesta.service';
 
 @Component({
   selector: 'app-vigilance',
@@ -27,7 +33,12 @@ export class VigilanceComponent implements OnInit {
   //Data para la tabla
   nombrePaciente: string = '';
   tipoTestNombre: string = '';
-
+  //Para mostrar las respuestas por cada test
+  respuestas: Respuesta[] = [];
+  preguntasContestadas: {
+    pregunta: any;
+    alternativa: any;
+  }[] = [];
 
   //Si quiere fitrar
   filterTestId: string = '';
@@ -43,6 +54,9 @@ export class VigilanceComponent implements OnInit {
     private testService: TestService,
     private tipoTestService: TipoTestService,
     private personaService: PersonaService,
+    private preguntaService: PreguntaService,
+    private alternativaService: AlternativaService,
+    private respuestaService: RespuestaService
   ) {}
 
   ngOnInit() {
@@ -71,6 +85,7 @@ export class VigilanceComponent implements OnInit {
     this.esOpcionConsignar = true;
     this.test = test;
     console.log(this.test);
+    this.getRespuestas();
     this.tipoTestService.getTiposTest().subscribe((data: any) => {
       this.tipoTest = data.tipos.find((tipo:TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
       console.log(this.tipoTest);
@@ -82,10 +97,50 @@ export class VigilanceComponent implements OnInit {
     this.esOpcionConsignar = false;
   }
 
+  async getRespuestas() {
+    this.respuestaService.getRespuestas().subscribe(async (data: any) => {
+      const test = this.test;
+      this.respuestas = data.respuestas;
+      this.respuestas = this.respuestas.filter((respuesta) => respuesta.id_test === test?.id_test);
+      for (let respuesta of this.respuestas) {
+        const p = await this.getPregunta(respuesta.id_pregunta);
+        const a = await this.getAlternativa(respuesta.id_alternativa);
+        this.preguntasContestadas.push({
+          pregunta: p,
+          alternativa: a
+        });
+      }
+      console.log(this.preguntasContestadas);
+    });
+  }
+
+  getPregunta(id_pregunta: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.preguntaService.getPreguntas().subscribe((data: any) => {
+        const pregunta = data.preguntas.find((pregunta:Pregunta) => pregunta.id_pregunta === id_pregunta) || null;
+        const contenido = pregunta ? pregunta.contenido : null;
+        resolve(contenido);
+      });
+    });
+  }
+
+  getAlternativa(id_alternativa: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.alternativaService.getAlternativas().subscribe((data: any) => {
+        const alternativa = data.alternativas.find((alternativa:Alternativa) => alternativa.id_alternativa === id_alternativa) || null;
+        const contenido = alternativa ? alternativa.contenido : null;
+        resolve(contenido);
+      });
+    });
+  }
+
+
+
   cancel() {
     this.selectedTest = false;
     this.test = null;
     this.esOpcionConsignar = false;
+    this.preguntasContestadas = [];
   }
 
   submitConsignation() {

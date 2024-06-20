@@ -1,4 +1,4 @@
-const BACKEND = 'https://two41dswgrupo12sisvita.onrender.com';
+const BACKEND = 'http://localhost:5000';
 
 export const MODEL = {
     UBIGEO: BACKEND + '/ubigeos',
