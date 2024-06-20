@@ -49,12 +49,14 @@ export class TestsPerformedComponent implements OnInit {
     this.pacienteService.getPacientes().subscribe((data: any) => {
       this.pacientes = data.pacientes;
       this.paciente = this.pacientes.find((paciente) => paciente.id_usuario === payload.id_usuario) || null;
+
+      this.testService.getTests().subscribe((data: any) => {
+        this.tests = data.tests;
+        this.tests = this.tests.filter((test) => test.id_paciente === this.paciente?.id_paciente);
+      });
     });
 
-    this.testService.getTests().subscribe((data: any) => {
-      this.tests = data.tests;
-      this.tests = this.tests.filter((test) => test.id_paciente === this.paciente?.id_paciente);
-    });
+
 
   }
 
@@ -90,7 +92,7 @@ export class TestsPerformedComponent implements OnInit {
       console.log(this.preguntasContestadas);
     });
   }
-  
+
   getPregunta(id_pregunta: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.preguntaService.getPreguntas().subscribe((data: any) => {
@@ -100,7 +102,7 @@ export class TestsPerformedComponent implements OnInit {
       });
     });
   }
-  
+
   getAlternativa(id_alternativa: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.alternativaService.getAlternativas().subscribe((data: any) => {
@@ -110,7 +112,7 @@ export class TestsPerformedComponent implements OnInit {
       });
     });
   }
-  
+
 
   cancelTest(){
     this.selectedTest = false;
