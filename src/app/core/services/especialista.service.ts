@@ -9,7 +9,7 @@ import { MODEL, SERVICE } from '../constants/api';
   providedIn: 'root'
 })
 export class EspecialistaService {
-  readonly URL: string = MODEL.PACIENTE
+  readonly URL: string = MODEL.ESPECIALISTA
   headers: HttpHeaders;
 
   constructor(private http: HttpClient) {

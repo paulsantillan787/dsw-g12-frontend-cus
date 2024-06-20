@@ -9,6 +9,9 @@ import { PacienteService } from '../../core/services/paciente.service';
 import { Ubigeo } from '../../core/models/ubigeo';
 import { UbigeoService } from '../../core/services/ubigeo.service';
 
+import { Especialista } from '../../core/models/especialista';
+import { EspecialistaService } from '../../core/services/especialista.service';
+
 @Component({
   selector: 'app-my-profile',
   standalone: true,
@@ -25,12 +28,18 @@ export class MyProfileComponent implements OnInit {
   paciente: Paciente | null = null;
   ubigeos: Ubigeo[] = [];
   ubigeo: Ubigeo | null = null;
+  especialistas: Especialista[] = [];
+  especialista: Especialista | null = null;
+
+  tipo_usuario: string = localStorage.getItem('user') || '';
 
   constructor(
     private personaService: PersonaService,
     private usuarioService: UsuarioService,
     private pacienteService: PacienteService,
-    private ubigeoService: UbigeoService
+    private ubigeoService: UbigeoService,
+
+    private especialistaService: EspecialistaService,
   ) { }
 
   ngOnInit(){
@@ -60,6 +69,12 @@ export class MyProfileComponent implements OnInit {
       this.pacientes = data.pacientes;
       this.paciente = this.pacientes.find((paciente) => paciente.id_usuario == this.usuario?.id_usuario) || null;
       console.log(this.paciente);
+    });
+
+    this.especialistaService.getEspecialistas().subscribe((data: any) => {
+      this.especialistas = data.especialistas;
+      this.especialista = this.especialistas.find((especialista) => especialista.id_usuario == this.usuario?.id_usuario) || null;
+      console.log(this.especialista);
     });
   }
 }

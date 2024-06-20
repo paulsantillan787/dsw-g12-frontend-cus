@@ -8,7 +8,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            
+
             <div *ngIf="user === 'especialista'; else studentNavbar">
                 <ng-container *ngTemplateOutlet="specialistNavbar"></ng-container>
             </div>
@@ -29,7 +29,7 @@
             <a class="nav-link text-white" href="../horario">Horario</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white" href="../perfil">Mi Cuenta</a>
+            <a class="nav-link text-white" href="../my-profile">Mi Cuenta</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-white" href="../usuarios" (click)="exit()">Cerrar Sesión</a>
