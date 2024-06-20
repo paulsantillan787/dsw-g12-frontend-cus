@@ -36,8 +36,15 @@ export class LoginComponent {
   provincia: string = '';
   distritos: string[] = [];
   distrito: string = '';
-  checkpass: boolean = true;
+  checkpass: boolean = false;
   modalRef?: NgbModalRef | null = null;
+  usuarios: Usuario[] = [];
+  usuario: Usuario | null = null;
+  pacientes: Paciente[] = [];
+  paciente: Paciente | null = null;
+  especialistas: Especialista[] = [];
+  especialista: Especialista | null = null;
+  tipo_usuario: string = localStorage.getItem('user') || '';
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
@@ -70,6 +77,7 @@ export class LoginComponent {
       telefono: new FormControl('', [Validators.required]),
       fecha_nacimiento: new FormControl('', [Validators.required]),
       sexo: new FormControl('', [Validators.required]),
+      id_ubigeo: new FormControl(''),
       //modelo usuario
       correo: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
@@ -91,6 +99,7 @@ export class LoginComponent {
       telefono: new FormControl('', [Validators.required]),
       fecha_nacimiento: new FormControl('', [Validators.required]),
       sexo: new FormControl('', [Validators.required]),
+      id_ubigeo: new FormControl(''),
       //modelo usuario
       correo: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
@@ -99,7 +108,6 @@ export class LoginComponent {
       licencia: new FormControl('', [Validators.required]),
       especialidad: new FormControl('', [Validators.required]),
     });
-
   }
 
   obtenerDepartamentos(form: FormGroup) {
@@ -132,39 +140,83 @@ export class LoginComponent {
       console.log(this.distritos);
   }
 
-  checkPasswords() {
-    if (this.registerPacienteForm.value.password === this.registerPacienteForm.value.confirm_password) {
-      this.checkpass = true;
-    } else {
+  checkPasswords(form: FormGroup) {
+    const password = form.value.password;
+    const confirmPassword = form.value.confirm_password;
+    console.log(password, confirmPassword);
+    // If both are filled and they are not the same, set an error
+    if (password && confirmPassword && password !== confirmPassword) {
+      form.get('confirm_password')?.setErrors({ notSame: true });
       this.checkpass = false;
+    } else {
+      form.get('confirm_password')?.setErrors(null);
+      this.checkpass = true;
     }
   }
 
   register() {
-    if (this.registerPacienteForm.valid) {
-      this.ubigeo = this.ubigeos.find((ubigeo) => ubigeo.departamento == this.departamento && ubigeo.provincia == this.provincia && ubigeo.distrito == this.distrito) || null;
-      let persona: Persona
-      // persona.documento = this.registerPacienteForm.value.documento;
+    console.log(this.registerPacienteForm.value);
+    console.log(this.registrarEspecialistaForm.value);
 
-      this.personaService.insertPersona(this.registerPacienteForm.value).subscribe({
+    if (this.tipo_usuario==="paciente" && this.registerPacienteForm.valid && this.checkpass) {
+      this.ubigeo = this.ubigeos.find((ubigeo) => ubigeo.departamento == this.departamento && ubigeo.provincia == this.provincia && ubigeo.distrito == this.distrito) || null;
+      this.registerPacienteForm.value.id_ubigeo = this.ubigeos.find((ubigeo) => ubigeo.departamento == this.departamento && ubigeo.provincia == this.provincia && ubigeo.distrito == this.distrito)?.id_ubigeo;
+      const persona = {
+        documento: this.registerPacienteForm.value.documento,
+        tipo_documento: this.registerPacienteForm.value.tipo_documento,
+        nombre: this.registerPacienteForm.value.nombre,
+        apellido_paterno: this.registerPacienteForm.value.apellido_paterno,
+        apellido_materno: this.registerPacienteForm.value.apellido_materno,
+        telefono: this.registerPacienteForm.value.telefono,
+        fecha_nacimiento: this.registerPacienteForm.value.fecha_nacimiento,
+        sexo: this.registerPacienteForm.value.sexo,
+        id_ubigeo: this.registerPacienteForm.value.id_ubigeo,
+      };
+      console.log("Persona: ", persona);
+
+      this.personaService.insertPersona(persona).subscribe({
         next: (res: any) => {
-          this.usuarioService.insertUsuario(this.registerPacienteForm.value).subscribe({
+          const usuario = {
+            documento: this.registerPacienteForm.value.documento,
+            correo: this.registerPacienteForm.value.correo,
+            password: this.registerPacienteForm.value.password,
+          };
+          this.usuarioService.insertUsuario(usuario).subscribe({
             next: (res: any) => {
-              this.pacienteService.insertPaciente(this.registerPacienteForm.value).subscribe({
-                next: (res: any) => {
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Registro exitoso',
-                    text: res.message,
+              this.usuarioService.getUsuario(this.registerPacienteForm.value.documento).subscribe((data: any) => {
+                this.usuario = data.usuario;
+                console.log("Usuario existe?: ", this.usuario);
+                if (this.usuario != null){
+                  this.pacienteService.getPaciente(this.usuario.id_usuario).subscribe((data: any) => {
+                    this.paciente = data.paciente;
+                    console.log("Paciente existe?: ", this.paciente);
+                  }, (err) => {
+                    if (this.paciente == null){
+                      const paciente = {
+                        id_usuario: this.usuario?.id_usuario,
+                      };
+                      console.log("Paciente: ", paciente);
+                      this.pacienteService.insertPaciente(paciente).subscribe({
+                        next: (res: any) => {
+                          Swal.fire({
+                            icon: 'success',
+                            title: 'Registro exitoso',
+                            text: res.message,
+                          });
+                          this.modalRef?.close();
+                        },
+                        error: (err) => {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: err.error.message,
+                          });
+                        }
+                      });
+                    }
                   });
-                  this.modalRef?.close();
-                },
-                error: (err) => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: err.error.message,
-                  });
+
+
                 }
               });
             },
@@ -185,26 +237,74 @@ export class LoginComponent {
           });
         }
       });
-    } else if (this.registrarEspecialistaForm.valid) {
-      this.personaService.insertPersona(this.registrarEspecialistaForm.value).subscribe({
+    }
+
+    if (this.tipo_usuario==="especialista" && this.registrarEspecialistaForm.valid && this.checkpass) {
+      this.ubigeo = this.ubigeos.find((ubigeo) => ubigeo.departamento == this.departamento && ubigeo.provincia == this.provincia && ubigeo.distrito == this.distrito) || null;
+      this.registrarEspecialistaForm.value.id_ubigeo = this.ubigeos.find((ubigeo) => ubigeo.departamento == this.departamento && ubigeo.provincia == this.provincia && ubigeo.distrito == this.distrito)?.id_ubigeo;
+      const persona = {
+        documento: this.registrarEspecialistaForm.value.documento,
+        tipo_documento: this.registrarEspecialistaForm.value.tipo_documento,
+        nombre: this.registrarEspecialistaForm.value.nombre,
+        apellido_paterno: this.registrarEspecialistaForm.value.apellido_paterno,
+        apellido_materno: this.registrarEspecialistaForm.value.apellido_materno,
+        telefono: this.registrarEspecialistaForm.value.telefono,
+        fecha_nacimiento: this.registrarEspecialistaForm.value.fecha_nacimiento,
+        sexo: this.registrarEspecialistaForm.value.sexo,
+        id_ubigeo: this.registrarEspecialistaForm.value.id_ubigeo,
+      };
+      console.log("Persona: ", persona);
+      this.personaService.insertPersona(persona).subscribe({
         next: (res: any) => {
-          this.usuarioService.insertUsuario(this.registrarEspecialistaForm.value).subscribe({
+          const usuario = {
+            documento: this.registrarEspecialistaForm.value.documento,
+            correo: this.registrarEspecialistaForm.value.correo,
+            password: this.registrarEspecialistaForm.value.password,
+          };
+          this.usuarioService.insertUsuario(usuario).subscribe({
             next: (res: any) => {
-              this.especialistaService.insertEspecialista(this.registrarEspecialistaForm.value).subscribe({
-                next: (res: any) => {
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Registro exitoso',
-                    text: res.message,
-                  });
-                  this.modalRef?.close();
-                },
-                error: (err) => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: err.error.message,
-                  });
+              this.usuarioService.getUsuario(this.registrarEspecialistaForm.value.documento).subscribe((data: any) => {
+                this.usuario = data.usuario;
+                console.log(this.usuario);
+                if (this.usuario){
+                  this.pacienteService.getPaciente(this.usuario.id_usuario).subscribe((data: any) => {
+                    this.paciente = data.paciente;
+                    console.log(this.paciente);
+                  },
+                  (err) => {
+                    if (this.paciente == null){
+                      const paciente = {
+                        id_usuario: this.usuario?.id_usuario,
+                      };
+                      this.pacienteService.insertPaciente(paciente).subscribe({});
+                    }
+                  }
+                );
+
+                  this.especialistaService.getEspecialista(this.usuario.id_usuario).subscribe((data: any) => {
+                    this.especialista = data.especialista;
+                    console.log(this.especialista);
+                  },
+                  (err) => {
+                    if (this.especialista == null){
+                      const especialista = {
+                        id_usuario: this.usuario?.id_usuario,
+                        licencia: this.registrarEspecialistaForm.value.licencia,
+                        especialidad: this.registrarEspecialistaForm.value.especialidad,
+                      };
+                      this.especialistaService.insertEspecialista(especialista).subscribe({
+                        next: (res: any) => {
+                          Swal.fire({
+                            icon: 'success',
+                            title: 'Registro exitoso',
+                            text: res.message,
+                          });
+                          this.modalRef?.close();
+                        }
+                      });
+                    }
+                  }
+                  );
                 }
               });
             },
@@ -230,8 +330,8 @@ export class LoginComponent {
 
   login() {
     if (this.loginForm.valid) {
-      this.usuarioService.login(this.loginForm.value).subscribe({
-        next: (res: any) => {
+      this.usuarioService.login(this.loginForm.value).subscribe(
+       (res: any) => {
           localStorage.setItem('token', res.access_token);
           this.router.navigate(['/home']);
           Swal.fire({
@@ -240,14 +340,14 @@ export class LoginComponent {
             text: res.message,
           });
         },
-        error: (err) => {
+        (err) => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: err.error.message,
           });
         }
-      });
+      );
     }
   }
 

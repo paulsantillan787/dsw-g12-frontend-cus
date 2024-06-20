@@ -21,6 +21,10 @@ export class EspecialistaService {
     return this.http.get<Especialista[]>( this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getEspecialista(id:number): Observable<Especialista> {
+    return this.http.get<Especialista>( this.URL + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
   insertEspecialista(form:any) {
     return this.http.post<Especialista>(this.URL + SERVICE.POST, form);
   }

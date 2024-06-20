@@ -18,7 +18,7 @@
                             </div>
                         </form>
                         <div class="options">
-                            <button
+                            <button type="button"
                                 class="btn btn-primary btn-block mt-4"
                                 (click)="login()"
                             >
@@ -39,38 +39,6 @@
         </div>
     </div>
 </div>
-
-<!--
-<div class="bg">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card bg-light shadow-lg border-0 rounded">
-                    <div class="card-body">
-                        <h2 class="text-center card-title">Iniciar Sesión</h2>
-                        <form [formGroup]="loginForm" (ngSubmit)="login()">
-                            <div class="form-group mt-4">
-                                <label for="correo">Correo</label>
-                                <input type="email" formControlName="correo" class="form-control mt-2" id="correo"
-                                    placeholder="Ingrese su correo">
-                            </div>
-                            <div class="form-group mt-4">
-                                <label for="password">Contraseña</label>
-                                <input type="password" formControlName="password" class="form-control mt-2"
-                                    id="password" placeholder="Ingrese su contraseña">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
-                        </form>
-                        <button *ngIf="user === 'estudiante'" class="btn btn-secondary btn-block mt-4"
-                            (click)="openRegisterModal(estudianteContent)">Registrar</button>
-                        <button *ngIf="user === 'especialista'" class="btn btn-secondary btn-block mt-4"
-                            (click)="openRegisterModal(especialistaContent)">Registrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  </div> -->
 
 <ng-template #estudianteContent let-modal>
     <div class="modal-header">
@@ -138,9 +106,9 @@
                     <div class="form-group">
                         <label for="sexo">Sexo</label>
                         <select formControlName="sexo" class="form-control" id="sexo">
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                            <option value="X">Otro</option>
                         </select>
                     </div>
 
@@ -157,9 +125,13 @@
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirmar Contraseña</label>
-                        <input type="password" formControlName="confirm_password" class="form-control"
+                        <input type="password" formControlName="confirm_password" class="form-control" (input)="checkPasswords(registerPacienteForm)"
                             id="confirm_password" placeholder="Confirme su contraseña">
+                        <div *ngIf="this.registerPacienteForm.get('confirm_password')?.errors?.['notSame']" class="text-danger">
+                            Las contraseñas no coinciden.
+                        </div>
                     </div>
+
                 </div>
             </div>
         </form>
@@ -172,7 +144,7 @@
 
 <ng-template #especialistaContent let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">Registrar Paciente</h5>
+    <h5 class="modal-title">Registrar Especialista</h5>
 </div>
 <div class="modal-body">
     <form [formGroup]="registrarEspecialistaForm" class="letter">
@@ -237,9 +209,9 @@
                 <div class="form-group">
                     <label for="sexo">Sexo</label>
                     <select formControlName="sexo" class="form-control" id="sexo">
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
-                        <option value="Otro">Otro</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                        <option value="X">Otro</option>
                     </select>
                 </div>
 
@@ -256,8 +228,11 @@
                 </div>
                 <div class="form-group">
                     <label for="confirm_password">Confirmar Contraseña</label>
-                    <input type="password" formControlName="confirm_password" class="form-control"
+                    <input type="password" formControlName="confirm_password" class="form-control" (input)="checkPasswords(registrarEspecialistaForm)"
                         id="confirm_password" placeholder="Confirme su contraseña">
+                    <div *ngIf="this.registrarEspecialistaForm.get('confirm_password')?.errors?.['notSame']" class="text-danger">
+                        Las contraseñas no coinciden.
+                    </div>
                 </div>
 
                 <h4>Datos de Especialista</h4>
@@ -266,7 +241,7 @@
                     <input type="text" formControlName="licencia" class="form-control" id="licencia"
                         placeholder="Ingrese numero de licencia">
                 </div>
-                <div class="form-group" oninput="checkPasswords()">
+                <div class="form-group">
                     <label for="especialidad">Especialidad</label>
                     <input type="text" formControlName="especialidad" class="form-control" id="especialidad"
                         placeholder="Ingrese su especialidad">

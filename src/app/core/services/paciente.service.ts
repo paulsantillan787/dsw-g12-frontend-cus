@@ -21,6 +21,10 @@ export class PacienteService {
     return this.http.get<Paciente[]>( this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getPaciente(id:number): Observable<Paciente> {
+    return this.http.get<Paciente>( this.URL + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
   insertPaciente(form:any) {
     return this.http.post<Paciente>(this.URL + SERVICE.POST, form);
   }

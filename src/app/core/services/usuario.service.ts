@@ -20,6 +20,10 @@ export class UsuarioService {
     return this.http.get<Usuario[]>( this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getUsuario(documento: string): Observable<Usuario> {
+    return this.http.get<Usuario>( this.URL + SERVICE.GETBY + documento, { headers: this.headers });
+  }
+
   insertUsuario(form:any) {
     return this.http.post<Usuario>(this.URL + SERVICE.POST, form);
   }

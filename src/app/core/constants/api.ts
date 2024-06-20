@@ -17,6 +17,7 @@ export const MODEL = {
 
 export const SERVICE = {
     GET: '/get',
+    GETBY: '/get/', // /get/:id_<modelo> o /get/:id_<modelo1>/:id_<modelo2> o /get/:id_<modelo1>/:id_<modelo2>/:id_<modelo3>... etc
     POST: '/insert',
     PUT: '/update/', // /update/:id_<modelo>
     DELETE: '/delete/', // /delete/:id_<modelo>

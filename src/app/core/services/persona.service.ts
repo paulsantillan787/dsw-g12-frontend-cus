@@ -20,6 +20,10 @@ export class PersonaService {
     return this.http.get<Persona[]>( this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getPersona(documento:string): Observable<Persona> {
+    return this.http.get<Persona>( this.URL + SERVICE.GETBY + documento, { headers: this.headers });
+  }
+
   insertPersona(form:any) {
     return this.http.post<Persona>(this.URL + SERVICE.POST, form);
   }
