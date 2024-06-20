@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Test } from '../../core/models/test';
+import { Test, TestView } from '../../core/models/test';
 import { TestService } from '../../core/services/test.service';
 import { TipoTest } from '../../core/models/tipo_test';
 import { TipoTestService } from '../../core/services/tipo-test.service';
@@ -17,9 +17,9 @@ import { PersonaService } from '../../core/services/persona.service';
   styleUrl: './vigilance.component.css'
 })
 export class VigilanceComponent implements OnInit {
-  tests: Test[] = [];
-  test: Test | null = null;
-  filteredTests: Test[] = [];
+  tests: TestView[] = [];
+  test: TestView | null = null;
+  filteredTests: TestView[] = [];
   selectedTest = false;
   tipoTest: TipoTest | null = null;
   personas: Persona[] = [];
@@ -66,7 +66,7 @@ export class VigilanceComponent implements OnInit {
     });
   }
 
-  getTest(test: Test) {
+  getTest(test: TestView) {
     this.selectedTest = true;
     this.esOpcionConsignar = true;
     this.test = test;
@@ -77,7 +77,7 @@ export class VigilanceComponent implements OnInit {
     });
   }
 
-  viewTestDetails(test: Test) {
+  viewTestDetails(test: TestView) {
     this.getTest(test);
     this.esOpcionConsignar = false;
   }
@@ -112,9 +112,12 @@ export class VigilanceComponent implements OnInit {
           title: 'Consignación exitosa',
           text: 'La consignación del test se ha realizado con éxito.',
           confirmButtonText: 'Aceptar'
+        }).then(() => {
+          this.cancel();
+          this.cancel();
+          window.location.reload();
         });
       });
-      this.cancel();
     }
   }
 

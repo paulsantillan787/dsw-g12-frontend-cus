@@ -25,8 +25,8 @@
                 <thead class="table-dark">
                     <tr>
                         <th>ID Test</th>
-                        <th>ID Tipo Test</th>
-                        <th>ID Paciente</th>
+                        <th>Tipo Test</th>
+                        <th>Paciente</th>
                         <th>Resultado</th>
                         <th>Interpretación</th>
                         <th>Fecha</th>
@@ -37,8 +37,8 @@
                 <tbody>
                     <tr *ngFor="let test of filteredTests">
                         <td>{{test.id_test}}</td>
-                        <td>{{test.id_tipo_test}}</td>
-                        <td>{{test.id_paciente}}</td>
+                        <td>{{test.tipo_test.nombre}}</td>
+                        <td>{{test.paciente.usuario.persona.nombre}} {{test.paciente.usuario.persona.apellido_paterno}} {{test.paciente.usuario.persona.apellido_materno}}</td>
                         <td>{{test.resultado}}</td>
                         <td>
                             <div class="interpretacion">
@@ -74,12 +74,14 @@
             </div>
             <div class="card-body">
                 <p><strong>ID Test:</strong> {{ test?.id_test }}</p>
-                <p><strong>ID Tipo Test:</strong> {{ test?.id_tipo_test }}</p>
-                <p><strong>ID Paciente:</strong> {{ test?.id_paciente }}</p>
-                <p><strong>Resultado:</strong> {{ test?.resultado }}</p>
+                <p><strong>Tipo Test:</strong> {{ test?.tipo_test?.nombre }}</p>
+                <p><strong>Paciente:</strong> {{ test?.paciente?.usuario?.persona?.nombre }}</p>
+                <p><strong>Resultado:</strong> {{ test?.resultado }} pts.</p>
                 <p><strong>Interpretación:</strong> {{ test?.interpretacion }}</p>
                 <p><strong>Fecha:</strong> {{ test?.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</p>
                 <p><strong>Estado:</strong> {{ test?.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}</p>
+                <p><strong>Ansiedad Consignada:</strong> {{ test?.ansiedad_consignada }}</p>
+                <p><strong>Observaciones:</strong> {{ test?.observaciones }}</p>
                 <div *ngIf="esOpcionConsignar">
                     <form (ngSubmit)="submitConsignation()">
                         <div class="mb-3">

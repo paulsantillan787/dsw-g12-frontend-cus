@@ -3,7 +3,7 @@
     <h2 class="mb-4 text-center">Mi Perfil</h2>
 
     <!-- Información de Persona -->
-    <ng-container *ngIf="persona && ubigeo">
+    <ng-container *ngIf="persona && ubigeo; else NoPersona">
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
                 <h4 class="mb-0">Información Personal</h4>
@@ -23,9 +23,14 @@
             </div>
         </div>
     </ng-container>
+    <ng-template #NoPersona>
+        <div class="alert alert-warning" role="alert">
+            CARGANDO DATOS DE PERSONA...
+        </div>
+    </ng-template>
 
     <!-- Información de Usuario -->
-    <ng-container *ngIf="usuario">
+    <ng-container *ngIf="usuario; else NoUsuario">
         <div class="card mb-4">
             <div class="card-header bg-secondary text-white">
                 <h4 class="mb-0">Información de Usuario</h4>
@@ -35,6 +40,11 @@
             </div>
         </div>
     </ng-container>
+    <ng-template #NoUsuario>
+        <div class="alert alert-warning" role="alert">
+            CARGANDO DATOS DE USUARIO...
+        </div>
+    </ng-template>
 
     <!-- Información de Paciente -->
     <ng-container *ngIf="paciente && tipo_usuario=='paciente'">
@@ -48,21 +58,20 @@
             </div>
         </div>
     </ng-container>
-
     <!-- Información de Especialista -->
     <ng-container *ngIf="especialista && tipo_usuario=='especialista'">
-      <div class="card mb-4">
-          <div class="card-header bg-success text-white">
-              <h4 class="mb-0">Información de Especialista</h4>
-          </div>
-          <div class="card-body">
-              <p><strong>ID Especialista:</strong> {{ especialista.id_especialista }}</p>
-              <p><strong>ID Usuario Asociado:</strong> {{ especialista.id_usuario }}</p>
-              <p><strong>Licencia:</strong> {{especialista.licencia}}</p>
-              <p><strong>Especialidad:</strong> {{especialista.especialidad}}</p>
-          </div>
-      </div>
-  </ng-container>
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Información de Especialista</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>ID Especialista:</strong> {{ especialista.id_especialista }}</p>
+                <p><strong>ID Usuario Asociado:</strong> {{ especialista.id_usuario }}</p>
+                <p><strong>Licencia:</strong> {{especialista.licencia}}</p>
+                <p><strong>Especialidad:</strong> {{especialista.especialidad}}</p>
+            </div>
+        </div>
+    </ng-container>
 
     <!-- Mensaje si no hay datos disponibles -->
     <ng-template #noDataTemplate>

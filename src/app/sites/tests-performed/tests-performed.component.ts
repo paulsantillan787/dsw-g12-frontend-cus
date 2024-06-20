@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Test } from '../../core/models/test';
+import { TestView } from '../../core/models/test';
 import { TestService } from '../../core/services/test.service';
 import { Paciente } from '../../core/models/paciente';
 import { PacienteService } from '../../core/services/paciente.service';
@@ -21,8 +21,8 @@ import { AlternativaService } from '../../core/services/alternativa.service';
   styleUrl: './tests-performed.component.css'
 })
 export class TestsPerformedComponent implements OnInit {
-  tests: Test[] = [];
-  test: Test | null = null;
+  tests: TestView[] = [];
+  test: TestView | null = null;
   pacientes: Paciente[] = [];
   paciente: Paciente | null = null;
   respuestas: Respuesta[] = [];
@@ -59,12 +59,12 @@ export class TestsPerformedComponent implements OnInit {
   }
 
 
-  getResumen(test:Test){
+  getResumen(test:TestView){
     this.getTest(test);
     this.getRespuestas();
   }
 
-  getTest(test: Test) {
+  getTest(test: TestView) {
     this.selectedTest = true;
     this.test = test;
     console.log(this.test);

@@ -8,6 +8,7 @@ import { SelectTestComponent } from './sites/select-test/select-test.component';
 import { TestsPerformedComponent } from './sites/tests-performed/tests-performed.component';
 import { MyProfileComponent } from './sites/my-profile/my-profile.component';
 import { VigilanceComponent } from './sites/vigilance/vigilance.component';
+import { MapaComponent } from './sites/mapa/mapa.component';
 
 export const routes: Routes = [
     {
@@ -47,7 +48,12 @@ export const routes: Routes = [
             {
                 path: 'vigilance',
                 component: VigilanceComponent
-            }
+            },
+            {
+                path: 'mapa',
+                component: MapaComponent
+            },
+            
         ]
     }
 ];
