@@ -65,16 +65,17 @@ export class MyProfileComponent implements OnInit {
       console.log(this.usuario);
     });
 
-    this.pacienteService.getPacientes().subscribe((data: any) => {
-      this.pacientes = data.pacientes;
-      this.paciente = this.pacientes.find((paciente) => paciente.id_usuario == this.usuario?.id_usuario) || null;
-      console.log(this.paciente);
-    });
-
-    this.especialistaService.getEspecialistas().subscribe((data: any) => {
-      this.especialistas = data.especialistas;
-      this.especialista = this.especialistas.find((especialista) => especialista.id_usuario == this.usuario?.id_usuario) || null;
-      console.log(this.especialista);
-    });
+    if (this.tipo_usuario == 'paciente')
+      this.pacienteService.getPacientes().subscribe((data: any) => {
+        this.pacientes = data.pacientes;
+        this.paciente = this.pacientes.find((paciente) => paciente.id_usuario == this.usuario?.id_usuario) || null;
+        console.log(this.paciente);
+      });
+    else if (this.tipo_usuario == 'especialista')
+      this.especialistaService.getEspecialistas().subscribe((data: any) => {
+        this.especialistas = data.especialistas;
+        this.especialista = this.especialistas.find((especialista) => especialista.id_usuario == this.usuario?.id_usuario) || null;
+        console.log(this.especialista);
+      });
   }
 }
