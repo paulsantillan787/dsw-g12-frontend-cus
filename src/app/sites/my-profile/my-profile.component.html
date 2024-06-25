@@ -1,82 +1,102 @@
 <!-- my-profile.component.html -->
 <div class="container mt-4">
-    <h2 class="mb-4 text-center">Mi Perfil</h2>
-
-    <!-- Información de Persona -->
-    <ng-container *ngIf="persona && ubigeo; else NoPersona">
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">Información Personal</h4>
+    <div *ngIf="paciente; else NoPaciente">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h3 class="card-title">Perfil del Paciente</h3>
             </div>
             <div class="card-body">
-                <p><strong>Nombre Completo:</strong> {{ persona.nombre }} {{ persona.apellido_paterno }} {{
-                    persona.apellido_materno }}</p>
-                <p><strong>Documento:</strong> {{ persona.tipo_documento }} - {{ persona.documento }}</p>
-                <p><strong>Teléfono:</strong> {{ persona.telefono }}</p>
-                <p><strong>Fecha de Nacimiento:</strong> {{ persona.fecha_nacimiento | date: 'longDate' }}</p>
-                <p><strong>Sexo:</strong> {{ persona.sexo === 'M' ? 'Masculino' : persona.sexo === 'F' ? 'Femenino' :
-                    'Otro' }}</p>
-                <p><strong>Ubigeo:</strong> {{ ubigeo.id_ubigeo }}</p>
-                <p><strong>Departamento:</strong> {{ ubigeo.departamento }}</p>
-                <p><strong>Provincia:</strong> {{ ubigeo.provincia }}</p>
-                <p><strong>Distrito:</strong> {{ ubigeo.distrito }}</p>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Nombre:</strong></div>
+                    <div class="col-md-8">{{ paciente.usuario.persona.nombre }} {{ paciente.usuario.persona.apellido_paterno }} {{ paciente.usuario.persona.apellido_materno }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Documento:</strong></div>
+                    <div class="col-md-8">{{ paciente.usuario.persona.tipo_documento }}: {{ paciente.usuario.persona.documento }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Correo:</strong></div>
+                    <div class="col-md-8">{{ paciente.usuario.correo }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Teléfono:</strong></div>
+                    <div class="col-md-8">{{ paciente.usuario.persona.telefono }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Fecha de Nacimiento:</strong></div>
+                    <div class="col-md-8">{{ paciente.usuario.persona.fecha_nacimiento | date: 'dd/MM/yyyy' }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Sexo:</strong></div>
+                    <div class="col-md-8">
+                        {{ paciente.usuario.persona.sexo === 'M' ? 'Masculino' : paciente.usuario.persona.sexo === 'F' ? 'Femenino' : 'Otro' }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Ubicación:</strong></div>
+                    <div class="col-md-8">{{ paciente.usuario.persona.ubigeo.departamento }}, {{ paciente.usuario.persona.ubigeo.provincia }}, {{ paciente.usuario.persona.ubigeo.distrito }}</div>
+                </div>
             </div>
         </div>
-    </ng-container>
-    <ng-template #NoPersona>
-        <div class="alert alert-warning" role="alert">
-            CARGANDO DATOS DE PERSONA...
+    </div>
+
+    <div *ngIf="especialista; else NoEspecialista">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title">Perfil del Especialista</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Nombre:</strong></div>
+                    <div class="col-md-8">{{ especialista.usuario.persona.nombre }} {{ especialista.usuario.persona.apellido_paterno }} {{ especialista.usuario.persona.apellido_materno }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Documento:</strong></div>
+                    <div class="col-md-8">{{ especialista.usuario.persona.tipo_documento }}: {{ especialista.usuario.persona.documento }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Correo:</strong></div>
+                    <div class="col-md-8">{{ especialista.usuario.correo }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Teléfono:</strong></div>
+                    <div class="col-md-8">{{ especialista.usuario.persona.telefono }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Fecha de Nacimiento:</strong></div>
+                    <div class="col-md-8">{{ especialista.usuario.persona.fecha_nacimiento | date: 'dd/MM/yyyy' }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Sexo:</strong></div>
+                    <div class="col-md-8">
+                        {{ especialista.usuario.persona.sexo === 'M' ? 'Masculino' : especialista.usuario.persona.sexo === 'F' ? 'Femenino' : 'Otro' }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Ubicación:</strong></div>
+                    <div class="col-md-8">{{ especialista.usuario.persona.ubigeo.departamento }}, {{ especialista.usuario.persona.ubigeo.provincia }}, {{ especialista.usuario.persona.ubigeo.distrito }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Licencia:</strong></div>
+                    <div class="col-md-8">{{ especialista.licencia }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Especialidad:</strong></div>
+                    <div class="col-md-8">{{ especialista.especialidad }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #NoPaciente>
+        <div class="alert alert-warning text-center" role="alert" *ngIf="isTemplate">
+            Cargando datos del paciente...
         </div>
     </ng-template>
 
-    <!-- Información de Usuario -->
-    <ng-container *ngIf="usuario; else NoUsuario">
-        <div class="card mb-4">
-            <div class="card-header bg-secondary text-white">
-                <h4 class="mb-0">Información de Usuario</h4>
-            </div>
-            <div class="card-body">
-                <p><strong>Correo Electrónico:</strong> {{ usuario.correo }}</p>
-            </div>
-        </div>
-    </ng-container>
-    <ng-template #NoUsuario>
-        <div class="alert alert-warning" role="alert">
-            CARGANDO DATOS DE USUARIO...
-        </div>
-    </ng-template>
-
-    <!-- Información de Paciente -->
-    <ng-container *ngIf="paciente && tipo_usuario=='paciente'">
-        <div class="card mb-4">
-            <div class="card-header bg-success text-white">
-                <h4 class="mb-0">Información de Paciente</h4>
-            </div>
-            <div class="card-body">
-                <p><strong>ID Paciente:</strong> {{ paciente.id_paciente }}</p>
-                <p><strong>ID Usuario Asociado:</strong> {{ paciente.id_usuario }}</p>
-            </div>
-        </div>
-    </ng-container>
-    <!-- Información de Especialista -->
-    <ng-container *ngIf="especialista && tipo_usuario=='especialista'">
-        <div class="card mb-4">
-            <div class="card-header bg-success text-white">
-                <h4 class="mb-0">Información de Especialista</h4>
-            </div>
-            <div class="card-body">
-                <p><strong>ID Especialista:</strong> {{ especialista.id_especialista }}</p>
-                <p><strong>ID Usuario Asociado:</strong> {{ especialista.id_usuario }}</p>
-                <p><strong>Licencia:</strong> {{especialista.licencia}}</p>
-                <p><strong>Especialidad:</strong> {{especialista.especialidad}}</p>
-            </div>
-        </div>
-    </ng-container>
-
-    <!-- Mensaje si no hay datos disponibles -->
-    <ng-template #noDataTemplate>
-        <div class="alert alert-warning" role="alert">
-            No se encontraron datos de perfil disponibles.
+    <ng-template #NoEspecialista>
+        <div class="alert alert-warning text-center" role="alert" *ngIf="!isTemplate">
+            Cargando datos del especialista...
         </div>
     </ng-template>
 </div>

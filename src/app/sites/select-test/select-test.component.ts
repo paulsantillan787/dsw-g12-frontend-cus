@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Paciente } from '../../core/models/paciente';
 import { PacienteService } from '../../core/services/paciente.service';
 import { TipoTest } from '../../core/models/tipo_test';
@@ -12,7 +13,6 @@ import { Clasificacion } from '../../core/models/clasificacion';
 import { ClasificacionService } from '../../core/services/clasificacion.service';
 import { Test } from '../../core/models/test';
 import { TestService } from '../../core/services/test.service';
-import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
 import Swal from 'sweetalert2';
 import { Semaforo } from '../../core/models/semaforo';
@@ -40,19 +40,20 @@ export class SelectTestComponent implements OnInit {
   semaforos: Semaforo[] = [];
 
   constructor(
+    private router: Router,
     private tipoTestService: TipoTestService,
     private preguntaService: PreguntaService,
     private alternativaService: AlternativaService,
     private pacienteService: PacienteService,
     private clasificacionService: ClasificacionService,
     private testService: TestService,
-    private respuestaService: RespuestaService,
-    private semaforoService: SemaforoService
+    private semaforoService: SemaforoService,
+    private respuestaService: RespuestaService
   ) {}
 
   ngOnInit() {
     this.tipoTestService.getTiposTest().subscribe((data: any) => {
-      this.tiposTest = data.tipos;
+      this.tiposTest = data.tipos_test;
     });
   }
 
@@ -134,14 +135,6 @@ export class SelectTestComponent implements OnInit {
     console.log(semaforo?.color);
     return semaforo?.color;
   }
-  
-  getNewTestId(): Promise<number> {
-    return new Promise((resolve, reject) => {
-      this.testService.getTests().subscribe((data: any) => {
-        resolve(data.tests.length + 1);
-      });
-    });
-  }
 
   async generateTestJson() {
     const respuestas:any[] = [];
@@ -152,9 +145,8 @@ export class SelectTestComponent implements OnInit {
   
       if (selectedOption) {
         const idAlternativa = parseInt(selectedOption.value, 10);
-        const idTest = await this.getNewTestId();
         respuestas.push({
-          id_test: idTest,
+          id_test: 0,
           id_pregunta: pregunta.id_pregunta,
           id_alternativa: idAlternativa
         });
@@ -186,22 +178,25 @@ export class SelectTestComponent implements OnInit {
           consignado: false
         };
         console.log(JSON.stringify(testResult, null, 2));
-        console.log(JSON.stringify(respuestas, null, 2));
 
         this.testService.insertTest(testResult).subscribe((data: any) => {
           console.log(data.message);
+          const id_test = data.test.id_test;
           respuestas.forEach((respuesta) => {
+            respuesta.id_test = id_test;
+            console.log(JSON.stringify(respuesta, null, 2));
             this.respuestaService.insertRespuesta(respuesta).subscribe((data: any) => {
               console.log(data.message);
             });
           });
           Swal.fire({
             title: '¡Test enviado!',
-            text: '¡Gracias por responder el test!',
+            text: 'Su resultado es: ' + interpretacion,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
           this.cancelTest();
+          this.router.navigate(['../tests-performed']);
         });
       });
     } else {

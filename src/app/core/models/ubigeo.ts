@@ -3,4 +3,6 @@ export interface Ubigeo {
     departamento: string;
     provincia: string;
     distrito: string;
+    latitud: number;
+    longitud: number;
 }

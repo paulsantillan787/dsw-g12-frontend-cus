@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { Test, TestView } from '../models/test';
+import { Test } from '../models/test';
 import { MODEL, SERVICE } from '../constants/api';
 
 @Injectable({
@@ -33,7 +33,4 @@ export class TestService {
     return this.http.delete<Test>(this.URL + SERVICE.DELETE + id, { headers: this.headers });
   }
 
-  getTestView(): Observable<TestView[]> {
-    return this.http.get<TestView[]>(this.URL + SERVICE.GET, { headers: this.headers });
-  }
 }

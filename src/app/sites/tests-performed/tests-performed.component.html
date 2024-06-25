@@ -15,7 +15,7 @@
                         <div class="interpretacion">
                             <div>
                                 <p><strong>Fecha realizada:</strong> {{ test?.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</p>
-                                <p class="mb-1 text-muted"><strong>Interpretacion: </strong>{{ test?.interpretacion }} - {{test?.resultado}} pts.</p>
+                                <p class="mb-1 text-muted"><strong>Interpretacion: </strong>{{ test?.interpretacion }}</p>
                                 <p><strong>Estado:</strong> {{ test?.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}</p>
                             </div>
                             <p class="color" [style.background-color]="test.color"></p>
@@ -40,11 +40,11 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Interpretacion: {{ test?.interpretacion }}</h5>
-                    <h5 class="card-title">Anñalisis del especialista:</h5>
+                    <h5 class="card-title">Análisis del especialista:</h5>
                     <p><strong>Consignacion: </strong>{{ test?.ansiedad_consignada }}</p>
                     <p><strong>Observación: </strong>{{ test?.observaciones }}</p>
                     <h5 class="card-title">Resumen:</h5>
-                    <ul class="list-group" *ngIf="preguntasContestadas.length > 0; else Cargando">
+                    <ul class="list-group" *ngIf="preguntasContestadas.length == 10; else Cargando">
                         <li class="list-group-item" *ngFor="let preguntaContestada of preguntasContestadas">
                             <p><strong>Pregunta:</strong> {{ preguntaContestada.pregunta }}</p>
                             <p><strong>Respuesta:</strong> {{ preguntaContestada.alternativa }}</p>

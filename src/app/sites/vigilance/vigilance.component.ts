@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Test, TestView } from '../../core/models/test';
+import { Test } from '../../core/models/test';
 import { TestService } from '../../core/services/test.service';
 import { TipoTest } from '../../core/models/tipo_test';
 import { TipoTestService } from '../../core/services/tipo-test.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { Persona } from '../../core/models/persona';
-import { PersonaService } from '../../core/services/persona.service';
 import { Pregunta } from '../../core/models/pregunta';
 import { PreguntaService } from '../../core/services/pregunta.service';
 import { Alternativa } from '../../core/models/alternativa';
@@ -23,16 +21,12 @@ import { RespuestaService } from '../../core/services/respuesta.service';
   styleUrl: './vigilance.component.css'
 })
 export class VigilanceComponent implements OnInit {
-  tests: TestView[] = [];
-  test: TestView | null = null;
-  filteredTests: TestView[] = [];
+  tests: Test[] = [];
+  test: Test | null = null;
+  filteredTests: Test[] = [];
   selectedTest = false;
   tipoTest: TipoTest | null = null;
-  personas: Persona[] = [];
-  persona: Persona | null = null;
-  //Data para la tabla
-  nombrePaciente: string = '';
-  tipoTestNombre: string = '';
+  
   //Para mostrar las respuestas por cada test
   respuestas: Respuesta[] = [];
   preguntasContestadas: {
@@ -53,7 +47,6 @@ export class VigilanceComponent implements OnInit {
   constructor(
     private testService: TestService,
     private tipoTestService: TipoTestService,
-    private personaService: PersonaService,
     private preguntaService: PreguntaService,
     private alternativaService: AlternativaService,
     private respuestaService: RespuestaService
@@ -80,19 +73,19 @@ export class VigilanceComponent implements OnInit {
     });
   }
 
-  getTest(test: TestView) {
+  getTest(test: Test) {
     this.selectedTest = true;
     this.esOpcionConsignar = true;
     this.test = test;
     console.log(this.test);
     this.getRespuestas();
     this.tipoTestService.getTiposTest().subscribe((data: any) => {
-      this.tipoTest = data.tipos.find((tipo:TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
+      this.tipoTest = data.tipos_test.find((tipo:TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
       console.log(this.tipoTest);
     });
   }
 
-  viewTestDetails(test: TestView) {
+  viewTestDetails(test: Test) {
     this.getTest(test);
     this.esOpcionConsignar = false;
   }
@@ -140,7 +133,7 @@ export class VigilanceComponent implements OnInit {
     this.selectedTest = false;
     this.test = null;
     this.esOpcionConsignar = false;
-    this.preguntasContestadas = [];
+    this.preguntasContestadas = [];   
   }
 
   submitConsignation() {

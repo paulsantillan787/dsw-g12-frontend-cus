@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TestView } from '../../core/models/test';
+import { Test } from '../../core/models/test';
 import { TestService } from '../../core/services/test.service';
 import { Paciente } from '../../core/models/paciente';
 import { PacienteService } from '../../core/services/paciente.service';
@@ -21,8 +21,8 @@ import { AlternativaService } from '../../core/services/alternativa.service';
   styleUrl: './tests-performed.component.css'
 })
 export class TestsPerformedComponent implements OnInit {
-  tests: TestView[] = [];
-  test: TestView | null = null;
+  tests: Test[] = [];
+  test: Test | null = null;
   pacientes: Paciente[] = [];
   paciente: Paciente | null = null;
   respuestas: Respuesta[] = [];
@@ -55,24 +55,20 @@ export class TestsPerformedComponent implements OnInit {
         this.tests = this.tests.filter((test) => test.id_paciente === this.paciente?.id_paciente);
       });
     });
-
-
-
   }
 
 
-  getResumen(test:TestView){
+  getResumen(test:Test){
     this.getTest(test);
     this.getRespuestas();
   }
 
-  getTest(test: TestView) {
+  getTest(test: Test) {
     this.selectedTest = true;
     this.test = test;
     console.log(this.test);
     this.tipoTestService.getTiposTest().subscribe((data: any) => {
-      this.tipoTest = data.tipos.find((tipo:TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
-      console.log(this.tipoTest);
+      this.tipoTest = data.tipos_test.find((tipo:TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
     });
   }
 
@@ -88,8 +84,8 @@ export class TestsPerformedComponent implements OnInit {
           pregunta: p,
           alternativa: a
         });
+        console.log(this.preguntasContestadas);
       }
-      console.log(this.preguntasContestadas);
     });
   }
 
@@ -112,7 +108,6 @@ export class TestsPerformedComponent implements OnInit {
       });
     });
   }
-
 
   cancelTest(){
     this.selectedTest = false;
