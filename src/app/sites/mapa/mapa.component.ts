@@ -14,6 +14,10 @@ import { Style, Circle as CircleStyle, Fill } from 'ol/style';
 
 import Overlay from 'ol/Overlay';
 
+import { TestService } from '../../core/services/test.service';
+import { Test } from '../../core/models/test';
+import { Ubigeo } from '../../core/models/ubigeo';
+
 @Component({
   selector: 'app-mapa',
   standalone: true,
@@ -24,9 +28,15 @@ import Overlay from 'ol/Overlay';
 export class MapaComponent implements OnInit {
   map: Map = new Map();
   overlay: Overlay | undefined;  
-  
+  tests: Test[] = [];
+
+  constructor(private testService: TestService) {}
+
   ngOnInit(): void {
-    this.initializeMap();
+    this.testService.getTests().subscribe((data: any) => {
+      this.tests = data.tests;
+      this.initializeMap();
+    });
   }
 
   initializeMap(): void {
@@ -68,13 +78,14 @@ export class MapaComponent implements OnInit {
       const feature = this.map.forEachFeatureAtPixel(event.pixel, (feature) => feature);
       if (feature) {
         const geometry = feature.getGeometry();
-        if (geometry instanceof Point) { // Verifica si la geometría es un Point
-          const coord = geometry.getCoordinates(); // Ahora es seguro llamar a getCoordinates
+        if (geometry instanceof Point) {
+          const coord = geometry.getCoordinates();
           const props = feature.getProperties();
+          const testsCount = props['testsCount'];
           const ciudad = props['ciudad'];
     
           this.overlay?.setPosition(coord);
-          this.popupContent.nativeElement.innerHTML = `<strong>${ciudad}</strong>`;
+          this.popupContent.nativeElement.innerHTML = `<strong>${ciudad}</strong><br/>Tests realizados: ${testsCount}`;
           this.overlay?.setPositioning('top-left');
           this.overlay?.setOffset([0, -10]); // Ajustar posición de la etiqueta
         }
@@ -85,31 +96,35 @@ export class MapaComponent implements OnInit {
   }
 
   getHeatmapFeatures() {
-    // Simulando la obtención de datos de ejemplo
-    const data = [
-      { lon: -77.0428, lat: -12.0464, weight: 1, ciudad: 'Lima' },
-      { lon: -71.5375, lat: -16.409, weight: 1, ciudad: 'Arequipa' },
-      { lon: -71.9782, lat: -13.5319, weight: 1, ciudad: 'Cusco' },
-      { lon: -80.6328, lat: -5.1945, weight: 1, ciudad: 'Piura' },
-      { lon: -79.0059, lat: -8.1091, weight: 1, ciudad: 'Trujillo' }
-    ];
+    // Agrupar los tests por Ubigeo y contar cuántos hay en cada ubicación
+    const ubigeoCount: { [key: string]: { count: number, ubigeo: Ubigeo } } = {};
 
-    return data.map(point => {
-      const feature = new Feature({
-        geometry: new Point(fromLonLat([point.lon, point.lat])),
-        weight: point.weight,
-        ciudad: point.ciudad // Agregar la propiedad ciudad al feature
-      });
-      feature.setStyle(new Style({
-        image: new CircleStyle({
-          radius: 10,
-          fill: new Fill({
-            color: 'red'
-          })
-        })
-      }));
-      return feature;
+    this.tests.forEach(test => {
+      const ubigeo = test.paciente.usuario.persona.ubigeo;
+      if (ubigeoCount[ubigeo.id_ubigeo]) {
+        ubigeoCount[ubigeo.id_ubigeo].count++;
+      } else {
+        ubigeoCount[ubigeo.id_ubigeo] = { count: 1, ubigeo: ubigeo };
+      }
     });
+
+    // Convertir los datos agrupados en características para el heatmap
+    const features: Feature[] = [];
+    for (const key in ubigeoCount) {
+      if (ubigeoCount.hasOwnProperty(key)) {
+        const value = ubigeoCount[key];
+        const point = new Feature({
+          geometry: new Point(fromLonLat([value.ubigeo.longitud, value.ubigeo.latitud])),
+          weight: value.count, // Utiliza la cantidad de tests como peso
+          testsCount: value.count, // Para mostrar en el tooltip
+          //ciudad: `${value.ubigeo.departamento} - ${value.ubigeo.provincia} - ${value.ubigeo.distrito}`,
+          ciudad:`${value.ubigeo.distrito}`
+        });
+        features.push(point);
+      }
+    }
+
+    return features;
   }
 
   @ViewChild('popupContent', { static: true }) popupContent!: ElementRef;

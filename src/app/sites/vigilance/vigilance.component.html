@@ -1,7 +1,23 @@
 <div class="container mt-4">
-    <h2 class="mb-4 text-center">GESTIÓN DE TESTS REALIZADOS</h2>
+    <h2 class="mb-4 text-center">Gestión de Tests Realizados</h2>
 
     <div *ngIf="!selectedTest; else testDetail">
+        <div class="mb-3 row">
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Filtrar por ID Test" [(ngModel)]="filterTestId" (input)="applyFilters()">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Filtrar por ID Paciente" [(ngModel)]="filterPacienteId" (input)="applyFilters()">
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" [(ngModel)]="filterConsignado" (change)="applyFilters()">
+                    <option value="">Estado de Consignación</option>
+                    <option value="true">Consignada</option>
+                    <option value="false">Por Consignar</option>
+                </select>
+            </div>
+        </div>
+
         <div *ngIf="filteredTests.length > 0; else NoTest" class="table-responsive">
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark text-center">
@@ -17,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let test of filteredTests">
+                    <tr *ngFor="let test of filteredTests | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
                         <td>{{ test?.id_test }}</td>
                         <td>{{ test?.tipo_test?.nombre }}</td>
                         <td>
@@ -35,27 +51,29 @@
                         <td>{{ test?.fecha | date: 'dd/MM/yyyy - HH:mm:ss' }}</td>
                         <td>
                             <span class="badge" [ngClass]="{'bg-success': test.consignado, 'bg-warning': !test.consignado}">
-                                {{ test.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}
+                                {{ test.consignado ? 'Consignada' : 'Por Consignar' }}
                             </span>
                         </td>
                         <td class="actions">
                             <button class="btn btn-info btn-sm me-2" (click)="viewTestDetails(test)">
-                                VER DETALLE
+                                Ver Detalle
                             </button>
-                            <button *ngIf="!test.consignado;" class="btn btn-primary btn-sm" (click)="getTest(test)">
-                                CONSIGNAR
+                            <button *ngIf="!test.consignado" class="btn btn-primary btn-sm" (click)="getTest(test)">
+                                Consignar
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <pagination-controls (pageChange)="currentPage = $event" class="d-flex justify-content-center"></pagination-controls>
     </div>
 
     <ng-template #testDetail>
-        <div *ngIf="tipoTest;" class="card mb-4">
+        <div *ngIf="tipoTest" class="card mb-4">
             <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0">TEST SELECCIONADO - {{ tipoTest.nombre }}</h5>
+                <h5 class="mb-0">Test Seleccionado - {{ tipoTest.nombre }}</h5>
             </div>
             <div class="card-body">
                 <p><strong>ID TEST:</strong> {{ test?.id_test }}</p>
@@ -64,9 +82,9 @@
                     {{ test?.paciente?.usuario?.persona?.apellido_paterno }} 
                     {{ test?.paciente?.usuario?.persona?.apellido_materno }}</p>
                 <p><strong>RESULTADO:</strong> {{ test?.resultado }} pts.</p>
-                <p><strong>INTERPRETACION:</strong> {{ test?.interpretacion }}</p>
+                <p><strong>INTERPRETACIÓN:</strong> {{ test?.interpretacion }}</p>
                 <p><strong>FECHA:</strong> {{ test?.fecha | date: 'dd/MM/yyyy - HH:mm:ss' }}</p>
-                <p><strong>ESTADO:</strong> {{ test?.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}</p>
+                <p><strong>ESTADO:</strong> {{ test?.consignado ? 'Consignada' : 'Por Consignar' }}</p>
                 <p><strong>ANSIEDAD:</strong> {{ test?.ansiedad_consignada }}</p>
                 <p><strong>OBSERVACIONES:</strong> {{ test?.observaciones }}</p>
 
@@ -79,7 +97,7 @@
                 </ul>
                 <ng-template #Cargando>
                     <div class="alert alert-warning text-center" role="alert">
-                        CARGANDO RESPUESTAS...
+                        Cargando Respuestas...
                     </div>
                 </ng-template>
 
@@ -87,20 +105,18 @@
                     <form (ngSubmit)="submitConsignation()">
                         <div class="mb-3">
                             <label for="ansiedadConSignada" class="form-label">Ansiedad Consignada</label>
-                            <input type="text" class="form-control" id="ansiedadConSignada"
-                                [(ngModel)]="ansiedadConsignada" name="ansiedadConSignada" required>
+                            <input type="text" class="form-control" id="ansiedadConSignada" [(ngModel)]="ansiedadConsignada" name="ansiedadConSignada" required>
                         </div>
                         <div class="mb-3">
                             <label for="observaciones" class="form-label">Observaciones</label>
-                            <textarea class="form-control" id="observaciones" [(ngModel)]="observaciones"
-                                name="observaciones" rows="3" required></textarea>
+                            <textarea class="form-control" id="observaciones" [(ngModel)]="observaciones" name="observaciones" rows="3" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-success">ENVIAR CONSIGNACIÓN</button>
-                        <button type="button" class="btn btn-secondary" (click)="cancel()">CANCELAR CONSIGNACIÓN</button>
+                        <button type="submit" class="btn btn-success">Enviar Consignación</button>
+                        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar Consignación</button>
                     </form>
                 </div>
             </div>
-            <button *ngIf="!esOpcionConsignar" (click)="cancel()" class="btn btn-danger mt-3">VOLVER</button>
+            <button *ngIf="!esOpcionConsignar" (click)="cancel()" class="btn btn-danger mt-3">Volver</button>
         </div>
     </ng-template>
 

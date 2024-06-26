@@ -12,11 +12,13 @@ import { Alternativa } from '../../core/models/alternativa';
 import { AlternativaService } from '../../core/services/alternativa.service';
 import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @Component({
   selector: 'app-vigilance',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule],
   templateUrl: './vigilance.component.html',
   styleUrl: './vigilance.component.css'
 })
@@ -38,6 +40,10 @@ export class VigilanceComponent implements OnInit {
   filterTestId: string = '';
   filterPacienteId: string = '';
   filterConsignado: string = '';
+
+  // Para la paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
 
   esOpcionConsignar = false;
 
