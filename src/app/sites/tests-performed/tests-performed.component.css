@@ -18,7 +18,7 @@ h2 {
 
 .list-group-item:hover {
     background-color: #f8f9fa;
-    scale:1.05;
+    transform: scale(1.05);
 }
 
 .list-group-item a {
@@ -79,9 +79,63 @@ h2 {
     border-color: #bd2130;
 }
 
+/* Estilos para la paginación */
+.pagination {
+    margin-top: 20px;
+}
+
+.page-item.disabled .page-link {
+    pointer-events: none;
+    cursor: default;
+    color: #6c757d;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
 /* Responsividad */
 @media (max-width: 576px) {
-    .card-header, .card-title {
+
+    .card-header,
+    .card-title {
         text-align: center;
+    }
+
+    .list-group-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .interpretacion {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .color {
+        margin-top: 10px;
     }
 }

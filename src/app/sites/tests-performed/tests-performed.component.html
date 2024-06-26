@@ -7,22 +7,45 @@
 
         <div *ngIf="!selectedTest; else testDetail">
             <ul class="list-group">
-                <li
-                    class="list-group-item list-group-item-action" *ngFor="let test of tests"
-                    >
+                <li class="list-group-item list-group-item-action" *ngFor="let test of paginatedTests">
                     <a href="javascript:void(0)" (click)="getResumen(test)" class="text-decoration-none">
                         <h5>{{ test?.tipo_test?.nombre }}</h5>
                         <div class="interpretacion">
                             <div>
-                                <p><strong>Fecha realizada:</strong> {{ test?.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</p>
+                                <p><strong>Fecha realizada: </strong> {{ test?.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</p>
                                 <p class="mb-1 text-muted"><strong>Interpretacion: </strong>{{ test?.interpretacion }}</p>
-                                <p><strong>Estado:</strong> {{ test?.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}</p>
+                                <p><strong>Estado: </strong>
+                                <span class="badge" [ngClass]="{'bg-success': test.consignado, 'bg-warning': !test.consignado}">
+                                {{ test?.consignado ? 'CONSIGNADA' : 'POR CONSIGNAR' }}
+                            </span>
+                                </p>
                             </div>
                             <p class="color" [style.background-color]="test.color"></p>
                         </div>
                     </a>
                 </li>
             </ul>
+
+            <!-- Paginación -->
+            <nav *ngIf="totalPages > 1" aria-label="Page navigation" class="mt-3">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                        <button class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+                        [class.active]="currentPage === i + 1">
+                        <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <button class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
     </ng-container>
 
@@ -32,6 +55,7 @@
         </div>
     </ng-template>
 
+    <!-- Test seleccionado -->
     <ng-template #testDetail>
         <div *ngIf="tipoTest; else NoTipoTest">
             <div class="card mb-4">

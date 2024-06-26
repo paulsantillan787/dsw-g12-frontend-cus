@@ -33,6 +33,11 @@ export class TestsPerformedComponent implements OnInit {
     alternativa: any;
   }[] = [];
 
+  //Para la paginación ;D
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  paginatedTests: Test[] = [];
+
   constructor(
     private pacienteService: PacienteService,
     private testService: TestService,
@@ -53,12 +58,14 @@ export class TestsPerformedComponent implements OnInit {
       this.testService.getTests().subscribe((data: any) => {
         this.tests = data.tests;
         this.tests = this.tests.filter((test) => test.id_paciente === this.paciente?.id_paciente);
+        
+        this.tests.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime()); // <- Orden inverso por fecha
+        this.paginateTests();
       });
     });
   }
 
-
-  getResumen(test:Test){
+  getResumen(test: Test) {
     this.getTest(test);
     this.getRespuestas();
   }
@@ -66,9 +73,8 @@ export class TestsPerformedComponent implements OnInit {
   getTest(test: Test) {
     this.selectedTest = true;
     this.test = test;
-    console.log(this.test);
     this.tipoTestService.getTiposTest().subscribe((data: any) => {
-      this.tipoTest = data.tipos_test.find((tipo:TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
+      this.tipoTest = data.tipos_test.find((tipo: TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
     });
   }
 
@@ -84,7 +90,6 @@ export class TestsPerformedComponent implements OnInit {
           pregunta: p,
           alternativa: a
         });
-        console.log(this.preguntasContestadas);
       }
     });
   }
@@ -92,7 +97,7 @@ export class TestsPerformedComponent implements OnInit {
   getPregunta(id_pregunta: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.preguntaService.getPreguntas().subscribe((data: any) => {
-        const pregunta = data.preguntas.find((pregunta:Pregunta) => pregunta.id_pregunta === id_pregunta) || null;
+        const pregunta = data.preguntas.find((pregunta: Pregunta) => pregunta.id_pregunta === id_pregunta) || null;
         const contenido = pregunta ? pregunta.contenido : null;
         resolve(contenido);
       });
@@ -102,14 +107,14 @@ export class TestsPerformedComponent implements OnInit {
   getAlternativa(id_alternativa: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.alternativaService.getAlternativas().subscribe((data: any) => {
-        const alternativa = data.alternativas.find((alternativa:Alternativa) => alternativa.id_alternativa === id_alternativa) || null;
+        const alternativa = data.alternativas.find((alternativa: Alternativa) => alternativa.id_alternativa === id_alternativa) || null;
         const contenido = alternativa ? alternativa.contenido : null;
         resolve(contenido);
       });
     });
   }
 
-  cancelTest(){
+  cancelTest() {
     this.selectedTest = false;
     this.test = null;
     this.respuestas = [];
@@ -117,4 +122,19 @@ export class TestsPerformedComponent implements OnInit {
     this.preguntasContestadas = [];
   }
 
+  // ↓ Métodos para la paginación
+  paginateTests() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedTests = this.tests.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number) {
+    this.currentPage = page;
+    this.paginateTests();
+  }
+
+  get totalPages() {
+    return Math.ceil(this.tests.length / this.itemsPerPage);
+  }
 }
