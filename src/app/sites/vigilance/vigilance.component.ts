@@ -74,8 +74,7 @@ export class VigilanceComponent implements OnInit {
     this.filteredTests = this.tests.filter(test => {
       const matchesTestId = !this.filterTestId || test.id_test.toString().includes(this.filterTestId);
       const matchesPacienteId = !this.filterPacienteId || test.id_paciente.toString().includes(this.filterPacienteId);
-      const matchesConsignado = !this.filterConsignado || test.consignado.toString() === this.filterConsignado;
-      return matchesTestId && matchesPacienteId && matchesConsignado;
+      return matchesTestId && matchesPacienteId;
     });
   }
 
@@ -150,9 +149,6 @@ export class VigilanceComponent implements OnInit {
           id_tipo_test: this.test.id_tipo_test,
           id_paciente: this.test.id_paciente,
           resultado: this.test.resultado,
-          interpretacion: this.test.interpretacion,
-          fecha: this.test.fecha,
-          color: this.test.color,
           ansiedad_consignada: this.ansiedadConsignada,
           observaciones: this.observaciones,
           consignado: true

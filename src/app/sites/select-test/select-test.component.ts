@@ -112,28 +112,12 @@ export class SelectTestComponent implements OnInit {
     return result;
   }
 
-  calculateInterpretacion() {
-    const result = this.calculateResult();
-
-    const clasificacion = this.clasificaciones.find(clasif => {
-      return result >= clasif.minimo && result <= clasif.maximo;
-    });
-    return clasificacion ? clasificacion.interpretacion : '';
-  }
-
-  getIdSemaforo() {
+  getIdClasififacion() {
     const result = this.calculateResult();
     const clasificacion = this.clasificaciones.find(clasif => {
       return result >= clasif.minimo && result <= clasif.maximo;
     });
-    return clasificacion ? clasificacion.id_semaforo : '';
-  }
-
-  getColor(){
-    const getIdSemaforo = this.getIdSemaforo();
-    const semaforo = this.semaforos.find(semaforo => semaforo.id_semaforo === getIdSemaforo);
-    console.log(semaforo?.color);
-    return semaforo?.color;
+    return clasificacion ? clasificacion.id_clasificacion : '';
   }
 
   async generateTestJson() {
@@ -157,9 +141,8 @@ export class SelectTestComponent implements OnInit {
 
     if (allAnswered) {
       const result = this.calculateResult();
-      const interpretacion = this.calculateInterpretacion();
-      const color = this.getColor();
       const id_tipo_test = this.selectedTest?.id_tipo_test;
+      const id_clasificacion = this.getIdClasififacion();
       const token = localStorage.getItem('token');
       const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
       this.date.setHours(this.date.getHours() - 5);
@@ -169,18 +152,17 @@ export class SelectTestComponent implements OnInit {
         const testResult = {
           id_tipo_test: id_tipo_test,
           id_paciente: this.paciente?.id_paciente,
+          id_clasificacion: id_clasificacion, //<-
+          id_vigilancia: null,
           resultado: result,
-          interpretacion: interpretacion,
-          color: color,
-          fecha: this.date.toISOString().slice(0,19),
-          ansiedad_consignada: "Por consignar",
-          observaciones: "Por detallar",
-          consignado: false
+          fecha: this.date.toISOString().slice(0,19)
         };
-        console.log(JSON.stringify(testResult, null, 2));
+        //console.log(JSON.stringify(testResult, null, 2));
+        //console.log(JSON.stringify(respuestas, null, 2));
 
         this.testService.insertTest(testResult).subscribe((data: any) => {
           console.log(data.message);
+          const test = data.test;
           const id_test = data.test.id_test;
           respuestas.forEach((respuesta) => {
             respuesta.id_test = id_test;
@@ -191,7 +173,7 @@ export class SelectTestComponent implements OnInit {
           });
           Swal.fire({
             title: '¡Test enviado!',
-            text: 'Su resultado es: ' + interpretacion,
+            text: 'Su resultado es:' + test.clasificacion.interpretacion,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
