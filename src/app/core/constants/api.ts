@@ -13,6 +13,9 @@ export const MODEL = {
     SEMAFORO: BACKEND + '/semaforos',
     TEST: BACKEND + '/tests',
     RESPUESTA: BACKEND + '/respuestas',
+    VIGILANCIA: BACKEND + '/vigilancias',
+    ANSIEDAD: BACKEND + '/ansiedades',
+    TRATAMIENTO: BACKEND + '/tratamientos',
 };
 
 export const SERVICE = {
