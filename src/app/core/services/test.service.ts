@@ -21,6 +21,10 @@ export class TestService {
     return this.http.get<Test[]>(this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getTestsByPaciente(id:any): Observable<Test[]> {
+    return this.http.get<Test[]>(this.URL + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
   insertTest(form:any) {
     return this.http.post<Test>(this.URL + SERVICE.POST, form, { headers: this.headers });
   }

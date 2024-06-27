@@ -50,16 +50,17 @@ export class TestsPerformedComponent implements OnInit {
   ngOnInit() {
     const token = localStorage.getItem('token');
     const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
+    console.log(payload);
 
-    this.pacienteService.getPacientes().subscribe((data: any) => {
-      this.pacientes = data.pacientes;
-      this.paciente = this.pacientes.find((paciente) => paciente.id_usuario === payload.id_usuario) || null;
 
-      this.testService.getTests().subscribe((data: any) => {
+    this.pacienteService.getPaciente(payload.id_usuario).subscribe((data: any) => {
+      this.paciente = data.paciente;
+      console.log(this.paciente);
+
+
+      this.testService.getTestsByPaciente(this.paciente?.id_paciente).subscribe((data: any) => {
         this.tests = data.tests;
-        this.tests = this.tests.filter((test) => test.id_paciente === this.paciente?.id_paciente);
-
-        this.tests.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime()); // <- Orden inverso por fecha
+        console.log(this.tests);
         this.paginateTests();
       });
     });
