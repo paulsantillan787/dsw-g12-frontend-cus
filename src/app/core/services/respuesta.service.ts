@@ -21,6 +21,10 @@ export class RespuestaService {
     return this.http.get<Respuesta[]>(this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getRespuestasByTest(id:any): Observable<Respuesta[]> {
+    return this.http.get<Respuesta[]>(this.URL + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
   insertRespuesta(form:any) {
     return this.http.post<Respuesta>(this.URL + SERVICE.POST, form, { headers: this.headers });
   }

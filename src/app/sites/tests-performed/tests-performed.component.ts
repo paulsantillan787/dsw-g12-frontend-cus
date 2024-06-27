@@ -58,7 +58,7 @@ export class TestsPerformedComponent implements OnInit {
       this.testService.getTests().subscribe((data: any) => {
         this.tests = data.tests;
         this.tests = this.tests.filter((test) => test.id_paciente === this.paciente?.id_paciente);
-        
+
         this.tests.sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime()); // <- Orden inverso por fecha
         this.paginateTests();
       });
@@ -68,6 +68,8 @@ export class TestsPerformedComponent implements OnInit {
   getResumen(test: Test) {
     this.getTest(test);
     this.getRespuestas();
+    console.log(test);
+
   }
 
   getTest(test: Test) {
@@ -78,40 +80,11 @@ export class TestsPerformedComponent implements OnInit {
     });
   }
 
-  async getRespuestas() {
-    this.respuestaService.getRespuestas().subscribe(async (data: any) => {
-      const test = this.test;
-      this.respuestas = data.respuestas;
-      this.respuestas = this.respuestas.filter((respuesta) => respuesta.id_test === test?.id_test);
-      for (let respuesta of this.respuestas) {
-        const p = await this.getPregunta(respuesta.id_pregunta);
-        const a = await this.getAlternativa(respuesta.id_alternativa);
-        this.preguntasContestadas.push({
-          pregunta: p,
-          alternativa: a
-        });
-      }
-    });
-  }
-
-  getPregunta(id_pregunta: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.preguntaService.getPreguntas().subscribe((data: any) => {
-        const pregunta = data.preguntas.find((pregunta: Pregunta) => pregunta.id_pregunta === id_pregunta) || null;
-        const contenido = pregunta ? pregunta.contenido : null;
-        resolve(contenido);
+  getRespuestas() {
+    const id_test = this.test?.id_test;
+      this.respuestaService.getRespuestasByTest(id_test).subscribe((data: any) => {
+        this.respuestas = data.respuestas;
       });
-    });
-  }
-
-  getAlternativa(id_alternativa: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.alternativaService.getAlternativas().subscribe((data: any) => {
-        const alternativa = data.alternativas.find((alternativa: Alternativa) => alternativa.id_alternativa === id_alternativa) || null;
-        const contenido = alternativa ? alternativa.contenido : null;
-        resolve(contenido);
-      });
-    });
   }
 
   cancelTest() {
