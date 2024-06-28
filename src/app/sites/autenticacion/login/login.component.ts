@@ -331,14 +331,23 @@ export class LoginComponent {
   login() {
     if (this.loginForm.valid) {
       this.usuarioService.login(this.loginForm.value).subscribe(
-       (res: any) => {
+        (res: any) => {
           localStorage.setItem('token', res.access_token);
-          this.router.navigate(['/home']);
-          Swal.fire({
-            icon: 'success',
-            title: 'Bienvenido',
-            text: res.message,
-          });
+          const payload = res.access_token ? JSON.parse(atob(res.access_token.split('.')[1])) : null;
+          if(this.user == 'especialista' && !payload.isEspecialista){
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No tiene permisos para acceder a esta sección',
+            });
+          } else {
+            this.router.navigate(['/home']);
+            Swal.fire({
+              icon: 'success',
+              title: 'Bienvenido',
+              text: res.message,
+            });
+          }
         },
         (err) => {
           Swal.fire({
