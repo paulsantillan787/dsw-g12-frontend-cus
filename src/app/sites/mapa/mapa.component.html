@@ -1,5 +1,47 @@
-<div id="map" style="height: 500px; width: 100%;"></div>
-<!-- Overlay para mostrar la etiqueta -->
-<div #popup id="popup" class="ol-popup">
-    <div #popupContent id="popup-content"></div>
+<div class="map-controls mb-3">
+    <div class="row">
+        <div class="col-md-4">
+            <select class="form-select" [(ngModel)]="filterTestId" (change)="applyFilters()">
+                <option value="all">Todos los Estados del Caso</option>
+                <option value="green">Estado Verde</option>
+                <option value="yellow">Estado Amarillo</option>
+                <option value="red">Estado Rojo</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" [(ngModel)]="filterPacienteId" (change)="applyFilters()">
+                <option value="all">Todos los Tipos de Test</option>
+                <option *ngFor="let test of tests" [value]="test.id_tipo_test">{{ test.tipo_test.nombre }}</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" [(ngModel)]="filterConsignado" (change)="applyFilters()">
+                <option value="all">Todos los Tests</option>
+                <option value="true">Tests Consignados</option>
+                <option value="false">Tests No Consignados</option>
+            </select>
+        </div>
+    </div>
 </div>
+
+<div class="map">
+    <div id="map" style="height: 500px; width: 80%;"></div>
+    <div #popup id="popup" class="ol-popup">
+        <div #popupContent id="popup-content"></div>
+    </div>
+</div>
+
+<style>
+    .map {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .map-controls {
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto 10px auto;
+    }
+</style>

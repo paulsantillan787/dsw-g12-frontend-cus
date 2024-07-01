@@ -31,7 +31,7 @@ export class VigilanceComponent implements OnInit {
   filteredTests: Test[] = [];
   selectedTest = false;
   tipoTest: TipoTest | null = null;
-
+  tipos: TipoTest[] = [];
   // Para mostrar las respuestas por cada test
   respuestas: Respuesta[] = [];
 
@@ -50,15 +50,16 @@ export class VigilanceComponent implements OnInit {
   idEspecialista: number = 0;
 
   // Filtros
-  filterTestId: string = '';
-  filterPacienteId: string = '';
-  filterConsignado: string = '';
+  filterTestId: string = 'all'; // Por defecto se muestran todos
+  filterPacienteId: string = 'all'; // Por defecto se muestran todos
+  filterConsignado: string = 'all'; // Por defecto se muestran todos
 
   // Para la paginación
   currentPage: number = 1;
   itemsPerPage: number = 8;
 
   esOpcionConsignar = false;
+
   constructor(
     private testService: TestService,
     private tipoTestService: TipoTestService,
@@ -77,6 +78,10 @@ export class VigilanceComponent implements OnInit {
       console.log(data.tests);
       this.tests = data.tests;
       this.filteredTests = this.tests;
+    });
+
+    this.tipoTestService.getTiposTest().subscribe((data: any) => {
+      this.tipos = data.tipos_test;
     });
 
     this.ansiedadService.getAnsiedades().subscribe((data: any) => {
@@ -99,9 +104,10 @@ export class VigilanceComponent implements OnInit {
 
   applyFilters() {
     this.filteredTests = this.tests.filter(test => {
-      const matchesTestId = !this.filterTestId || test.id_test.toString().includes(this.filterTestId);
-      const matchesPacienteId = !this.filterPacienteId || test.id_paciente.toString().includes(this.filterPacienteId);
-      const matchesConsignado = !this.filterConsignado || test.id_vigilancia.toString().includes(this.filterConsignado);
+      const matchesTestId = this.filterTestId === 'all' || test.clasificacion.semaforo.color === this.filterTestId;
+      const matchesPacienteId = this.filterPacienteId === 'all' || test.id_tipo_test.toString() === this.filterPacienteId;
+      const matchesConsignado = this.filterConsignado === 'all' || (this.filterConsignado === 'true' && test.id_vigilancia) || (this.filterConsignado === 'false' && !test.id_vigilancia);
+
       return matchesTestId && matchesPacienteId && matchesConsignado;
     });
   }
@@ -146,7 +152,7 @@ export class VigilanceComponent implements OnInit {
     this.newTratamiento = '';
   }
 
-  submitVigilancia(vigilancia:any, testToUpdate: any) {
+  submitVigilancia(vigilancia: any, testToUpdate: any) {
     this.vigilanciaService.insertVigilancia(vigilancia).subscribe((data: any) => {
       console.log(data);
       testToUpdate.id_vigilancia = data.vigilancia.id_vigilancia;
@@ -176,23 +182,23 @@ export class VigilanceComponent implements OnInit {
         resultado: this.test.resultado,
         fecha: this.test.fecha,
       }
-  
+
       let ansiedad = {
         id_especialista: this.idEspecialista,
         contenido: this.newAnsiedad
       };
-  
+
       let tratamiento = {
         recomendacion: this.newTratamiento
       };
-  
+
       const vigilancia = {
         id_ansiedad: this.selectedAnsiedad,
         id_tratamiento: this.selectedTratamiento,
       };
-  
+
       const observables = [];
-  
+
       if (this.isOtherAnsiedad) {
         observables.push(this.ansiedadService.insertAnsiedad(ansiedad).pipe(
           tap((data: any) => vigilancia.id_ansiedad = data.ansiedad.id_ansiedad)
@@ -203,7 +209,7 @@ export class VigilanceComponent implements OnInit {
           tap((data: any) => vigilancia.id_tratamiento = data.tratamiento.id_tratamiento)
         ));
       }
-  
+
       if (observables.length > 0) {
         forkJoin(observables).subscribe(() => {
           console.log('Vigilancia:', vigilancia);

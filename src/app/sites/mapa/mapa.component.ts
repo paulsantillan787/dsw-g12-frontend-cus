@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-//import { GoogleMapsModule } from '@angular/google-maps';
-//import { BrowserModule } from '@angular/platform-browser';
+//↓ Mapa con OpenLayers
 import 'ol/ol.css';
 import { Map, View } from 'ol';
 import { Tile as TileLayer, Heatmap as HeatmapLayer } from 'ol/layer';
@@ -10,18 +9,18 @@ import { Vector as VectorSource } from 'ol/source';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { fromLonLat } from 'ol/proj';
-import { Style, Circle as CircleStyle, Fill } from 'ol/style';
-
 import Overlay from 'ol/Overlay';
 
 import { TestService } from '../../core/services/test.service';
 import { Test } from '../../core/models/test';
 import { Ubigeo } from '../../core/models/ubigeo';
 
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.css'
 })
@@ -29,39 +28,35 @@ export class MapaComponent implements OnInit {
   map: Map = new Map();
   overlay: Overlay | undefined;  
   tests: Test[] = [];
+  filteredTests: Test[] = [];
+
+  // Filtros
+  filterTestId: string = 'all';
+  filterPacienteId: string = 'all';
+  filterConsignado: string = 'all';
 
   constructor(private testService: TestService) {}
 
   ngOnInit(): void {
     this.testService.getTests().subscribe((data: any) => {
       this.tests = data.tests;
+      this.applyFilters();
       this.initializeMap();
     });
   }
 
   initializeMap(): void {
-    const features = this.getHeatmapFeatures();
-
-    const vectorSource = new VectorSource({
-      features: features
-    });
-
-    const heatmapLayer = new HeatmapLayer({
-      source: vectorSource,
-      blur: 15,
-      radius: 10
-    });
-
+    // Crear el mapa inicialmente
     this.map = new Map({
       target: 'map',
       layers: [
         new TileLayer({
           source: new OSM()
         }),
-        heatmapLayer
+        this.createHeatmapLayer()
       ],
       view: new View({
-        center: fromLonLat([-77.0428, -12.0464]), // Coordenadas de Lima
+        center: fromLonLat([-77.0428, -12.0464]), // PO: Coordenadas de Lima
         zoom: 6
       })
     });
@@ -73,7 +68,7 @@ export class MapaComponent implements OnInit {
     });
     this.map.addOverlay(this.overlay);
 
-    // Evento para mostrar la etiqueta al pasar el mouse sobre el punto
+    // ↓ Evento para la etiqueta
     this.map.on('pointermove', (event) => {
       const feature = this.map.forEachFeatureAtPixel(event.pixel, (feature) => feature);
       if (feature) {
@@ -87,7 +82,7 @@ export class MapaComponent implements OnInit {
           this.overlay?.setPosition(coord);
           this.popupContent.nativeElement.innerHTML = `<strong>${ciudad}</strong><br/>Tests realizados: ${testsCount}`;
           this.overlay?.setPositioning('top-left');
-          this.overlay?.setOffset([0, -10]); // Ajustar posición de la etiqueta
+          this.overlay?.setOffset([0, -10]); //<- Ajustar posición de la etiqueta
         }
       } else {
         this.overlay?.setPosition(undefined);
@@ -95,11 +90,24 @@ export class MapaComponent implements OnInit {
     });
   }
 
+  createHeatmapLayer() {
+    const features = this.getHeatmapFeatures();
+
+    const vectorSource = new VectorSource({
+      features: features
+    });
+
+    return new HeatmapLayer({
+      source: vectorSource,
+      blur: 15,
+      radius: 10
+    });
+  }
+
   getHeatmapFeatures() {
-    // Agrupar los tests por Ubigeo y contar cuántos hay en cada ubicación
     const ubigeoCount: { [key: string]: { count: number, ubigeo: Ubigeo } } = {};
 
-    this.tests.forEach(test => {
+    this.filteredTests.forEach(test => {
       const ubigeo = test.paciente.usuario.persona.ubigeo;
       if (ubigeoCount[ubigeo.id_ubigeo]) {
         ubigeoCount[ubigeo.id_ubigeo].count++;
@@ -108,23 +116,39 @@ export class MapaComponent implements OnInit {
       }
     });
 
-    // Convertir los datos agrupados en características para el heatmap
     const features: Feature[] = [];
     for (const key in ubigeoCount) {
       if (ubigeoCount.hasOwnProperty(key)) {
         const value = ubigeoCount[key];
         const point = new Feature({
           geometry: new Point(fromLonLat([value.ubigeo.longitud, value.ubigeo.latitud])),
-          weight: value.count, // Utiliza la cantidad de tests como peso
-          testsCount: value.count, // Para mostrar en el tooltip
-          //ciudad: `${value.ubigeo.departamento} - ${value.ubigeo.provincia} - ${value.ubigeo.distrito}`,
-          ciudad:`${value.ubigeo.distrito}`
+          weight: value.count,
+          testsCount: value.count,
+          ciudad: `${value.ubigeo.distrito}`
         });
         features.push(point);
       }
     }
 
     return features;
+  }
+
+  applyFilters() {
+    this.filteredTests = this.tests.filter(test => {
+      const matchesTestId = this.filterTestId === 'all' || test.clasificacion.semaforo.color === this.filterTestId;
+      const matchesPacienteId = this.filterPacienteId === 'all' || test.id_tipo_test.toString() === this.filterPacienteId;
+      const matchesConsignado = this.filterConsignado === 'all' || (this.filterConsignado === 'true' && !!test.id_vigilancia) || (this.filterConsignado === 'false' && !test.id_vigilancia);
+
+      return matchesTestId && matchesPacienteId && matchesConsignado;
+    });
+
+    this.updateMap();
+  }
+
+  updateMap() {
+    this.map.getLayers().getArray().slice(1).forEach(layer => this.map.removeLayer(layer));
+
+    this.map.addLayer(this.createHeatmapLayer());
   }
 
   @ViewChild('popupContent', { static: true }) popupContent!: ElementRef;

@@ -4,14 +4,25 @@
     <div *ngIf="!selectedTest; else testDetail">
         <div class="mb-3 row">
             <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Filtrar por ID Test" [(ngModel)]="filterTestId" (input)="applyFilters()">
+                <p>Filtrar por caso</p>
+                <select class="form-select" [(ngModel)]="filterTestId" (change)="applyFilters()">
+                    <option value="all">Todos los Estados del Caso</option>
+                    <option value="green">Caso leve - VERDE</option>
+                    <option value="yellow">Caso Moderado - AMARILLO</option>
+                    <option value="red">Caso grave - ROJO</option>
+                </select>
             </div>
             <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Filtrar por ID Paciente" [(ngModel)]="filterPacienteId" (input)="applyFilters()">
+                <p>Filtrar por el tipo de test</p>
+                <select class="form-select" [(ngModel)]="filterPacienteId" (change)="applyFilters()">
+                    <option value="all">Todos los Tipos de Test</option>
+                    <option *ngFor="let tipo of tipos" [value]="tipo.id_tipo_test">{{ tipo.nombre }}</option>
+                </select>
             </div>
             <div class="col-md-4">
+                <p>Filtrar por vigilancia realizada</p>
                 <select class="form-select" [(ngModel)]="filterConsignado" (change)="applyFilters()">
-                    <option value="">Estado de Consignación</option>
+                    <option value="all">Estado de Consignación</option>
                     <option value="true">Consignada</option>
                     <option value="false">Por Consignar</option>
                 </select>
@@ -40,7 +51,12 @@
                             {{ test?.paciente?.usuario?.persona?.apellido_paterno }} 
                             {{ test?.paciente?.usuario?.persona?.apellido_materno }}
                         </td>
-                        <td>{{ test?.resultado }}</td>
+                        <td>
+                            <div class="interpretacion">
+                                <p>{{ test?.resultado }}</p>
+                                <p class="color" [style.background-color]="test.clasificacion.semaforo.color"></p>
+                            </div>
+                        </td>
                         <td>{{ test?.fecha | date: 'dd/MM/yyyy - HH:mm:ss' }}</td>
                         <td>
                             <span class="badge" [ngClass]="{'bg-success': test.vigilancia, 'bg-warning': !test.vigilancia}">
@@ -133,3 +149,16 @@
         </div>
     </ng-template>
 </div>
+
+<style>
+    .color {
+        padding: 10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+    .interpretacion {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
