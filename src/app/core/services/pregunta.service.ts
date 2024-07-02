@@ -21,6 +21,10 @@ export class PreguntaService {
     return this.http.get<Pregunta[]>(this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getPreguntasByTipoTest(id:number): Observable<Pregunta[]> {
+    return this.http.get<Pregunta[]>(this.URL + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
   insertPregunta(form:any) {
     return this.http.post<Pregunta>(this.URL + SERVICE.POST, form, { headers: this.headers });
   }

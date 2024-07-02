@@ -21,6 +21,10 @@ export class AlternativaService {
     return this.http.get<Alternativa[]>(this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getAlternativasByTipoTest(id:number): Observable<Alternativa[]> {
+    return this.http.get<Alternativa[]>(this.URL + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
   insertAlternativa(form:any) {
     return this.http.post<Alternativa>(this.URL + SERVICE.POST, form, { headers: this.headers });
   }

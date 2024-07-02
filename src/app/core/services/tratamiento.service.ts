@@ -19,6 +19,10 @@ export class TratamientoService {
     return this.http.get<Tratamiento[]>( this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getTratamiento(id:number): Observable<Tratamiento> {
+    return this.http.get<Tratamiento>(this.URL + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
   insertTratamiento(form:any) {
     return this.http.post<Tratamiento>(this.URL + SERVICE.POST, form, { headers: this.headers });
   }

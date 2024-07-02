@@ -1,10 +1,12 @@
-import { Ansiedad } from "./ansiedad";
+import { Diagnostico } from "./diagnostico";
 import { Tratamiento } from "./tratamiento";
 
 export interface Vigilancia {
     id_vigilancia: number;
-    id_ansiedad: number;
+    id_diagnostico: number;
     id_tratamiento: number;
-    ansiedad: Ansiedad;
+    observacion: string;
+    fundamentacion: string;
+    diagnostico: Diagnostico;
     tratamiento: Tratamiento;
 }

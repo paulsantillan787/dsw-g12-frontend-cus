@@ -65,12 +65,24 @@
                 <div class="card-body">
                     <h5 class="card-title">Interpretacion: {{ test?.clasificacion?.interpretacion }}</h5>
                     <h5 class="card-title">Análisis del especialista:</h5>
-                    <p><strong>Ansiedad certificada: </strong>{{ test?.vigilancia?.ansiedad?.contenido || 'No hay certificacion disponible' }}</p>
-                    <p><strong>Tratamiendo: </strong>{{ test?.vigilancia?.tratamiento?.recomendacion || 'No hay tratamiento disponible'}}</p>
+                    <div *ngIf="test?.vigilancia; else NoVigilancia">
+                        <h6><strong>Detalle del test: </strong></h6>
+                        <p><strong>→ Observaciones: </strong>{{ test?.vigilancia?.observacion }}</p>
+                        <p><strong>→ Fundamentación: </strong>{{ test?.vigilancia?.fundamentacion }}</p>
+                        <h6><strong>Diagnostico: </strong></h6>
+                        <p><strong>→ Descripcion: </strong>{{ test?.vigilancia?.diagnostico?.descripcion }}</p>
+                        <p><strong>→ Fundamentación: </strong>{{ test?.vigilancia?.diagnostico?.fundamentacion }}</p>
+                        <h6><strong>Tratamiento: </strong></h6>
+                        <p><strong>→ Descripcion: </strong>{{ test?.vigilancia?.tratamiento?.descripcion }}</p>
+                        <p><strong>→ Fundamentación: </strong>{{ test?.vigilancia?.tratamiento?.fundamentacion }}</p>
+                    </div>
+                    <ng-template #NoVigilancia>
+                        <p class="text-danger">NO HAY VIGILANCIA ASOCIADA</p>
+                    </ng-template>
                     <h5 class="card-title">Resumen:</h5>
-                    <ul class="list-group" *ngIf="respuestas.length > 0; else Cargando">
-                        <li class="list-group-item" *ngFor="let respuesta of respuestas">
-                            <p><strong>Pregunta:</strong> {{ respuesta.pregunta.contenido }}</p>
+                    <ul class="list-group scrollbar" *ngIf="respuestas.length > 0; else Cargando">
+                        <li class="list-group-item" *ngFor="let respuesta of respuestas; let i = index">
+                            <p><strong>Pregunta {{ i+1 }}:</strong> {{ respuesta.pregunta.contenido }}</p>
                             <p><strong>Respuesta:</strong> {{ respuesta.alternativa.contenido }}</p>
                         </li>
                     </ul>
@@ -103,5 +115,10 @@
     .interpretacion {
         display: flex;
         justify-content: space-between;
+    }
+
+    .scrollbar{
+        max-height: 300px;
+        overflow-x: auto;
     }
 </style>

@@ -8,13 +8,12 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
-import { Ansiedad } from '../../core/models/ansiedad';
-import { AnsiedadService } from '../../core/services/ansiedad.service';
+import { Diagnostico } from '../../core/models/diagnostico';
+import { DiagnosticoService } from '../../core/services/diagnostico.service';
 import { Tratamiento } from '../../core/models/tratamiento';
 import { TratamientoService } from '../../core/services/tratamiento.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { VigilanciaService } from '../../core/services/vigilancia.service';
-import { EspecialistaService } from '../../core/services/especialista.service';
 import { forkJoin, tap } from 'rxjs';
 
 
@@ -36,19 +35,23 @@ export class VigilanceComponent implements OnInit {
   respuestas: Respuesta[] = [];
 
   // Listar las ansiedades y si es nueva
-  ansiedades: Ansiedad[] = [];
-  selectedAnsiedad: string = '';
+  diagnosticos: Diagnostico[] = [];
+  selectedDiagnostico: string = '';
   isOtherAnsiedad = false;
   newAnsiedad: string = '';
+  fundamentacionAnsiedad: string = '';
 
   // Listar los tratamientos y si es nuevo
   tratamientos: Tratamiento[] = [];
   selectedTratamiento: string = '';
   isOtherTratamiento = false;
   newTratamiento: string = '';
+  fundamentacionTratamiento: string = '';
 
-  idEspecialista: number = 0;
-
+  //Para certificar el mismo test
+  observacion: string = '';
+  fundamentacion: string = '';
+  
   // Filtros
   filterTestId: string = 'all'; // Por defecto se muestran todos
   filterPacienteId: string = 'all'; // Por defecto se muestran todos
@@ -64,16 +67,12 @@ export class VigilanceComponent implements OnInit {
     private testService: TestService,
     private tipoTestService: TipoTestService,
     private respuestaService: RespuestaService,
-    private ansiedadService: AnsiedadService,
+    private diagnosticoService: DiagnosticoService,
     private tratamientoService: TratamientoService,
     private vigilanciaService: VigilanciaService,
-    private especialistaService: EspecialistaService
   ) {}
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    const payload = token ? JSON.parse(atob(token.split('.')[1])) : null; 
-
+  ngOnInit() { 
     this.testService.getTests().subscribe((data: any) => {
       console.log(data.tests);
       this.tests = data.tests;
@@ -84,17 +83,12 @@ export class VigilanceComponent implements OnInit {
       this.tipos = data.tipos_test;
     });
 
-    this.ansiedadService.getAnsiedades().subscribe((data: any) => {
-      this.ansiedades = data.ansiedades;
+    this.diagnosticoService.getDiagnosticos().subscribe((data: any) => {
+      this.diagnosticos = data.diagnosticos;
     });
 
     this.tratamientoService.getTratamientos().subscribe((data: any) => {
       this.tratamientos = data.tratamientos;
-    });
-
-    this.especialistaService.getEspecialistas().subscribe((data: any) => {
-      this.idEspecialista = data.especialistas.find((especialista: any) => especialista.id_usuario === payload?.id_usuario).id_especialista;
-      console.log(this.idEspecialista);
     });
   }
 
@@ -120,7 +114,6 @@ export class VigilanceComponent implements OnInit {
     this.getRespuestas();
     this.tipoTestService.getTiposTest().subscribe((data: any) => {
       this.tipoTest = data.tipos_test.find((tipo: TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
-      console.log(this.tipoTest);
     });
   }
 
@@ -144,7 +137,7 @@ export class VigilanceComponent implements OnInit {
   }
 
   resetConsignationOptions() {
-    this.selectedAnsiedad = '';
+    this.selectedDiagnostico = '';
     this.isOtherAnsiedad = false;
     this.newAnsiedad = '';
     this.selectedTratamiento = '';
@@ -183,25 +176,32 @@ export class VigilanceComponent implements OnInit {
         fecha: this.test.fecha,
       }
 
-      let ansiedad = {
-        id_especialista: this.idEspecialista,
-        contenido: this.newAnsiedad
+      let diagnostico = {
+        descripcion: this.newAnsiedad,
+        fundamentacion: this.fundamentacionAnsiedad
       };
 
       let tratamiento = {
-        recomendacion: this.newTratamiento
+        descripcion: this.newTratamiento,
+        fundamentacion: this.fundamentacionTratamiento
       };
 
       const vigilancia = {
-        id_ansiedad: this.selectedAnsiedad,
+        id_diagnostico: this.selectedDiagnostico,
         id_tratamiento: this.selectedTratamiento,
+        observacion: this.observacion,
+        fundamentacion: this.fundamentacion,
       };
+
+      console.log(diagnostico);
+      console.log(tratamiento);
+      console.log(vigilancia);
 
       const observables = [];
 
       if (this.isOtherAnsiedad) {
-        observables.push(this.ansiedadService.insertAnsiedad(ansiedad).pipe(
-          tap((data: any) => vigilancia.id_ansiedad = data.ansiedad.id_ansiedad)
+        observables.push(this.diagnosticoService.insertDiagnostico(diagnostico).pipe(
+          tap((data: any) => vigilancia.id_diagnostico = data.diagnostico.id_diagnostico)
         ));
       }
       if (this.isOtherTratamiento) {

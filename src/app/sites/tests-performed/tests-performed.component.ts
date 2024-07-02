@@ -8,10 +8,6 @@ import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
 import { TipoTest } from '../../core/models/tipo_test';
 import { TipoTestService } from '../../core/services/tipo-test.service';
-import { Pregunta } from '../../core/models/pregunta';
-import { PreguntaService } from '../../core/services/pregunta.service';
-import { Alternativa } from '../../core/models/alternativa';
-import { AlternativaService } from '../../core/services/alternativa.service';
 
 @Component({
   selector: 'app-tests-performed',
@@ -43,24 +39,17 @@ export class TestsPerformedComponent implements OnInit {
     private testService: TestService,
     private respuestaService: RespuestaService,
     private tipoTestService: TipoTestService,
-    private preguntaService: PreguntaService,
-    private alternativaService: AlternativaService
   ) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');
     const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
-    console.log(payload);
-
 
     this.pacienteService.getPaciente(payload.id_usuario).subscribe((data: any) => {
       this.paciente = data.paciente;
-      console.log(this.paciente);
-
 
       this.testService.getTestsByPaciente(this.paciente?.id_paciente).subscribe((data: any) => {
         this.tests = data.tests;
-        console.log(this.tests);
         this.paginateTests();
       });
     });
@@ -69,8 +58,6 @@ export class TestsPerformedComponent implements OnInit {
   getResumen(test: Test) {
     this.getTest(test);
     this.getRespuestas();
-    console.log(test);
-
   }
 
   getTest(test: Test) {

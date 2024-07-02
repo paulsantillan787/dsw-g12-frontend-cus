@@ -16,10 +16,10 @@ h2 {
     transition: all 0.3s;
 }
 
-.list-group-item:hover {
+/*list-group-item:hover {
     background-color: #f8f9fa;
     transform: scale(1.05);
-}
+}*/
 
 .list-group-item a {
     display: block;

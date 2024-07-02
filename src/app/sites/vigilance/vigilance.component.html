@@ -92,14 +92,14 @@
                     {{ test?.paciente?.usuario?.persona?.apellido_materno }}</p>
                 <p><strong>RESULTADO:</strong> {{ test?.resultado }} pts.</p>
                 <p><strong>FECHA:</strong> {{ test?.fecha | date: 'dd/MM/yyyy - HH:mm:ss' }}</p>
-                <p><strong>Ansiedad certificada: </strong>{{ test?.vigilancia?.ansiedad?.contenido || 'No hay certificacion disponible' }}</p>
-                <p><strong>Tratamiendo: </strong>{{ test?.vigilancia?.tratamiento?.recomendacion || 'No hay tratamiento disponible'}}</p>
+                <p><strong>Ansiedad certificada: </strong>{{ test?.vigilancia?.diagnostico?.descripcion || 'No hay certificacion disponible' }}</p>
+                <p><strong>Tratamiendo: </strong>{{ test?.vigilancia?.tratamiento?.descripcion || 'No hay tratamiento disponible'}}</p>
 
                 <h5 class="card-title">Resumen:</h5>
-                <ul class="list-group" *ngIf="respuestas.length > 0; else Cargando">
-                    <li class="list-group-item" *ngFor="let respuesta of respuestas">
-                        <p><strong>Pregunta:</strong> {{ respuesta.pregunta.contenido }}</p>
-                        <p><strong>Respuesta:</strong> {{ respuesta.alternativa.contenido }}</p>
+                <ul class="list-group scrollbar" *ngIf="respuestas.length > 0; else Cargando">
+                    <li class="list-group-item" *ngFor="let respuesta of respuestas; let i = index">
+                        <p><strong>Pregunta {{ i + 1 }} :</strong> {{ respuesta.pregunta.contenido }}</p>
+                        <p><strong>Respuesta {{ i + 1 }} :</strong> {{ respuesta.alternativa.contenido }}</p>
                     </li>
                 </ul>
                 <ng-template #Cargando>
@@ -110,31 +110,43 @@
 
                 <div *ngIf="esOpcionConsignar" class="mt-4">
                     <form (ngSubmit)="submitConsignation()">
-                        <div class="mb-3">
-                            <label for="ansiedadConSignada" class="form-label">Ansiedad Consignada</label>
-                            <select class="form-select" id="ansiedadConSignada" [(ngModel)]="selectedAnsiedad" name="selectedAnsiedad" (change)="isOtherAnsiedad = (selectedAnsiedad === 'other')">
-                                <option *ngFor="let ansiedad of ansiedades" [value]="ansiedad.id_ansiedad">{{ ansiedad.contenido }}</option>
-                                <option value="other">Otro</option>
-                            </select>
+                        <div>
+                            <label for="vigilancia" class="form-label">PARA EL TEST</label>
+                            <textarea class="form-control" id="observacion" [(ngModel)]="observacion" name="observacion" placeholder="Ingrese la observacion" required></textarea>
+                            <textarea class="form-control my-3" id="fundamentacion" [(ngModel)]="fundamentacion" name="fundamentacion" placeholder="Ingrese la fundamentacion" required></textarea>
                         </div>
-                        <div class="mb-3" *ngIf="isOtherAnsiedad">
-                            <label for="newAnsiedad" class="form-label">Nueva Ansiedad</label>
-                            <input type="text" class="form-control" id="newAnsiedad" [(ngModel)]="newAnsiedad" name="newAnsiedad" required>
-                            <button type="button" class="btn btn-secondary mt-2" (click)="isOtherAnsiedad = false; selectedAnsiedad = '';">Volver a Seleccionar</button>
+
+                        <div *ngIf="!isOtherAnsiedad" class="mb-3">
+                            <label for="ansiedadConSignada" class="form-label">DIAGNÓSTICO</label>
+                            <div class="d-flex ">
+                                <select class="form-select w-50" id="ansiedadConSignada" [(ngModel)]="selectedDiagnostico" name="selectedDiagnostico" (change)="isOtherAnsiedad = (selectedDiagnostico === 'other')">
+                                    <option *ngFor="let diagnostico of diagnosticos" [value]="diagnostico.id_diagnostico">{{ diagnostico.descripcion }}</option>
+                                </select>
+                                <button type="button" class="btn btn-primary mx-3 btn-more-scale" (click)="isOtherAnsiedad=!isOtherAnsiedad">+</button>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="tratamiento" class="form-label">Tratamiento</label>
-                            <select class="form-select" id="tratamiento" [(ngModel)]="selectedTratamiento" name="selectedTratamiento" (change)="isOtherTratamiento = (selectedTratamiento === 'other')">
-                                <option *ngFor="let tratamiento of tratamientos" [value]="tratamiento.id_tratamiento">{{ tratamiento.recomendacion }}</option>
-                                <option value="other">Otro</option>
-                            </select>
+                        <div class="mb-3 w-50" *ngIf="isOtherAnsiedad">
+                            <label for="newAnsiedad" class="form-label">AGREGAR NUEVO DIAGNOSTICO</label>
+                            <input type="text" class="form-control" id="newAnsiedad" [(ngModel)]="newAnsiedad" name="newAnsiedad" placeholder="Ingrese la descripcion" required>
+                            <textarea class="my-4 form-control" id="fundamentacionAnsiedad" [(ngModel)]="fundamentacionAnsiedad" name="fundamentacionAnsiedad" placeholder="Ingrese el fundamento cientifico" required></textarea>
+                            <button type="button" class="btn btn-secondary mt-2 " (click)="isOtherAnsiedad = false; selectedDiagnostico = '';">CANCELAR</button>
                         </div>
-                        <div class="mb-3" *ngIf="isOtherTratamiento">
-                            <label for="newTratamiento" class="form-label">Nuevo Tratamiento</label>
-                            <input type="text" class="form-control" id="newTratamiento" [(ngModel)]="newTratamiento" name="newTratamiento" required>
-                            <button type="button" class="btn btn-secondary mt-2" (click)="isOtherTratamiento = false; selectedTratamiento = '';">Volver a Seleccionar</button>
+                        <div *ngIf="!isOtherTratamiento" class="mb-3">
+                            <label for="tratamiento" class="form-label">TRATAMIENTO</label>
+                            <div class="d-flex ">
+                                <select class="form-select w-50" id="tratamiento" [(ngModel)]="selectedTratamiento" name="selectedTratamiento" (change)="isOtherTratamiento = (selectedTratamiento === 'other')">
+                                    <option *ngFor="let tratamiento of tratamientos" [value]="tratamiento.id_tratamiento">{{ tratamiento.descripcion }}</option>
+                                </select>
+                                <button type="button" class="btn btn-primary mx-3 btn-more-scale" (click)="isOtherTratamiento=!isOtherTratamiento">+</button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-success">Enviar Consignación</button>
+                        <div class="mb-3 w-50" *ngIf="isOtherTratamiento">
+                            <label for="newTratamiento" class="form-label">AGREGAR NUEVO TRATAMIENTO</label>
+                            <input type="text" class="form-control" id="newTratamiento" [(ngModel)]="newTratamiento" name="newTratamiento" placeholder="Ingrese la descripcion"  required>
+                            <textarea class="my-4 form-control" id="fundamentacionTratamiento" [(ngModel)]="fundamentacionTratamiento" name="fundamentacionTratamiento" placeholder="Ingrese el fundamento cientifico" required></textarea>
+                            <button type="button" class="btn btn-secondary mt-2" (click)="isOtherTratamiento = false; selectedTratamiento = '';">CANCELAR</button>
+                        </div>
+                        <button type="submit" class="btn btn-success">CERTIFICAR VIGILANCIA</button>
                         <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar Consignación</button>
                     </form>
                 </div>
@@ -160,5 +172,15 @@
     .interpretacion {
         display: flex;
         justify-content: space-between;
+    }
+
+    .btn-more-scale{
+        font-weight: bold;
+        border-radius: 50%;
+    }
+
+    .scrollbar{
+        max-height: 300px;
+        overflow-x: auto;
     }
 </style>

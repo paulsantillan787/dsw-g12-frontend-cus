@@ -14,7 +14,7 @@ export const MODEL = {
     TEST: BACKEND + '/tests',
     RESPUESTA: BACKEND + '/respuestas',
     VIGILANCIA: BACKEND + '/vigilancias',
-    ANSIEDAD: BACKEND + '/ansiedades',
+    DIAGNOSTICO: BACKEND + '/diagnosticos',
     TRATAMIENTO: BACKEND + '/tratamientos',
 };
 

@@ -25,8 +25,8 @@
                 <p><strong>Descripción:</strong> {{ selectedTest?.descripcion }}</p>
 
                 <h5 class="mt-4">Preguntas</h5>
-                <div *ngFor="let pregunta of preguntas" class="mb-4">
-                    <h6>{{ pregunta.contenido }}</h6>
+                <div *ngFor="let pregunta of preguntas; let i = index" class="mb-4">
+                    <h6>{{ i + 1 }}. {{ pregunta.contenido }}</h6>
 
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <label *ngFor="let alternativa of alternativas" class="btn btn-outline-primary">
@@ -42,4 +42,49 @@
             </div>
         </div>
     </ng-template>
+
+    <div *ngIf="loading;" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner-border text-primary" role="status"></div>
+            <div class="loading-message">
+                <p>Cargando preguntas</p>
+                <p>{{ counter }} de {{ preguntas.length }}</p>
+            </div>
+        </div>
+    </div>
+    <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            padding: 20px 30px;
+            border-radius: 20%;
+        }
+        
+        .spinner-border {
+            margin-bottom: 10px;
+        }
+        
+        .loading-message {
+            text-align: center;
+            color: black;
+        }
+    </style>
+
+
 </div>
