@@ -15,7 +15,6 @@ import { TratamientoService } from '../../core/services/tratamiento.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { VigilanciaService } from '../../core/services/vigilancia.service';
 import { forkJoin, tap } from 'rxjs';
-import { TdoService } from '../../core/services/tdo.service';
 
 
 @Component({
@@ -26,7 +25,7 @@ import { TdoService } from '../../core/services/tdo.service';
   styleUrl: './vigilance.component.css'
 })
 export class VigilanceComponent implements OnInit {
-  tests: Test[] = [];
+  tests: any[] = [];
   test: Test | null = null;
   filteredTests: Test[] = [];
   selectedTest = false;
@@ -74,9 +73,10 @@ export class VigilanceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.testService.getTests().subscribe((data: any) => {
+    this.vigilanciaService.getVigilanciasDTO().subscribe((data: any) => {
       console.log(data.tests);
       this.tests = data.tests;
+      console.log(this.tests)
       this.filteredTests = this.tests;
     });
 

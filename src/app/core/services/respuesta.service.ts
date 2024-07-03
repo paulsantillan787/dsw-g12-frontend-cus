@@ -36,4 +36,8 @@ export class RespuestaService {
   deleteRespuesta(id:number) {
     return this.http.delete<Respuesta>(this.URL + SERVICE.DELETE + id, { headers: this.headers });
   }
+
+  getRespuestasDTO(id:any): Observable<any> {
+    return this.http.get(this.URL + SERVICE.DTO + SERVICE.GETBY + id, { headers: this.headers });
+  }
 }

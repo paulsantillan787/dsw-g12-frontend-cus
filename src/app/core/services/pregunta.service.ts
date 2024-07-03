@@ -11,7 +11,7 @@ import { MODEL, SERVICE } from '../constants/api';
 export class PreguntaService {
   readonly URL: string = MODEL.PREGUNTA
   headers: HttpHeaders;
-  
+
   constructor(private http:HttpClient) {
     const token = localStorage.getItem('token');
     this.headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -35,5 +35,9 @@ export class PreguntaService {
 
   deletePregunta(id:number) {
     return this.http.delete<Pregunta>(this.URL + SERVICE.DELETE + id, { headers: this.headers });
+  }
+
+  getPreguntasDTO(id:any): Observable<any> {
+    return this.http.get(this.URL + SERVICE.DTO + SERVICE.GETBY + id, { headers: this.headers });
   }
 }

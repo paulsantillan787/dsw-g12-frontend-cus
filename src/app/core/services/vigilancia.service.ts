@@ -31,4 +31,8 @@ export class VigilanciaService {
   deleteVigilancia(id:number) {
     return this.http.delete<Vigilancia>(this.URL + SERVICE.DELETE + id, { headers: this.headers });
   }
+
+  getVigilanciasDTO(): Observable<any[]> {
+    return this.http.get<any[]>(this.URL + SERVICE.DTO + SERVICE.GET, { headers: this.headers });
+  }
 }

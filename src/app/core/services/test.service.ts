@@ -37,4 +37,8 @@ export class TestService {
     return this.http.delete<Test>(this.URL + SERVICE.DELETE + id, { headers: this.headers });
   }
 
+  getTestsDTO(id:any): Observable<any> {
+    return this.http.get(this.URL + SERVICE.DTO + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
 }

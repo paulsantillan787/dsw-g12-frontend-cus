@@ -15,11 +15,11 @@ export const MODEL = {
     RESPUESTA: BACKEND + '/respuestas',
     VIGILANCIA: BACKEND + '/vigilancias',
     DIAGNOSTICO: BACKEND + '/diagnosticos',
-    TRATAMIENTO: BACKEND + '/tratamientos',
+    TRATAMIENTO: BACKEND + '/tratamientos'
 };
 
 export const SERVICE = {
-    TDO: '/tdo',   // Para extraer informacion exacta, sin filtros (en este caso primero se coloca el servicio tdo y luego el modelo, ejemplo: /tdo/vigilancia)
+    DTO: '/dto',   // Para extraer informacion exacta, sin filtros (en este caso primero se coloca el servicio tdo y luego el modelo, ejemplo: /tdo/vigilancia)
     GET: '/get',
     GETBY: '/get/', // /get/:id_<modelo> o /get/:id_<modelo1>/:id_<modelo2> o /get/:id_<modelo1>/:id_<modelo2>/:id_<modelo3>... etc
     POST: '/insert',
