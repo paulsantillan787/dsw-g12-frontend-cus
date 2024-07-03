@@ -109,7 +109,7 @@ export class LoginComponent {
       especialidad: new FormControl('', [Validators.required]),
     });
   }
-
+  
   obtenerDepartamentos(form: FormGroup) {
     this.ubigeoService.getUbigeos().subscribe((data: any) => {
       this.ubigeos = data.ubigeos;
