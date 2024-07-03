@@ -8,8 +8,6 @@ import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
 import { TipoTest } from '../../core/models/tipo_test';
 import { TipoTestService } from '../../core/services/tipo-test.service';
-import { VigilanciaService } from '../../core/services/vigilancia.service';
-import { Vigilancia } from '../../core/models/vigilancia';
 
 @Component({
   selector: 'app-tests-performed',
@@ -19,6 +17,7 @@ import { Vigilancia } from '../../core/models/vigilancia';
   styleUrl: './tests-performed.component.css'
 })
 export class TestsPerformedComponent implements OnInit {
+<<<<<<< HEAD
   //tests: Test[] = [];
   tests: any[] = [];
   test: any | null = null;
@@ -29,6 +28,19 @@ export class TestsPerformedComponent implements OnInit {
   respuestas: any[] = [];
   preguntas: any[] = [];
 
+=======
+  tests: Test[] = [];
+  test: Test | null = null;
+  pacientes: Paciente[] = [];
+  paciente: Paciente | null = null;
+  respuestas: Respuesta[] = [];
+  selectedTest = false;
+  tipoTest: TipoTest | null = null;
+  preguntasContestadas: {
+    pregunta: any;
+    alternativa: any;
+  }[] = [];
+>>>>>>> 991ff903aebf04ece7e00d20c2f8b561370d0989
 
   //Para la paginación ;D
   currentPage: number = 1;
@@ -40,43 +52,41 @@ export class TestsPerformedComponent implements OnInit {
     private testService: TestService,
     private respuestaService: RespuestaService,
     private tipoTestService: TipoTestService,
-    private vigilanciaService: VigilanciaService,
   ) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');
     const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
 
+<<<<<<< HEAD
     
 
     this.testService.getTestsDTO(payload.id_paciente).subscribe((data: any) => {
       console.log(data.data);
       this.tests = data.data;
       this.paginateTests();   
+=======
+    this.pacienteService.getPaciente(payload.id_usuario).subscribe((data: any) => {
+      this.paciente = data.paciente;
+
+      this.testService.getTestsByPaciente(this.paciente?.id_paciente).subscribe((data: any) => {
+        this.tests = data.tests;
+        this.paginateTests();
+      });
+>>>>>>> 991ff903aebf04ece7e00d20c2f8b561370d0989
     });
   }
 
-  getResumen(test:any ) {
+  getResumen(test: Test) {
     this.getTest(test);
-
-    if(this.test.id_vigilancia != null){
-      this.vigilanciaService.getVigilanciById(this.test.id_test).subscribe(
-        (data: any) => {
-          this.vigilancia = data.vigilancia;
-          console.log(data.vigilancia);
-        });
-    }
- 
-    console.log("afuera : " + this.vigilancia);
-    console.log(test)
     this.getRespuestas();
   }
 
-  getTest(test: any) {
+  getTest(test: Test) {
     this.selectedTest = true;
     this.test = test;
     this.tipoTestService.getTiposTest().subscribe((data: any) => {
-      this.tipoTest = data.tipos_test.find((tipo: TipoTest) => tipo.nombre === test.tipo_test) || null;
+      this.tipoTest = data.tipos_test.find((tipo: TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
     });
   }
 /*
@@ -97,7 +107,6 @@ export class TestsPerformedComponent implements OnInit {
   cancelTest() {
     this.selectedTest = false;
     this.test = null;
-    this.vigilancia = null;
     this.respuestas = [];
     this.tipoTest = null;
   }
