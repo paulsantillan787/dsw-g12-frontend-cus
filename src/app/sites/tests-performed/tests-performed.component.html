@@ -9,18 +9,18 @@
             <ul class="list-group">
                 <li class="list-group-item list-group-item-action" *ngFor="let test of paginatedTests">
                     <a href="javascript:void(0)" (click)="getResumen(test)" class="text-decoration-none">
-                        <h5>{{ test?.tipo_test?.nombre }}</h5>
+                        <h5>{{ test?.tipo_test }}</h5>
                         <div class="interpretacion">
                             <div>
                                 <p><strong>Fecha realizada: </strong> {{ test?.fecha | date: 'dd/MM/yyyy - hh:mm:ss' }}</p>
-                                <p class="mb-1 text-muted"><strong>Interpretacion: </strong>{{ test?.clasificacion?.interpretacion }}</p>
+                                <p class="mb-1 text-muted"><strong>Interpretacion: </strong>{{ test.clasificacion }}</p>
                                 <p><strong>Estado: </strong>
                                 <span class="badge" [ngClass]="{'bg-success': test.id_vigilancia, 'bg-warning': !test.id_vigilancia}">
                                 {{ test?.id_vigilancia ? 'CONSIGNADA' : 'POR CONSIGNAR' }}
                             </span>
                                 </p>
                             </div>
-                            <p class="color" [style.background-color]="test.clasificacion.semaforo.color"></p>
+                            <p class="color" [style.background-color]="test.color"></p>
                         </div>
                     </a>
                 </li>

@@ -8,6 +8,7 @@ import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
 import { TipoTest } from '../../core/models/tipo_test';
 import { TipoTestService } from '../../core/services/tipo-test.service';
+import { Vigilancia } from '../../core/models/vigilancia';
 
 @Component({
   selector: 'app-tests-performed',
@@ -17,13 +18,16 @@ import { TipoTestService } from '../../core/services/tipo-test.service';
   styleUrl: './tests-performed.component.css'
 })
 export class TestsPerformedComponent implements OnInit {
-  tests: Test[] = [];
-  test: Test | null = null;
+  //tests: Test[] = [];
+  tests: any[] = [];
+  tests2: Test[] = [];
+  test: any | null = null;
   pacientes: Paciente[] = [];
   paciente: Paciente | null = null;
   respuestas: Respuesta[] = [];
   selectedTest = false;
   tipoTest: TipoTest | null = null;
+  vigilancia: Vigilancia | null = null;
   preguntasContestadas: {
     pregunta: any;
     alternativa: any;
@@ -48,23 +52,33 @@ export class TestsPerformedComponent implements OnInit {
     this.pacienteService.getPaciente(payload.id_usuario).subscribe((data: any) => {
       this.paciente = data.paciente;
 
-      this.testService.getTestsByPaciente(this.paciente?.id_paciente).subscribe((data: any) => {
+      this.testService.getTestsDTO(this.paciente?.id_paciente).subscribe((data: any) => {
+        console.log(data.data);
+        this.tests = data.data;
+        this.paginateTests();
+        
+      });
+
+      /*this.testService.getTestsByPaciente(this.paciente?.id_paciente).subscribe((data: any) => {
         this.tests = data.tests;
         this.paginateTests();
-      });
+      });*/
+
     });
   }
 
-  getResumen(test: Test) {
+  getResumen(test:any ) {
     this.getTest(test);
+
+    console.log(test)
     this.getRespuestas();
   }
 
-  getTest(test: Test) {
+  getTest(test: any) {
     this.selectedTest = true;
     this.test = test;
     this.tipoTestService.getTiposTest().subscribe((data: any) => {
-      this.tipoTest = data.tipos_test.find((tipo: TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
+      this.tipoTest = data.tipos_test.find((tipo: TipoTest) => tipo.nombre === test.tipo_test) || null;
     });
   }
 
