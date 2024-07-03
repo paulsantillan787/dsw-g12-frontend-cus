@@ -63,18 +63,18 @@
                     TEST SELECCIONADO - {{ tipoTest.nombre }}
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Interpretacion: {{ test?.clasificacion?.interpretacion }}</h5>
+                    <h5 class="card-title">Interpretacion: {{ test?.clasificacion }}</h5>
                     <h5 class="card-title">Análisis del especialista:</h5>
-                    <div *ngIf="test?.vigilancia; else NoVigilancia">
+                    <div *ngIf="vigilancia; else NoVigilancia">
                         <h6><strong>Detalle del test: </strong></h6>
-                        <p><strong>→ Observaciones: </strong>{{ test?.vigilancia?.observacion }}</p>
-                        <p><strong>→ Fundamentación: </strong>{{ test?.vigilancia?.fundamentacion }}</p>
+                        <p><strong>→ Observaciones: </strong>{{ vigilancia.observacion }}</p>
+                        <p><strong>→ Fundamentación: </strong>{{ vigilancia.fundamentacion }}</p>
                         <h6><strong>Diagnostico: </strong></h6>
-                        <p><strong>→ Descripcion: </strong>{{ test?.vigilancia?.diagnostico?.descripcion }}</p>
-                        <p><strong>→ Fundamentación: </strong>{{ test?.vigilancia?.diagnostico?.fundamentacion }}</p>
+                        <p><strong>→ Descripcion: </strong>{{ vigilancia.diagnostico.descripcion }}</p>
+                        <p><strong>→ Fundamentación: </strong>{{ vigilancia.diagnostico.fundamentacion }}</p>
                         <h6><strong>Tratamiento: </strong></h6>
-                        <p><strong>→ Descripcion: </strong>{{ test?.vigilancia?.tratamiento?.descripcion }}</p>
-                        <p><strong>→ Fundamentación: </strong>{{ test?.vigilancia?.tratamiento?.fundamentacion }}</p>
+                        <p><strong>→ Descripcion: </strong>{{ vigilancia.tratamiento.descripcion }}</p>
+                        <p><strong>→ Fundamentación: </strong>{{ vigilancia.tratamiento.fundamentacion }}</p>
                     </div>
                     <ng-template #NoVigilancia>
                         <p class="text-danger">NO HAY VIGILANCIA ASOCIADA</p>

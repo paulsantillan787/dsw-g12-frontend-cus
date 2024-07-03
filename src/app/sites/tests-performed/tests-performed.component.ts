@@ -8,6 +8,7 @@ import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
 import { TipoTest } from '../../core/models/tipo_test';
 import { TipoTestService } from '../../core/services/tipo-test.service';
+import { VigilanciaService } from '../../core/services/vigilancia.service';
 import { Vigilancia } from '../../core/models/vigilancia';
 
 @Component({
@@ -20,7 +21,6 @@ import { Vigilancia } from '../../core/models/vigilancia';
 export class TestsPerformedComponent implements OnInit {
   //tests: Test[] = [];
   tests: any[] = [];
-  tests2: Test[] = [];
   test: any | null = null;
   pacientes: Paciente[] = [];
   paciente: Paciente | null = null;
@@ -43,6 +43,7 @@ export class TestsPerformedComponent implements OnInit {
     private testService: TestService,
     private respuestaService: RespuestaService,
     private tipoTestService: TipoTestService,
+    private vigilanciaService: VigilanciaService,
   ) {}
 
   ngOnInit() {
@@ -70,6 +71,15 @@ export class TestsPerformedComponent implements OnInit {
   getResumen(test:any ) {
     this.getTest(test);
 
+    if(this.test.id_vigilancia != null){
+      this.vigilanciaService.getVigilanciById(this.test.id_test).subscribe(
+        (data: any) => {
+          this.vigilancia = data.vigilancia;
+          console.log(data.vigilancia);
+        });
+    }
+ 
+    console.log("afuera : " + this.vigilancia);
     console.log(test)
     this.getRespuestas();
   }
@@ -92,6 +102,7 @@ export class TestsPerformedComponent implements OnInit {
   cancelTest() {
     this.selectedTest = false;
     this.test = null;
+    this.vigilancia = null;
     this.respuestas = [];
     this.tipoTest = null;
     this.preguntasContestadas = [];
