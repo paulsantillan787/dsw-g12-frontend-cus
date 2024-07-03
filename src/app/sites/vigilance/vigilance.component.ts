@@ -15,6 +15,7 @@ import { TratamientoService } from '../../core/services/tratamiento.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { VigilanciaService } from '../../core/services/vigilancia.service';
 import { forkJoin, tap } from 'rxjs';
+import { TdoService } from '../../core/services/tdo.service';
 
 
 @Component({
@@ -51,7 +52,7 @@ export class VigilanceComponent implements OnInit {
   //Para certificar el mismo test
   observacion: string = '';
   fundamentacion: string = '';
-  
+
   // Filtros
   filterTestId: string = 'all'; // Por defecto se muestran todos
   filterPacienteId: string = 'all'; // Por defecto se muestran todos
@@ -72,7 +73,7 @@ export class VigilanceComponent implements OnInit {
     private vigilanciaService: VigilanciaService,
   ) {}
 
-  ngOnInit() { 
+  ngOnInit() {
     this.testService.getTests().subscribe((data: any) => {
       console.log(data.tests);
       this.tests = data.tests;
