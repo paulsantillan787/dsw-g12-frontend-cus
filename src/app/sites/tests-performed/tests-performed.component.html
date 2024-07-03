@@ -81,9 +81,9 @@
                     </ng-template>
                     <h5 class="card-title">Resumen:</h5>
                     <ul class="list-group scrollbar" *ngIf="respuestas.length > 0; else Cargando">
-                        <li class="list-group-item" *ngFor="let respuesta of respuestas; let i = index">
-                            <p><strong>Pregunta {{ i+1 }}:</strong> {{ respuesta.pregunta.contenido }}</p>
-                            <p><strong>Respuesta:</strong> {{ respuesta.alternativa.contenido }}</p>
+                        <li class="list-group-item" *ngFor="let pregunta of preguntas; let i = index">
+                            <p><strong>Pregunta {{ i + 1 }} :</strong> {{ pregunta }}</p>
+                            <p><strong>Respuesta {{ i + 1 }} :</strong> {{ respuestas.at(i) }}</p>
                         </li>
                     </ul>
                     <ng-template #Cargando>

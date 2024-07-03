@@ -22,16 +22,13 @@ export class TestsPerformedComponent implements OnInit {
   //tests: Test[] = [];
   tests: any[] = [];
   test: any | null = null;
-  pacientes: Paciente[] = [];
-  paciente: Paciente | null = null;
-  respuestas: Respuesta[] = [];
   selectedTest = false;
   tipoTest: TipoTest | null = null;
   vigilancia: Vigilancia | null = null;
-  preguntasContestadas: {
-    pregunta: any;
-    alternativa: any;
-  }[] = [];
+    // Para mostrar las respuestas por cada test
+  respuestas: any[] = [];
+  preguntas: any[] = [];
+
 
   //Para la paginación ;D
   currentPage: number = 1;
@@ -50,21 +47,12 @@ export class TestsPerformedComponent implements OnInit {
     const token = localStorage.getItem('token');
     const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
 
-    this.pacienteService.getPaciente(payload.id_usuario).subscribe((data: any) => {
-      this.paciente = data.paciente;
+    
 
-      this.testService.getTestsDTO(this.paciente?.id_paciente).subscribe((data: any) => {
-        console.log(data.data);
-        this.tests = data.data;
-        this.paginateTests();
-        
-      });
-
-      /*this.testService.getTestsByPaciente(this.paciente?.id_paciente).subscribe((data: any) => {
-        this.tests = data.tests;
-        this.paginateTests();
-      });*/
-
+    this.testService.getTestsDTO(payload.id_paciente).subscribe((data: any) => {
+      console.log(data.data);
+      this.tests = data.data;
+      this.paginateTests();   
     });
   }
 
@@ -91,12 +79,19 @@ export class TestsPerformedComponent implements OnInit {
       this.tipoTest = data.tipos_test.find((tipo: TipoTest) => tipo.nombre === test.tipo_test) || null;
     });
   }
-
+/*
   getRespuestas() {
     const id_test = this.test?.id_test;
       this.respuestaService.getRespuestasByTest(id_test).subscribe((data: any) => {
         this.respuestas = data.respuestas;
       });
+  }*/
+
+  getRespuestas() {
+    this.respuestaService.getRespuestasDTO(this.test.id_test).subscribe((data: any) => {
+      this.respuestas = data.resumen.alternativas_marcadas;
+      this.preguntas = data.resumen.preguntas_planteadas;
+    });
   }
 
   cancelTest() {
@@ -105,9 +100,11 @@ export class TestsPerformedComponent implements OnInit {
     this.vigilancia = null;
     this.respuestas = [];
     this.tipoTest = null;
-    this.preguntasContestadas = [];
   }
 
+
+
+  
   // ↓ Métodos para la paginación
   paginateTests() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
