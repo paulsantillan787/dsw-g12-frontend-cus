@@ -33,7 +33,7 @@ export class TestsPerformedComponent implements OnInit {
   //Para la paginación ;D
   currentPage: number = 1;
   itemsPerPage: number = 5;
-  paginatedTests: Test[] = [];
+  paginatedTests: any[] = [];
 
   constructor(
     private pacienteService: PacienteService,

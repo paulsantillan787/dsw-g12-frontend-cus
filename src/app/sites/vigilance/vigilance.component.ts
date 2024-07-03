@@ -57,7 +57,7 @@ export class VigilanceComponent implements OnInit {
 
   // Filtros
   filterTestId: string = 'all'; // Por defecto se muestran todos
-  filterPacienteId: string = 'all'; // Por defecto se muestran todos
+  filterTipoTestId: string = 'all'; // Por defecto se muestran todos
   filterConsignado: string = 'all'; // Por defecto se muestran todos
 
   // Para la paginación
@@ -102,16 +102,17 @@ export class VigilanceComponent implements OnInit {
 
   applyFilters() {
     this.filteredTests = this.tests.filter(test => {
-      const matchesTestId = this.filterTestId === 'all' || test.clasificacion.semaforo.color === this.filterTestId;
-      const matchesPacienteId = this.filterPacienteId === 'all' || test.id_tipo_test.toString() === this.filterPacienteId;
-      const matchesConsignado = this.filterConsignado === 'all' || (this.filterConsignado === 'true' && test.id_vigilancia) || (this.filterConsignado === 'false' && !test.id_vigilancia);
+      const matchesTestId = this.filterTestId === 'all' || test.color === this.filterTestId;
+      const matchesTipoTestId = this.filterTipoTestId === 'all' || test.id_tipo_test.toString() === this.filterTipoTestId;
+      const matchesConsignado = this.filterConsignado === 'all' || (this.filterConsignado === 'true' && test.consignacion) || (this.filterConsignado === 'false' && !test.consignacion);
 
-      return matchesTestId && matchesPacienteId && matchesConsignado;
+      return matchesTestId && matchesTipoTestId && matchesConsignado;
     });
   }
 
   getTest(test: any) {
     const id_vigilancia = test.consignacion
+    this.test = test;
     this.selectedTest = true;
     this.esOpcionConsignar = true;
     if (id_vigilancia != null)
@@ -181,12 +182,7 @@ export class VigilanceComponent implements OnInit {
     if (this.test) {
       let testToUpdate = {
         id_test: this.test.id_test,
-        id_tipo_test: this.test.id_tipo_test,
-        id_paciente: this.test.id_paciente,
-        id_clasificacion: this.test.id_clasificacion,
-        id_vigilancia: this.test.id_vigilancia,
-        resultado: this.test.resultado,
-        fecha: this.test.fecha,
+        id_vigilancia: this.test.consignacion,
       }
 
       let diagnostico = {
@@ -211,6 +207,8 @@ export class VigilanceComponent implements OnInit {
       console.log(vigilancia);
 
       const observables = [];
+
+      console.log(testToUpdate)
 
       if (this.isOtherAnsiedad) {
         observables.push(this.diagnosticoService.insertDiagnostico(diagnostico).pipe(

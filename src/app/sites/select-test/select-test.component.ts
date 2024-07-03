@@ -122,6 +122,8 @@ export class SelectTestComponent implements OnInit {
             console.log(this.counter);
             if(this.counter == respuestas.length){
               console.log('Todas las respuestas enviadas');
+              console.log(test);
+              console.log(test.clasificacion);
               Swal.fire({
                 title: '¡Test enviado!',
                 text: 'Su resultado es: ' + test.clasificacion.interpretacion,

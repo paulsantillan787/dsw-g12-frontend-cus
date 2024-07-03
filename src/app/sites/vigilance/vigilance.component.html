@@ -14,7 +14,7 @@
             </div>
             <div class="col-md-4">
                 <p>Filtrar por el tipo de test</p>
-                <select class="form-select" [(ngModel)]="filterPacienteId" (change)="applyFilters()">
+                <select class="form-select" [(ngModel)]="filterTipoTestId" (change)="applyFilters()">
                     <option value="all">Todos los Tipos de Test</option>
                     <option *ngFor="let tipo of tipos" [value]="tipo.id_tipo_test">{{ tipo.nombre }}</option>
                 </select>
@@ -44,7 +44,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let test of filteredTests | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
-                        <td>{{ test?.id_test }}</td>
+                        <td>
+                            <p style="width: 100%; display:flex; justify-content: center;">{{ test?.id_test }}</p>
+                        </td>
                         <td>{{ test?.tipo_test }}</td>
                         <td>
                             {{ test?.paciente }}
@@ -62,10 +64,10 @@
                             </span>
                         </td>
                         <td class="actions">
-                            <button class="btn btn-info btn-sm me-2" (click)="viewTestDetails(test)">
+                            <button class="btn btn-info btn-sm me-2" style="width: 100%; display:flex; justify-content: center;" (click)="viewTestDetails(test)">
                                 Ver Detalle
                             </button>
-                            <button *ngIf="!test.consignacion" class="btn btn-primary btn-sm" (click)="getTest(test)">
+                            <button *ngIf="!test.consignacion" class="btn btn-primary btn-sm" style="width: 100%; display:flex; justify-content: center;" (click)="getTest(test)">
                                 Consignar
                             </button>
                         </td>
