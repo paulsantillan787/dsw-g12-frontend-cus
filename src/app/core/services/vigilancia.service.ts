@@ -20,6 +20,10 @@ export class VigilanciaService {
     return this.http.get<Vigilancia[]>( this.URL + SERVICE.GET, { headers: this.headers });
   }
 
+  getVigilanciById(id:number): Observable<Vigilancia> {
+    return this.http.get<Vigilancia>(this.URL + SERVICE.GETBY + id, { headers: this.headers });
+  }
+
   insertVigilancia(form:any) {
     return this.http.post<Vigilancia>(this.URL + SERVICE.POST, form, { headers: this.headers });
   }
