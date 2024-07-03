@@ -45,29 +45,27 @@
                 <tbody>
                     <tr *ngFor="let test of filteredTests | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
                         <td>{{ test?.id_test }}</td>
-                        <td>{{ test?.tipo_test?.nombre }}</td>
+                        <td>{{ test?.tipo_test }}</td>
                         <td>
-                            {{ test?.paciente?.usuario?.persona?.nombre }} 
-                            {{ test?.paciente?.usuario?.persona?.apellido_paterno }} 
-                            {{ test?.paciente?.usuario?.persona?.apellido_materno }}
+                            {{ test?.paciente }}
                         </td>
                         <td>
                             <div class="interpretacion">
                                 <p>{{ test?.resultado }}</p>
-                                <p class="color" [style.background-color]="test.clasificacion.semaforo.color"></p>
+                                <p class="color" [style.background-color]="test.color"></p>
                             </div>
                         </td>
                         <td>{{ test?.fecha | date: 'dd/MM/yyyy - HH:mm:ss' }}</td>
                         <td>
-                            <span class="badge" [ngClass]="{'bg-success': test.vigilancia, 'bg-warning': !test.vigilancia}">
-                                {{ test.vigilancia ? 'Consignada' : 'Por Consignar' }}
+                            <span class="badge" [ngClass]="{'bg-success': test.consignacion, 'bg-warning': !test.consignacion}">
+                                {{ test.consignacion ? 'Consignada' : 'Por Consignar' }}
                             </span>
                         </td>
                         <td class="actions">
                             <button class="btn btn-info btn-sm me-2" (click)="viewTestDetails(test)">
                                 Ver Detalle
                             </button>
-                            <button *ngIf="!test.vigilancia" class="btn btn-primary btn-sm" (click)="getTest(test)">
+                            <button *ngIf="!test.consignacion" class="btn btn-primary btn-sm" (click)="getTest(test)">
                                 Consignar
                             </button>
                         </td>
@@ -80,26 +78,24 @@
     </div>
 
     <ng-template #testDetail>
-        <div *ngIf="tipoTest" class="card mb-4">
+        <div *ngIf="selectedTest" class="card mb-4">
             <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0">Test Seleccionado - {{ tipoTest.nombre }}</h5>
+                <h5 class="mb-0">Test Seleccionado - {{ test?.tipo_test }}</h5>
             </div>
             <div class="card-body">
                 <p><strong>ID TEST:</strong> {{ test?.id_test }}</p>
-                <p><strong>TIPO TEST:</strong> {{ test?.tipo_test?.nombre }}</p>
-                <p><strong>PACIENTE:</strong> {{ test?.paciente?.usuario?.persona?.nombre }} 
-                    {{ test?.paciente?.usuario?.persona?.apellido_paterno }} 
-                    {{ test?.paciente?.usuario?.persona?.apellido_materno }}</p>
+                <p><strong>TIPO TEST:</strong> {{ test?.tipo_test }}</p>
+                <p><strong>PACIENTE:</strong> {{ test?.paciente }}</p>
                 <p><strong>RESULTADO:</strong> {{ test?.resultado }} pts.</p>
                 <p><strong>FECHA:</strong> {{ test?.fecha | date: 'dd/MM/yyyy - HH:mm:ss' }}</p>
-                <p><strong>Ansiedad certificada: </strong>{{ test?.vigilancia?.diagnostico?.descripcion || 'No hay certificacion disponible' }}</p>
-                <p><strong>Tratamiendo: </strong>{{ test?.vigilancia?.tratamiento?.descripcion || 'No hay tratamiento disponible'}}</p>
+                <p><strong>Ansiedad certificada: </strong>{{ vigilancia?.diagnostico?.descripcion || 'No hay certificacion disponible' }}</p>
+                <p><strong>Tratamiendo: </strong>{{ vigilancia?.tratamiento?.descripcion || 'No hay tratamiento disponible'}}</p>
 
                 <h5 class="card-title">Resumen:</h5>
                 <ul class="list-group scrollbar" *ngIf="respuestas.length > 0; else Cargando">
-                    <li class="list-group-item" *ngFor="let respuesta of respuestas; let i = index">
-                        <p><strong>Pregunta {{ i + 1 }} :</strong> {{ respuesta.pregunta.contenido }}</p>
-                        <p><strong>Respuesta {{ i + 1 }} :</strong> {{ respuesta.alternativa.contenido }}</p>
+                    <li class="list-group-item" *ngFor="let pregunta of preguntas; let i = index">
+                        <p><strong>Pregunta {{ i + 1 }} :</strong> {{ pregunta }}</p>
+                        <p><strong>Respuesta {{ i + 1 }} :</strong> {{ respuestas.at(i) }}</p>
                     </li>
                 </ul>
                 <ng-template #Cargando>
