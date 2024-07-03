@@ -11,7 +11,7 @@
         <div class="col-md-4">
             <select class="form-select" [(ngModel)]="filterPacienteId" (change)="applyFilters()">
                 <option value="all">Todos los Tipos de Test</option>
-                <option *ngFor="let test of tests" [value]="test.id_tipo_test">{{ test.tipo_test.nombre }}</option>
+                <option *ngFor="let test of testsName" [value]="test.id_tipo_test">{{ test.nombre }}</option>
             </select>
         </div>
         <div class="col-md-4">

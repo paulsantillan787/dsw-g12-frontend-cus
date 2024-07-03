@@ -20,4 +20,8 @@ export class UbigeoService {
   getUbigeos(): Observable<Ubigeo[]> {
     return this.http.get<Ubigeo[]>( this.URL + SERVICE.GET, { headers: this.headers });
   }
+
+  getUbigeosDTO(): Observable<any[]> {
+    return this.http.get<any[]>( this.URL + SERVICE.DTO +SERVICE.GET, { headers: this.headers });
+  }
 }

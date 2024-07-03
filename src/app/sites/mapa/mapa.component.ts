@@ -16,6 +16,9 @@ import { Test } from '../../core/models/test';
 import { Ubigeo } from '../../core/models/ubigeo';
 
 import { FormsModule } from '@angular/forms';
+import { UbigeoService } from '../../core/services/ubigeo.service';
+import { TipoTest } from '../../core/models/tipo_test';
+import { TipoTestService } from '../../core/services/tipo-test.service';
 
 @Component({
   selector: 'app-mapa',
@@ -26,19 +29,28 @@ import { FormsModule } from '@angular/forms';
 })
 export class MapaComponent implements OnInit {
   map: Map = new Map();
-  overlay: Overlay | undefined;  
-  tests: Test[] = [];
-  filteredTests: Test[] = [];
+  overlay: Overlay | undefined;
+  tests: any[] = [];
+  testsName: TipoTest[] = [];
+  filteredTests: any[] = [];
 
   // Filtros
   filterTestId: string = 'all';
   filterPacienteId: string = 'all';
   filterConsignado: string = 'all';
 
-  constructor(private testService: TestService) {}
+  constructor(
+    private tipotestService: TipoTestService,
+    private testService: TestService,
+    private ubigeoService: UbigeoService
+  ) {}
 
   ngOnInit(): void {
-    this.testService.getTests().subscribe((data: any) => {
+    this.tipotestService.getTiposTest().subscribe((data: any) => {
+      this.testsName = data.tipos_test;
+    });
+
+    this.ubigeoService.getUbigeosDTO().subscribe((data: any) => {
       this.tests = data.tests;
       this.applyFilters();
       this.initializeMap();
@@ -78,7 +90,7 @@ export class MapaComponent implements OnInit {
           const props = feature.getProperties();
           const testsCount = props['testsCount'];
           const ciudad = props['ciudad'];
-    
+
           this.overlay?.setPosition(coord);
           this.popupContent.nativeElement.innerHTML = `<strong>${ciudad}</strong><br/>Tests realizados: ${testsCount}`;
           this.overlay?.setPositioning('top-left');
@@ -105,14 +117,14 @@ export class MapaComponent implements OnInit {
   }
 
   getHeatmapFeatures() {
-    const ubigeoCount: { [key: string]: { count: number, ubigeo: Ubigeo } } = {};
+    const ubigeoCount: { [key: string]: { count: number, latitud: number, longitud:number, distrito: String } } = {};
 
     this.filteredTests.forEach(test => {
-      const ubigeo = test.paciente.usuario.persona.ubigeo;
-      if (ubigeoCount[ubigeo.id_ubigeo]) {
-        ubigeoCount[ubigeo.id_ubigeo].count++;
+      const ubigeo = test.ubigeo;
+      if (ubigeoCount[ubigeo]) {
+        ubigeoCount[ubigeo].count++;
       } else {
-        ubigeoCount[ubigeo.id_ubigeo] = { count: 1, ubigeo: ubigeo };
+        ubigeoCount[ubigeo] = { count: 1, latitud: test.latitud, longitud: test.longitud, distrito: test.distrito};
       }
     });
 
@@ -121,10 +133,10 @@ export class MapaComponent implements OnInit {
       if (ubigeoCount.hasOwnProperty(key)) {
         const value = ubigeoCount[key];
         const point = new Feature({
-          geometry: new Point(fromLonLat([value.ubigeo.longitud, value.ubigeo.latitud])),
+          geometry: new Point(fromLonLat([value.longitud, value.latitud])),
           weight: value.count,
           testsCount: value.count,
-          ciudad: `${value.ubigeo.distrito}`
+          ciudad: `${value.distrito}`
         });
         features.push(point);
       }
@@ -135,7 +147,7 @@ export class MapaComponent implements OnInit {
 
   applyFilters() {
     this.filteredTests = this.tests.filter(test => {
-      const matchesTestId = this.filterTestId === 'all' || test.clasificacion.semaforo.color === this.filterTestId;
+      const matchesTestId = this.filterTestId === 'all' || test.color === this.filterTestId;
       const matchesPacienteId = this.filterPacienteId === 'all' || test.id_tipo_test.toString() === this.filterPacienteId;
       const matchesConsignado = this.filterConsignado === 'all' || (this.filterConsignado === 'true' && !!test.id_vigilancia) || (this.filterConsignado === 'false' && !test.id_vigilancia);
 
