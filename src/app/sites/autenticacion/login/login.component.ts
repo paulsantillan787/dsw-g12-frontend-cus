@@ -367,4 +367,8 @@ export class LoginComponent {
   ngOnDestroy() {
     this.modalRef?.close();
   }
+
+  regresar(){
+      this.router.navigate(['/usuarios']);
+  }
 }
