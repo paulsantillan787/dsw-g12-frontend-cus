@@ -15,6 +15,7 @@ import { TratamientoService } from '../../core/services/tratamiento.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { VigilanciaService } from '../../core/services/vigilancia.service';
 import { forkJoin, tap } from 'rxjs';
+import { Vigilancia } from '../../core/models/vigilancia';
 
 
 @Component({
@@ -26,13 +27,15 @@ import { forkJoin, tap } from 'rxjs';
 })
 export class VigilanceComponent implements OnInit {
   tests: any[] = [];
-  test: Test | null = null;
-  filteredTests: Test[] = [];
+  test: any | null = null;
+  vigilancia: Vigilancia | null = null;
+  filteredTests: any[] = [];
   selectedTest = false;
   tipoTest: TipoTest | null = null;
   tipos: TipoTest[] = [];
   // Para mostrar las respuestas por cada test
-  respuestas: Respuesta[] = [];
+  respuestas: any[] = [];
+  preguntas: any[] = [];
 
   // Listar las ansiedades y si es nueva
   diagnosticos: Diagnostico[] = [];
@@ -107,26 +110,32 @@ export class VigilanceComponent implements OnInit {
     });
   }
 
-  getTest(test: Test) {
+  getTest(test: any) {
+    const id_vigilancia = test.consignacion
     this.selectedTest = true;
     this.esOpcionConsignar = true;
+    if (id_vigilancia != null)
+      this.vigilanciaService.getVigilanciById(id_vigilancia).subscribe((data: any) => {
+        this.vigilancia = data.vigilancia;
+        console.log(this.vigilancia);
+      });
+
+    this.getRespuestas(test);
+  }
+
+  viewTestDetails(test: any) {
     this.test = test;
-    console.log(this.test);
-    this.getRespuestas();
-    this.tipoTestService.getTiposTest().subscribe((data: any) => {
-      this.tipoTest = data.tipos_test.find((tipo: TipoTest) => tipo.id_tipo_test === test.id_tipo_test) || null;
-    });
-  }
-
-  viewTestDetails(test: Test) {
-    this.getTest(test);
+    this.getTest(this.test);
     this.esOpcionConsignar = false;
+    console.log(this.respuestas);
   }
 
-  getRespuestas() {
-    const id_test = this.test?.id_test;
-    this.respuestaService.getRespuestasByTest(id_test).subscribe((data: any) => {
-      this.respuestas = data.respuestas;
+  getRespuestas(test: any) {
+    const id_test = test.id_test;
+    console.log(id_test)
+    this.respuestaService.getRespuestasDTO(id_test).subscribe((data: any) => {
+      this.respuestas = data.resumen.alternativas_marcadas;
+      this.preguntas = data.resumen.preguntas_planteadas;
     });
   }
 
@@ -144,6 +153,9 @@ export class VigilanceComponent implements OnInit {
     this.selectedTratamiento = '';
     this.isOtherTratamiento = false;
     this.newTratamiento = '';
+    this.preguntas = [];
+    this.respuestas = [];
+    this.vigilancia = null;
   }
 
   submitVigilancia(vigilancia: any, testToUpdate: any) {
