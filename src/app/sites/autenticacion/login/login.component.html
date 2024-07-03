@@ -66,8 +66,10 @@
                             <option value="Pasaporte">Pasaporte</option>
                             <option value="CE">Carnet de Extranjería</option>
                         </select>
-                        <div *ngIf="this.registerPacienteForm.get('tipo_documento')?.errors?.['required']" class="text-danger">
-                            Este campo es requerido.
+                        <div *ngIf="registerPacienteForm.get('tipo_documento')?.invalid && (registerPacienteForm.get('tipo_documento')?.dirty || registerPacienteForm.get('tipo_documento')?.touched)" class="text-danger">
+                            <div *ngIf="registerPacienteForm.get('tipo_documento')?.errors?.['required']">
+                                Seleccione un tipo de documento.
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -75,39 +77,79 @@
                         <input type="text" formControlName="documento" class="form-control" id="documento"
                             placeholder="Ingrese su número de documento">
                     </div>
+                    <div *ngIf="registerPacienteForm.get('documento')?.invalid && (registerPacienteForm.get('documento')?.dirty || registerPacienteForm.get('documento')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('documento')?.errors?.['required']">
+                            Ingrese su documento.
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="text" formControlName="nombre" class="form-control" id="nombre"
                             placeholder="Ingrese su nombre">
+                    </div>
+                    <div *ngIf="registerPacienteForm.get('nombre')?.invalid && (registerPacienteForm.get('nombre')?.dirty || registerPacienteForm.get('nombre')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('nombre')?.errors?.['required']">
+                            Ingrese su nombre.
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="apellido_paterno">Apellido Paterno</label>
                         <input type="text" formControlName="apellido_paterno" class="form-control" id="apellido_paterno"
                             placeholder="Ingrese su apellido paterno">
                     </div>
+                    <div *ngIf="registerPacienteForm.get('apellido_paterno')?.invalid && (registerPacienteForm.get('apellido_paterno')?.dirty || registerPacienteForm.get('apellido_paterno')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('apellido_paterno')?.errors?.['required']">
+                            Ingrese su apellido paterno.
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="apellido_materno">Apellido Materno</label>
                         <input type="text" formControlName="apellido_materno" class="form-control" id="apellido_materno"
                             placeholder="Ingrese su apellido materno">
+                    </div>
+                    <div *ngIf="registerPacienteForm.get('apellido_materno')?.invalid && (registerPacienteForm.get('apellido_materno')?.dirty || registerPacienteForm.get('apellido_materno')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('apellido_materno')?.errors?.['required']">
+                            Ingrese su apellido materno.
+                        </div>
                     </div>
                     <div class="form-group">
                       <label for="departamento">Departamento</label>
                       <select [(ngModel)]="departamento" formControlName="departamento" class="form-control" id="departamento" (change)="obtenerProvincias(departamento, registerPacienteForm)">
                         <option *ngFor="let depart of departamentos" [value]="depart">{{depart}}</option>
                       </select>
+                      <div *ngIf="registerPacienteForm.get('departamento')?.invalid && (registerPacienteForm.get('departamento')?.dirty || registerPacienteForm.get('departamento')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('departamento')?.errors?.['required']">
+                          Seleccione una de las opciones.
+                        </div>
+                      </div>
                       <label for="provincia">Provincia</label>
                       <select [(ngModel)]="provincia" formControlName="provincia" class="form-control" id="provincia" (change)="obtenerDistritos(departamento, provincia)">
                         <option *ngFor="let prov of provincias" [value]="prov">{{prov}}</option>
                       </select>
+                      <div *ngIf="registerPacienteForm.get('provincia')?.invalid && (registerPacienteForm.get('provincia')?.dirty || registerPacienteForm.get('provincia')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('provincia')?.errors?.['required']">
+                          Seleccione una de las opciones.
+                        </div>
+                      </div>
                       <label for="distrito">Distrito</label>
                       <select [(ngModel)]="distrito" formControlName="distrito" class="form-control" id="distrito">
                         <option *ngFor="let distri of distritos" [value]="distri">{{distri}}</option>
                       </select>
+                      <div *ngIf="registerPacienteForm.get('distrito')?.invalid && (registerPacienteForm.get('distrito')?.dirty || registerPacienteForm.get('distrito')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('distrito')?.errors?.['required']">
+                          Seleccione una de las opciones.
+                        </div>
+                      </div>
                   </div>
                     <div class="form-group">
                         <label for="telefono">Teléfono</label>
                         <input type="text" formControlName="telefono" class="form-control" id="telefono"
                             placeholder="Ingrese su teléfono">
+                    </div>
+                    <div *ngIf="registerPacienteForm.get('telefono')?.invalid && (registerPacienteForm.get('telefono')?.dirty || registerPacienteForm.get('telefono')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('telefono')?.errors?.['required']">
+                            Ingrese su telefono.
+                        </div>
                     </div>
                     <!-- fecha nacimiento -->
                     <div class="form-group">
@@ -123,6 +165,11 @@
                             <option value="F">Femenino</option>
                             <option value="X">Otro</option>
                         </select>
+                        <div *ngIf="registerPacienteForm.get('sexo')?.invalid && (registerPacienteForm.get('sexo')?.dirty || registerPacienteForm.get('sexo')?.touched)" class="text-danger">
+                            <div *ngIf="registerPacienteForm.get('sexo')?.errors?.['required']">
+                              Seleccione una de las opciones.
+                            </div>
+                          </div>
                     </div>
 
                     <h4>Datos de Usuario</h4>
@@ -130,6 +177,11 @@
                         <label for="correo">Correo</label>
                         <input type="email" formControlName="correo" class="form-control" id="correo"
                             placeholder="Ingrese su correo">
+                    </div>
+                    <div *ngIf="registerPacienteForm.get('correo')?.invalid && (registerPacienteForm.get('correo')?.dirty || registerPacienteForm.get('correo')?.touched)" class="text-danger">
+                        <div *ngIf="registerPacienteForm.get('correo')?.errors?.['required']">
+                            Ingrese un correo electronico.
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña</label>
