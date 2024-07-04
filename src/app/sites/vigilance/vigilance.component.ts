@@ -55,16 +55,21 @@ export class VigilanceComponent implements OnInit {
   observacion: string = '';
   fundamentacion: string = '';
 
+  //Para enviar email
+  email_content: string = '';
+
   // Filtros
   filterTestId: string = 'all'; // Por defecto se muestran todos
   filterTipoTestId: string = 'all'; // Por defecto se muestran todos
   filterConsignado: string = 'all'; // Por defecto se muestran todos
+  filterFecha: string = ''; // Por defecto se muestran todos
 
   // Para la paginación
   currentPage: number = 1;
   itemsPerPage: number = 8;
 
   esOpcionConsignar = false;
+  esOpcionEnviarEmail = false;
 
   constructor(
     private testService: TestService,
@@ -105,8 +110,10 @@ export class VigilanceComponent implements OnInit {
       const matchesTestId = this.filterTestId === 'all' || test.color === this.filterTestId;
       const matchesTipoTestId = this.filterTipoTestId === 'all' || test.id_tipo_test.toString() === this.filterTipoTestId;
       const matchesConsignado = this.filterConsignado === 'all' || (this.filterConsignado === 'true' && test.consignacion) || (this.filterConsignado === 'false' && !test.consignacion);
-
-      return matchesTestId && matchesTipoTestId && matchesConsignado;
+      const matchesFecha = this.filterFecha === '' || test.fecha.split(' ')[0] === this.filterFecha;
+      console.log(this.filterFecha);
+      console.log(test.fecha.split(' ')[0]);
+      return matchesTestId && matchesTipoTestId && matchesConsignado && matchesFecha;
     });
   }
 
@@ -144,6 +151,7 @@ export class VigilanceComponent implements OnInit {
     this.selectedTest = false;
     this.test = null;
     this.esOpcionConsignar = false;
+    this.esOpcionEnviarEmail = false;
     this.resetConsignationOptions();
   }
 
@@ -171,9 +179,30 @@ export class VigilanceComponent implements OnInit {
           text: 'La consignación del test se ha realizado con éxito.',
           confirmButtonText: 'Aceptar'
         }).then(() => {
-          this.cancel();
+          this.esOpcionConsignar = false;
+          this.esOpcionEnviarEmail = true;
           window.location.reload();
         });
+      });
+    });
+  }
+
+  sendEmail(){
+    const email = {
+      email: this.test.correo_paciente,
+      subject: 'Resultados de test',
+      body: this.email_content,
+    };
+    console.log(email);
+    this.vigilanciaService.sendEmailToVigilancia(email).subscribe((data: any) => {
+      console.log(data);
+      Swal.fire({
+        icon: 'success',
+        title: 'Correo enviado',
+        text: 'El correo se ha enviado con éxito.',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
+        this.cancel();
       });
     });
   }

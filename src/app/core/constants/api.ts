@@ -15,7 +15,9 @@ export const MODEL = {
     RESPUESTA: BACKEND + '/respuestas',
     VIGILANCIA: BACKEND + '/vigilancias',
     DIAGNOSTICO: BACKEND + '/diagnosticos',
-    TRATAMIENTO: BACKEND + '/tratamientos'
+    TRATAMIENTO: BACKEND + '/tratamientos',
+    //PARA LOS MENSAJES
+    EMAIL: BACKEND + '/email',
 };
 
 export const SERVICE = {

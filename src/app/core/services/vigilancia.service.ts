@@ -39,4 +39,8 @@ export class VigilanciaService {
   getVigilanciasDTO(): Observable<any[]> {
     return this.http.get<any[]>(this.URL + SERVICE.DTO + SERVICE.GET, { headers: this.headers });
   }
+
+  sendEmailToVigilancia(form:any) {
+    return this.http.post(MODEL.EMAIL + SERVICE.DTO + SERVICE.POST, form, { headers: this.headers });
+  }
 }
