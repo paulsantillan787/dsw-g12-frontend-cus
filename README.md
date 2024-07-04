@@ -11,7 +11,7 @@
 ## Instalación:
 - Descargamos el repositorio como .ZIP o con el siguiente comando:
 ```bash
-https://github.com/paulsantillan787/dsw-g12-frontend-cus.git
+git clone https://github.com/paulsantillan787/dsw-g12-frontend-cus.git
 ```
 
 - Una vez instalado, nos dirigimos a la carpeta del proyecto importado
