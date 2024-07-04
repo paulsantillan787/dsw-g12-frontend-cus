@@ -15,7 +15,7 @@ export class MainComponent implements OnInit{
   constructor(private router: Router) {}
 
   ngOnInit() {
-    if (localStorage.getItem('token') == null /*&& !isValidToken()*/ ) {
+    if (localStorage.getItem('token') == null) {
       window.alert('Sesión caducada, por favor inicie sesión nuevamente.');
       this.router.navigate(['../usuarios']);
     }

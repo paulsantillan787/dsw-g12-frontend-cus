@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Test } from '../../core/models/test';
 import { TestService } from '../../core/services/test.service';
 import { TipoTest } from '../../core/models/tipo_test';
 import { TipoTestService } from '../../core/services/tipo-test.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { Respuesta } from '../../core/models/respuesta';
 import { RespuestaService } from '../../core/services/respuesta.service';
 import { Diagnostico } from '../../core/models/diagnostico';
 import { DiagnosticoService } from '../../core/services/diagnostico.service';
@@ -70,6 +68,9 @@ export class VigilanceComponent implements OnInit {
 
   esOpcionConsignar = false;
   esOpcionEnviarEmail = false;
+
+  // Para el cargando...
+  loading = false;
 
   constructor(
     private testService: TestService,
@@ -173,6 +174,7 @@ export class VigilanceComponent implements OnInit {
       testToUpdate.id_vigilancia = data.vigilancia.id_vigilancia;
       this.testService.updateTest(testToUpdate, testToUpdate.id_test).subscribe((data: any) => {
         console.log(data);
+        this.loading = false;
         Swal.fire({
           icon: 'success',
           title: 'Consignación exitosa',
@@ -181,7 +183,6 @@ export class VigilanceComponent implements OnInit {
         }).then(() => {
           this.esOpcionConsignar = false;
           this.esOpcionEnviarEmail = true;
-          window.location.reload();
         });
       });
     });
@@ -190,7 +191,7 @@ export class VigilanceComponent implements OnInit {
   sendEmail(){
     const email = {
       email: this.test.correo_paciente,
-      subject: 'Resultados de test',
+      subject: 'RESULTADO DEL TEST',
       body: this.email_content,
     };
     console.log(email);
@@ -203,12 +204,14 @@ export class VigilanceComponent implements OnInit {
         confirmButtonText: 'Aceptar'
       }).then(() => {
         this.cancel();
+        window.location.reload();
       });
     });
   }
 
   submitConsignation() {
     if (this.test) {
+      this.loading = true;
       let testToUpdate = {
         id_test: this.test.id_test,
         id_vigilancia: this.test.consignacion,
