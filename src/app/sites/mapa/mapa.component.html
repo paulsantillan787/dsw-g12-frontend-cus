@@ -2,13 +2,13 @@
     <div class="row mt-3">
         <div class="col-md-4">
             <select class="form-select" [(ngModel)]="filterTestId" (change)="applyFilters()">
-                <option value="all">Todos los Estados del Caso</option>
-                <option value="green">Estado Verde</option>
-                <option value="yellow">Estado Amarillo</option>
-                <option value="red">Estado Rojo</option>
+                <option value="all">Estado de salud mental</option>
+                <option value="green">Estado Critico</option>
+                <option value="yellow">Estado Vulnerable</option>
+                <option value="red">Estado Estable</option>
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 my-3 my-md-0">
             <select class="form-select" [(ngModel)]="filterPacienteId" (change)="applyFilters()">
                 <option value="all">Todos los Tipos de Test</option>
                 <option *ngFor="let test of testsName" [value]="test.id_tipo_test">{{ test.nombre }}</option>
