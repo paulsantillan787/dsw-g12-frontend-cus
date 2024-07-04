@@ -7,9 +7,9 @@
                 <p>Filtrar por caso</p>
                 <select class="form-select" [(ngModel)]="filterTestId" (change)="applyFilters()">
                     <option value="all">Todos los Estados del Caso</option>
-                    <option value="green">Caso leve - VERDE</option>
-                    <option value="yellow">Caso Moderado - AMARILLO</option>
-                    <option value="red">Caso grave - ROJO</option>
+                    <option value="red">Caso Crítico</option>
+                    <option value="yellow">Caso Vulnerable</option>
+                    <option value="green">Caso Estable</option>
                 </select>
             </div>
             <div class="col-md-4">
