@@ -1,33 +1,40 @@
-# DswG12FrontendCus
+# Entregable SISVITA3 - grupo 12
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.1.
+## Descripción:
+- Tratamos el desarrollo del frontend de los casos de uso proporcionados en el diagrama para el avance del proyecto de curso *DESARROLLO DE SISTEMAS WEB*.
 
-## Development server
+## Detalles:
+- Uso del framework Agnular
+- Uso de librerías OpenLayer y Overlay, Map y Heatmap para la implementación del mapa de calor.
+- El backend utilizado es el siguiente:  https://github.com/JoArDiTo/dsw-g12-backend-cus
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Instalación:
+- Descargamos el repositorio como .ZIP o con el siguiente comando:
+```bash
+https://github.com/paulsantillan787/dsw-g12-frontend-cus.git
+```
 
-## Code scaffolding
+- Una vez instalado, nos dirigimos a la carpeta del proyecto importado
+```bash
+cd dsw-g12-frontend-cus/
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Abrimos en nuestro editor de codigo e instalamos los requerimientos del proyecto:
+```bash
+npm install
+```
 
-## Build
+### Ejecución:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Corremos el programa
+```bash
+ng serve
+```
+- Visualizamos la ejecución
+ Navegamos hacia `http://localhost:4200/`.
 
 ## Contact
-For any questions or assistance, please contact the following people:
+Ante cualquier duda, por favor contactar a los siguientes usuarios:
 - https://github.com/yabl1107
 - https://github.com/JoArDiTo
 - https://github.com/paulsantillan787
