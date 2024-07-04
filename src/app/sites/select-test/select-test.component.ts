@@ -35,6 +35,7 @@ export class SelectTestComponent implements OnInit {
   tests: Test[] = [];
   testForm: FormGroup;
   respuestasArray: number[] = [];
+  isLoading = false;
 
   counter = 0;
 
@@ -129,6 +130,7 @@ export class SelectTestComponent implements OnInit {
     const PuntajesPorAlternativa:any[] = [];
 
     if (this.testForm.valid) {
+      this.isLoading = true;
       this.getPuntajePorAlternativa(this.alternativas);
       console.log("selectedTest2:", this.selectedTest);
       const id_tipo_test = this.selectedTest?.id_tipo_test;
@@ -150,6 +152,7 @@ export class SelectTestComponent implements OnInit {
         const test = data.test;
         const id_test = data.test.id_test;
         this.generarRespuestasJSON(id_test);
+        this.isLoading = false;
         Swal.fire({
           title: '¡Test enviado!',
           text: 'Su resultado es: ' + test.clasificacion,
