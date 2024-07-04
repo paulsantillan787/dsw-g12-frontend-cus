@@ -47,12 +47,12 @@ export class TestsPerformedComponent implements OnInit {
     const token = localStorage.getItem('token');
     const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
 
-    
+
 
     this.testService.getTestsDTO(payload.id_paciente).subscribe((data: any) => {
       console.log(data.data);
       this.tests = data.data;
-      this.paginateTests();   
+      this.paginateTests();
     });
   }
 
@@ -60,13 +60,13 @@ export class TestsPerformedComponent implements OnInit {
     this.getTest(test);
 
     if(this.test.id_vigilancia != null){
-      this.vigilanciaService.getVigilanciById(this.test.id_test).subscribe(
+      this.vigilanciaService.getVigilanciById(this.test.id_vigilancia).subscribe(
         (data: any) => {
           this.vigilancia = data.vigilancia;
           console.log(data.vigilancia);
         });
     }
- 
+
     console.log("afuera : " + this.vigilancia);
     console.log(test)
     this.getRespuestas();
@@ -104,7 +104,7 @@ export class TestsPerformedComponent implements OnInit {
 
 
 
-  
+
   // ↓ Métodos para la paginación
   paginateTests() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
