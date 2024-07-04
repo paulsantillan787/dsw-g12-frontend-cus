@@ -11,7 +11,7 @@
           <div class="d-inline-flex box flex-row-reverse">
             <div *ngIf="user === 'paciente'; else especialista_logged">
                 <div class="etiqueta-card">
-                    <label class="px-3">PACIENTE</label>
+                    <label class="px-3 py-1">PACIENTE</label>
                   </div>
             </div>
           </div>
@@ -653,6 +653,6 @@
 
 <ng-template #especialista_logged>
     <div class="etiqueta-card">
-        <label class="px-3">ESPECIALISTA</label>
+        <label class="px-3 py-1">ESPECIALISTA</label>
       </div>
 </ng-template>
