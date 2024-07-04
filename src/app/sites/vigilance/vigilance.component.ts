@@ -41,6 +41,8 @@ export class VigilanceComponent implements OnInit {
   isOtherAnsiedad = false;
   newAnsiedad: string = '';
   fundamentacionAnsiedad: string = '';
+  diagnostico: Diagnostico | null = null;
+  selectedFundamentacion: string = '';
 
   // Listar los tratamientos y si es nuevo
   tratamientos: Tratamiento[] = [];
@@ -48,6 +50,8 @@ export class VigilanceComponent implements OnInit {
   isOtherTratamiento = false;
   newTratamiento: string = '';
   fundamentacionTratamiento: string = '';
+  tratamiento: Tratamiento | null = null;
+  selectedFundamentacionTratamiento: string = '';
 
   //Para certificar el mismo test
   observacion: string = '';
@@ -100,10 +104,22 @@ export class VigilanceComponent implements OnInit {
     this.tratamientoService.getTratamientos().subscribe((data: any) => {
       this.tratamientos = data.tratamientos;
     });
+
+    this.onDiagnosticoChange();
   }
 
   ngOnChanges() {
     this.applyFilters();
+  }
+
+  onDiagnosticoChange(): void {
+    const selected = this.diagnosticos.find(d => d.id_diagnostico === parseInt(this.selectedDiagnostico));
+    this.selectedFundamentacion = selected ? selected.fundamentacion : '';
+  }
+
+  onTratamientoChange(): void {
+    const selected = this.tratamientos.find(t => t.id_tratamiento === parseInt(this.selectedTratamiento));
+    this.selectedFundamentacionTratamiento = selected ? selected.fundamentacion : '';
   }
 
   applyFilters() {

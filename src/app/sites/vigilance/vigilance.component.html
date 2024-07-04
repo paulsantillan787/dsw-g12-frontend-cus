@@ -122,10 +122,13 @@
                         <div *ngIf="!isOtherAnsiedad" class="mb-3">
                             <label for="ansiedadConSignada" class="form-label">DIAGNÓSTICO</label>
                             <div class="d-flex ">
-                                <select class="form-select w-50" id="ansiedadConSignada" [(ngModel)]="selectedDiagnostico" name="selectedDiagnostico" (change)="isOtherAnsiedad = (selectedDiagnostico === 'other')">
+                                <select class="form-select w-50" id="ansiedadConSignada" [(ngModel)]="selectedDiagnostico" name="selectedDiagnostico" (change)="isOtherAnsiedad = (selectedDiagnostico === 'other'); onDiagnosticoChange()">
                                     <option *ngFor="let diagnostico of diagnosticos" [value]="diagnostico.id_diagnostico">{{ diagnostico.descripcion }}</option>
                                 </select>
                                 <button type="button" class="btn btn-primary mx-3 btn-more-scale" (click)="isOtherAnsiedad=!isOtherAnsiedad">+</button>
+                            </div>
+                            <div *ngIf="selectedDiagnostico != '' && selectedFundamentacion != ''">
+                                <p><strong>Fundamento: </strong>{{ selectedFundamentacion }}</p>
                             </div>
                         </div>
                         <div class="mb-3 w-50" *ngIf="isOtherAnsiedad">
@@ -137,10 +140,13 @@
                         <div *ngIf="!isOtherTratamiento" class="mb-3">
                             <label for="tratamiento" class="form-label">TRATAMIENTO</label>
                             <div class="d-flex ">
-                                <select class="form-select w-50" id="tratamiento" [(ngModel)]="selectedTratamiento" name="selectedTratamiento" (change)="isOtherTratamiento = (selectedTratamiento === 'other')">
+                                <select class="form-select w-50" id="tratamiento" [(ngModel)]="selectedTratamiento" name="selectedTratamiento" (change)="isOtherTratamiento = (selectedTratamiento === 'other'); onTratamientoChange()">
                                     <option *ngFor="let tratamiento of tratamientos" [value]="tratamiento.id_tratamiento">{{ tratamiento.descripcion }}</option>
                                 </select>
                                 <button type="button" class="btn btn-primary mx-3 btn-more-scale" (click)="isOtherTratamiento=!isOtherTratamiento">+</button>
+                            </div>
+                            <div *ngIf="selectedTratamiento != '' && selectedFundamentacionTratamiento != ''">
+                                <p><strong>Fundamento: </strong>{{ selectedFundamentacionTratamiento }}</p>
                             </div>
                         </div>
                         <div class="mb-3 w-50" *ngIf="isOtherTratamiento">
